@@ -2,110 +2,202 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="description" content="ALLO BILAL - إنشاء حساب سائق جديد">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0f2027">
   <title>إنشاء حساب سائق - ALLO BILAL</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  
-  <!-- Font Awesome - الرابط المضمون الذي يعمل دائمًا -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      position: relative;
-      overflow-x: hidden;
-      overflow-y: auto;
+    /* إعادة تعيين الأنماط */
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
-    body::before {
-      content: "";
-      position: absolute;
-      top: -50%; left: -50%; width: 200%; height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 70%);
-      z-index: -1;
-    }
-    .container {
-      background: rgba(0, 0, 0, 0.35);
-      backdrop-filter: blur(12px);
-      border-radius: 28px;
-      padding: 40px 30px;
-      max-width: 600px;
+    
+    html, body {
       width: 100%;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      height: 100%;
+      overflow: hidden;
+      position: fixed;
+      font-family: 'Cairo', sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      color: white;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overscroll-behavior: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* منطقة آمنة للهواتف ذات الشقوق */
+    .safe-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-top: env(safe-area-inset-top, 20px);
+      padding-bottom: env(safe-area-inset-bottom, 20px);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    /* رأس التطبيق */
+    .app-header {
+      padding: 15px 20px;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       position: relative;
       z-index: 10;
-      animation: fadeInUp 0.6s ease-out;
-      margin: 20px;
+      flex-shrink: 0;
     }
-    @keyframes fadeInUp {
+    
+    .header-left, .header-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .back-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .back-btn:active {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(0.95);
+    }
+    
+    .app-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #ff6b6b, #ffa726);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-right: 10px;
+    }
+    
+    /* المحتوى الرئيسي */
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 20px 15px;
+      position: relative;
+    }
+    
+    /* حاوية التطبيق */
+    .app-container {
+      max-width: 500px;
+      margin: 0 auto;
+      width: 100%;
+      animation: slideUp 0.5s ease-out;
+    }
+    
+    @keyframes slideUp {
       from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }    }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* شعار التطبيق */
     .logo-box {
       text-align: center;
       margin-bottom: 30px;
+      padding: 0 10px;
     }
+    
     .logo {
-      font-size: 72px;
+      font-size: 60px;
       margin-bottom: 15px;
       animation: pulse 2s infinite;
+      display: inline-block;
     }
+    
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.05); }
       100% { transform: scale(1); }
     }
+    
     .brand {
       font-family: 'Orbitron', sans-serif;
-      font-size: 38px;
+      font-size: 28px;
       font-weight: 800;
       background: linear-gradient(90deg, #ff512f, #dd2476, #24c6dc, #4facfe, #ff6b6b);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-size: 300% 300%;
       animation: gradientBG 8s ease infinite;
-      letter-spacing: -1px;
+      margin-bottom: 10px;
     }
+    
     @keyframes gradientBG {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
+    
     .subtitle {
       color: rgba(255, 255, 255, 0.85);
-      margin-top: 10px;
-      font-size: 18px;
-      font-weight: 400;
+      font-size: 16px;
       line-height: 1.5;
     }
-    .steps {
+    
+    /* مؤشر الخطوات */
+    .steps-container {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 30px;
       position: relative;
-      flex-wrap: wrap;
-      gap: 15px;
+      margin: 30px 0 40px;
+      padding: 0 10px;
     }
-    .steps::before {
+    
+    .steps-container::before {
       content: '';
       position: absolute;
-      top: 20px;      left: 0;
-      right: 0;
+      top: 20px;
+      left: 20px;
+      right: 20px;
       height: 3px;
       background: rgba(255, 255, 255, 0.15);
       z-index: 0;
     }
-    @media (max-width: 480px) {
-      .steps::before { display: none; }
-      .steps { flex-direction: column; align-items: center; }
+    
+    .step-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 1;
     }
+    
     .step {
       width: 40px;
       height: 40px;
@@ -116,148 +208,215 @@
       justify-content: center;
       color: rgba(255, 255, 255, 0.7);
       font-weight: 700;
-      position: relative;
-      z-index: 1;
       border: 2px solid rgba(255, 255, 255, 0.2);
       font-size: 16px;
+      transition: all 0.3s ease;
     }
+    
     .step.active {
-      background: #ffb;
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
       color: white;
       border-color: #ff6b6b;
+      transform: scale(1.1);
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
     }
+    
     .step-label {
       margin-top: 10px;
       font-size: 14px;
       color: rgba(255, 255, 255, 0.7);
       text-align: center;
       font-weight: 500;
+      white-space: nowrap;
     }
+    
     .step.active + .step-label {
       color: #ff6b6b;
       font-weight: 600;
     }
+    
+    /* الخطوات */
     .form-step {
       display: none;
     }
+    
     .form-step.active {
       display: block;
-      animation: fadeIn 0.5s ease-out;
+      animation: fadeIn 0.4s ease-out;
     }
+    
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
+    
+    /* مجموعات النموذج */
     .form-group {
       margin-bottom: 22px;
-      text-align: right;
     }
+    
     .form-group label {
       display: block;
       margin-bottom: 10px;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
       color: #fff;
       text-align: right;
     }
+    
     .form-control {
       width: 100%;
-      padding: 18px 20px;
-      border-radius: 16px;
+      padding: 16px 18px;
+      border-radius: 14px;
       border: 1px solid rgba(255, 255, 255, 0.2);
       background: rgba(255, 255, 255, 0.1);
       color: #fff;
-      font-size: 18px;
+      font-size: 16px;
       font-family: 'Cairo', sans-serif;
       transition: all 0.3s;
+      -webkit-appearance: none;
+      appearance: none;
     }
+    
     .form-control:focus {
       outline: none;
       border-color: #ff6b6b;
       background: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.3);
+      box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
     }
+    
     .form-control::placeholder {
       color: rgba(255, 255, 255, 0.5);
     }
+    
+    /* حقل اختيار الملفات */
+    .file-input-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+    }
+    
+    .file-input-wrapper input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 2;
+    }
+    
+    .file-input-label {
+      display: block;
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 16px;
+      font-family: 'Cairo', sans-serif;
+      cursor: pointer;
+      text-align: right;
+      transition: all 0.3s;
+    }
+    
+    .file-input-label:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .file-name {
+      display: block;
+      margin-top: 8px;
+      font-size: 14px;
+      color: #4fc3f7;
+      font-weight: 600;
+      word-break: break-all;
+    }
+    
+    /* أزرار التنقل */
     .btn-group {
       display: flex;
-      gap: 15px;
+      gap: 12px;
       margin-top: 30px;
-      justify-content: space-between;
-      flex-wrap: wrap;
     }
+    
     .btn {
-      padding: 18px 25px;
+      padding: 18px 20px;
       border: none;
-      border-radius: 16px;
-      font-size: 20px;
+      border-radius: 14px;
+      font-size: 17px;
       font-weight: 700;
       font-family: 'Cairo', sans-serif;
       cursor: pointer;
-      transition: all 0.4s;      position: relative;
-      overflow: hidden;
+      transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
       flex: 1;
-      min-width: 120px;
+      position: relative;
+      overflow: hidden;
+      min-height: 56px;
     }
-    @media (max-width: 480px) {
-      .btn-group { flex-direction: column; }
-      .btn { width: 100%; }
+    
+    .btn:active {
+      transform: translateY(2px);
     }
-    .btn::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, rgba(255,255,255,0.2), transparent);
-      transform: translateX(-100%);
-      transition: transform 0.6s;
-    }
-    .btn:hover::after { transform: translateX(100%); }
-    .btn-primary {
-      background: linear-gradient(90deg, #ff6b6b 0%, #ee5a24 100%);
-      color: white;
-      box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(255, 107, 107, 0.6);
-    }
-    .btn-primary:disabled {
-      opacity: 0.7;
+    
+    .btn:disabled {
+      opacity: 0.6;
       cursor: not-allowed;
       transform: none !important;
     }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+      color: white;
+      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+    }
+    
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(2px);
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+    }
+    
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.12);
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.25);
-      transform: translateY(-2px);
+    
+    .btn-secondary:active:not(:disabled) {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(2px);
     }
+    
+    /* مربع المعلومات */
     .info-box {
       background: rgba(255, 107, 107, 0.15);
       border-left: 4px solid #ff6b6b;
-      padding: 20px;      border-radius: 12px;
+      padding: 20px;
+      border-radius: 12px;
       margin-bottom: 25px;
-      font-size: 16px;
-      line-height: 1.7;
+      font-size: 15px;
+      line-height: 1.6;
     }
+    
     .info-box ul {
       margin-top: 10px;
       padding-right: 20px;
     }
+    
     .info-box li {
       margin-bottom: 8px;
       list-style-type: none;
       position: relative;
       padding-right: 20px;
     }
+    
     .info-box li::before {
       content: "•";
       color: #ff6b6b;
@@ -267,9 +426,76 @@
       font-size: 24px;
       line-height: 1;
     }
+    
     .info-box strong {
       color: #ff6b6b;
     }
+    
+    /* ملخص المعلومات */
+    .summary-box {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 15px;
+    }
+    
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .summary-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .summary-label {
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 15px;
+    }
+    
+    .summary-value {
+      font-weight: 700;
+      color: #fff;
+      font-size: 15px;
+      text-align: left;
+    }
+    
+    /* شريط اللغة */
+    .language-bar {
+      display: flex;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px;
+      border-radius: 25px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .lang-btn {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-family: 'Cairo', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 15px;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    
+    .lang-btn.active, .lang-btn:active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    /* الإشعارات */
     .notification {
       position: fixed;
       top: 20px;
@@ -281,291 +507,414 @@
       border-radius: 50px;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
       z-index: 10000;
-      font-size: 19px;
+      font-size: 17px;
       font-weight: 600;
-      transition: transform 0.45s ease;
+      transition: transform 0.4s ease;
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.15);
       display: flex;
       align-items: center;
       gap: 12px;
+      max-width: 90%;
+      text-align: center;
     }
+    
     .notification.show {
       transform: translateX(-50%) translateY(0);
-    }    .notification.success { background: rgba(34, 197, 94, 0.95); border-color: rgba(34, 197, 94, 0.4); }
-    .notification.error { background: rgba(239, 68, 68, 0.95); border-color: rgba(239, 68, 68, 0.4); }
-    .back-btn {
-      position: absolute;
-      top: 25px;
-      left: 25px;
-      background: rgba(0, 0, 0, 0.4);
-      color: white;
-      border: none;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      font-size: 24px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s;
-      z-index: 20;
     }
-    .back-btn:hover {
-      background: rgba(255, 255, 255, 0.15);
-      transform: scale(1.1);
+    
+    .notification.success { 
+      background: rgba(34, 197, 94, 0.95); 
+      border-color: rgba(34, 197, 94, 0.4); 
     }
-    .language-bar {
-      position: absolute;
-      top: 25px;
-      right: 25px;
-      display: flex;
-      gap: 8px;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 6px;
-      border-radius: 25px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      z-index: 20;
+    
+    .notification.error { 
+      background: rgba(239, 68, 68, 0.95); 
+      border-color: rgba(239, 68, 68, 0.4); 
     }
-    .lang-btn {
-      background: none;
-      border: none;
-      color: rgba(255, 255, 255, 0.7);
-      font-family: 'Cairo', sans-serif;
-      font-size: 14px;
-      cursor: pointer;
-      padding: 6px 12px;
-      border-radius: 15px;
-      transition: all 0.3s;
-      font-weight: 500;
-    }
-    .lang-btn.active, .lang-btn:hover {      color: #fff;
-      background: rgba(255, 255, 255, 0.15);
-    }
+    
+    /* مؤشر التحميل */
     .spinner {
       display: inline-block;
-      margin-left: 10px;
+      margin-right: 10px;
+      animation: spin 1s linear infinite;
     }
-    .spinner i {
-      font-size: 20px;
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
-    .summary-box {
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 15px;
-      line-height: 1.8;
-    }
-    .summary-item {
+    
+    /* شاشة التحميل */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 32, 39, 0.95);
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: opacity 0.3s ease;
     }
-    .summary-item:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
+    
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      border-top: 4px solid #ff6b6b;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
     }
-    .summary-label {
+    
+    .loading-text {
+      color: white;
+      font-size: 16px;
       font-weight: 600;
-      color: rgba(255, 255, 255, 0.85);
     }
-    .summary-value {
-      font-weight: 700;
-      color: #fff;
+    
+    /* التأثيرات للهواتف */
+    .touch-feedback {
+      transition: transform 0.2s ease, opacity 0.2s ease;
     }
+    
+    .touch-feedback:active {
+      opacity: 0.8;
+    }
+    
+    /* التمرير السلس */
+    .smooth-scroll {
+      scroll-behavior: smooth;
+    }
+    
+    /* دعم الشقوق والأجهزة الحديثة */
+    @supports (padding: max(0px)) {
+      .safe-area {
+        padding-top: max(env(safe-area-inset-top), 20px);
+        padding-bottom: max(env(safe-area-inset-bottom), 20px);
+        padding-left: max(env(safe-area-inset-left), 15px);
+        padding-right: max(env(safe-area-inset-right), 15px);
+      }
+      
+      .app-header {
+        padding-left: max(env(safe-area-inset-left), 20px);
+        padding-right: max(env(safe-area-inset-right), 20px);
+      }
+      
+      .main-content {
+        padding-left: max(env(safe-area-inset-left), 15px);
+        padding-right: max(env(safe-area-inset-right), 15px);
+      }
+    }
+    
+    /* تصميم متجاوب للهواتف الصغيرة */
     @media (max-width: 480px) {
-      .container { 
-        padding: 30px 25px; 
-        margin: 10px;
-        border-radius: 24px;
+      .app-header {
+        padding: 12px 15px;
       }
-      .logo { font-size: 60px; }
-      .brand { font-size: 32px; }
-      .subtitle { font-size: 16px; }
-      .step { width: 36px; height: 36px; font-size: 15px; }
-      .step-label { font-size: 13px; }
-      .form-control { padding: 16px 15px; font-size: 17px; }
-      .btn { padding: 16px 20px; font-size: 19px; }      .info-box { font-size: 15px; padding: 15px; }
-      .back-btn { width: 45px; height: 45px; font-size: 22px; }
-      .language-bar { top: 15px; right: 15px; padding: 4px; }
-      .lang-btn { font-size: 13px; padding: 5px 10px; }
-      .notification { padding: 14px 28px; font-size: 17px; }
-      .summary-box { padding: 15px; }
-      .summary-item { flex-direction: column; align-items: flex-start; }
+      
+      .app-title {
+        font-size: 20px;
+      }
+      
+      .main-content {
+        padding: 15px 12px;
+      }
+      
+      .logo {
+        font-size: 50px;
+      }
+      
+      .brand {
+        font-size: 24px;
+      }
+      
+      .subtitle {
+        font-size: 15px;
+      }
+      
+      .step {
+        width: 36px;
+        height: 36px;
+        font-size: 15px;
+      }
+      
+      .step-label {
+        font-size: 13px;
+      }
+      
+      .form-control {
+        padding: 14px 16px;
+        font-size: 15px;
+      }
+      
+      .btn {
+        padding: 16px 18px;
+        font-size: 16px;
+        min-height: 52px;
+      }
+      
+      .info-box {
+        padding: 16px;
+        font-size: 14px;
+      }
+      
+      .notification {
+        padding: 14px 28px;
+        font-size: 16px;
+      }
+      
+      .lang-btn {
+        font-size: 12px;
+        padding: 5px 10px;
+      }
     }
+    
+    /* تحسين للأجهزة الطويلة */
     @media (max-height: 700px) {
-      body {
-        padding: 10px;
+      .logo-box {
+        margin-bottom: 20px;
       }
-      .container {
-        margin: 10px;
-        padding: 25px 20px;
+      
+      .logo {
+        font-size: 50px;
+        margin-bottom: 10px;
       }
+      
+      .brand {
+        font-size: 24px;
+      }
+      
+      .steps-container {
+        margin: 20px 0 30px;
+      }
+      
+      .form-group {
+        margin-bottom: 18px;
+      }
+      
+      .btn-group {
+        margin-top: 20px;
+      }
+    }
+    
+    /* منع التحديد */
+    .no-select {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
   </style>
 </head>
-<body>
-  <!-- شريط اختيار اللغة -->
-  <div class="language-bar" id="languageBar">
-    <button class="lang-btn active" data-lang="ar" onclick="setLanguage('ar')">العربية</button>
-    <button class="lang-btn" data-lang="fr" onclick="setLanguage('fr')">Français</button>
-    <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">English</button>
-    <button class="lang-btn" data-lang="es" onclick="setLanguage('es')">Español</button>
-  </div>
-
-  <button class="back-btn" onclick="window.location.href='index.html'">
-    <i class="fas fa-arrow-right"></i>
-  </button>
-  
-  <div class="container">
-    <div class="logo-box">
-      <div class="logo">🏍️</div>
-      <div class="brand" id="pageTitle">حساب سائق جديد</div>
-      <div class="subtitle" id="pageSubtitle">انضم إلى فريقنا واربح معنا</div>
-    </div>
-    
-    <div class="steps">
-      <div style="text-align: center;">
-        <div class="step active" id="step1">1</div>
-        <div class="step-label" id="step1Label">المعلومات الأساسية</div>
-      </div>
-      <div style="text-align: center;">
-        <div class="step" id="step2">2</div>
-        <div class="step-label" id="step2Label">الوثائق</div>
-      </div>
-      <div style="text-align: center;">
-        <div class="step" id="step3">3</div>        <div class="step-label" id="step3Label">تأكيد</div>
-      </div>
-    </div>
-    
-    <div class="form-step active" id="step1Content">
-      <div class="info-box" id="infoBox">
-        <strong id="infoBoxTitle">الوثائق المطلوبة للسائقين في المغرب:</strong>
-        <ul id="documentsList">
-          <li id="doc1">البطاقة الوطنية (CIN) - الأمام والخلف</li>
-          <li id="doc2">رخصة السياقة سارية المفعول</li>
-          <li id="doc3">صورة المركبة مع وضوح رقم التسجيل</li>
-          <li id="doc4">وثيقة التأمين سارية المفعول</li>
-          <li id="doc5">صورة شخصية حديثة</li>
-        </ul>
-      </div>
-      
-      <div class="form-group">
-        <label for="fullName" id="fullNameLabel">الاسم الكامل</label>
-        <input type="text" id="fullName" class="form-control" placeholder="أدخل اسمك الكامل" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="nationalId" id="nationalIdLabel">رقم البطاقة الوطنية (CIN)</label>
-        <input type="text" id="nationalId" class="form-control" placeholder="أدخل رقم البطاقة الوطنية (مثل A123456 أو AB123456)" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="phone" id="phoneLabel">رقم الهاتف</label>
-        <input type="tel" id="phone" class="form-control" placeholder="06XXXXXXXX أو 07XXXXXXXX" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="email" id="emailLabel">البريد الإلكتروني</label>
-        <input type="email" id="email" class="form-control" placeholder="example@email.com" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="password" id="passwordLabel">كلمة المرور</label>
-        <input type="password" id="password" class="form-control" placeholder="أدخل كلمة المرور" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="confirmPassword" id="confirmPasswordLabel">تأكيد كلمة المرور</label>
-        <input type="password" id="confirmPassword" class="form-control" placeholder="أعد إدخال كلمة المرور" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="vehicleType" id="vehicleTypeLabel">نوع المركبة</label>
-        <select id="vehicleType" class="form-control" required>
-          <option value="" id="vehiclePlaceholder">اختر نوع المركبة</option>          <option value="motorcycle" id="vehicleMotorcycle">دراجة نارية</option>
-          <option value="car" id="vehicleCar">سيارة</option>
-          <option value="truck" id="vehicleTruck">شاحنة</option>
-        </select>
-      </div>
-      
-      <div class="btn-group">
-        <button class="btn btn-primary" onclick="nextStep(1)" id="nextBtn1">
-          <i class="fas fa-arrow-left"></i> <span id="nextBtnText1">التالي</span>
+<body class="no-select">
+  <!-- منطقة آمنة للهواتف -->
+  <div class="safe-area">
+    <!-- رأس التطبيق -->
+    <header class="app-header">
+      <div class="header-left">
+        <button class="back-btn touch-feedback" onclick="goBack()">
+          <i class="fas fa-arrow-right"></i>
         </button>
+        <div class="app-title">ALLO BILAL</div>
       </div>
-    </div>
+      
+      <div class="header-right">
+        <div class="language-bar" id="languageBar">
+          <button class="lang-btn active" data-lang="ar">العربية</button>
+          <button class="lang-btn" data-lang="fr">Français</button>
+          <button class="lang-btn" data-lang="en">English</button>
+        </div>
+      </div>
+    </header>
     
-    <div class="form-step" id="step2Content">
-      <div class="form-group">
-        <label for="cinFront" id="cinFrontLabel">البطاقة الوطنية (الأمام)</label>
-        <input type="file" id="cinFront" class="form-control" accept="image/*" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="cinBack" id="cinBackLabel">البطاقة الوطنية (الخلف)</label>
-        <input type="file" id="cinBack" class="form-control" accept="image/*" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="license" id="licenseLabel">رخصة السياقة</label>
-        <input type="file" id="license" class="form-control" accept="image/*" required>
-      </div>
-      
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="prevStep(2)" id="prevBtn2">
-          <i class="fas fa-arrow-right"></i> <span id="prevBtnText2">السابق</span>
-        </button>
-        <button class="btn btn-primary" onclick="nextStep(2)" id="nextBtn2">
-          <i class="fas fa-arrow-left"></i> <span id="nextBtnText2">التالي</span>
-        </button>
-      </div>
-    </div>
-    
-    <div class="form-step" id="step3Content">
-      <div class="info-box" id="summaryBoxTitle">
-        <strong>ملخص المعلومات:</strong>
-        <div class="summary-box">
-          <div class="summary-item">
-            <span class="summary-label" id="summaryNameLabel">الاسم:</span>
-            <span class="summary-value" id="summaryName">-</span>
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content smooth-scroll">
+      <div class="app-container">
+        <!-- شعار التطبيق -->
+        <div class="logo-box">
+          <div class="logo">🏍️</div>
+          <div class="brand" id="pageTitle">حساب سائق جديد</div>
+          <div class="subtitle" id="pageSubtitle">انضم إلى فريقنا واربح معنا</div>
+        </div>
+        
+        <!-- مؤشر الخطوات -->
+        <div class="steps-container">
+          <div class="step-wrapper">
+            <div class="step active" id="step1">1</div>
+            <div class="step-label" id="step1Label">المعلومات الأساسية</div>
           </div>
-          <div class="summary-item">
-            <span class="summary-label" id="summaryIdLabel">رقم البطاقة الوطنية:</span>
-            <span class="summary-value" id="summaryId">-</span>          </div>
-          <div class="summary-item">
-            <span class="summary-label" id="summaryPhoneLabel">رقم الهاتف:</span>
-            <span class="summary-value" id="summaryPhone">-</span>
+          <div class="step-wrapper">
+            <div class="step" id="step2">2</div>
+            <div class="step-label" id="step2Label">الوثائق</div>
           </div>
-          <div class="summary-item">
-            <span class="summary-label" id="summaryVehicleLabel">نوع المركبة:</span>
-            <span class="summary-value" id="summaryVehicle">-</span>
+          <div class="step-wrapper">
+            <div class="step" id="step3">3</div>
+            <div class="step-label" id="step3Label">تأكيد</div>
+          </div>
+        </div>
+        
+        <!-- الخطوة 1: المعلومات الأساسية -->
+        <div class="form-step active" id="step1Content">
+          <div class="info-box" id="infoBox">
+            <strong id="infoBoxTitle">الوثائق المطلوبة للسائقين في المغرب:</strong>
+            <ul id="documentsList">
+              <li id="doc1">البطاقة الوطنية (CIN) - الأمام والخلف</li>
+              <li id="doc2">رخصة السياقة سارية المفعول</li>
+              <li id="doc3">صورة المركبة مع وضوح رقم التسجيل</li>
+              <li id="doc4">وثيقة التأمين سارية المفعول</li>
+              <li id="doc5">صورة شخصية حديثة</li>
+            </ul>
+          </div>
+          
+          <div class="form-group">
+            <label for="fullName" id="fullNameLabel">الاسم الكامل</label>
+            <input type="text" id="fullName" class="form-control touch-feedback" placeholder="أدخل اسمك الكامل" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="nationalId" id="nationalIdLabel">رقم البطاقة الوطنية (CIN)</label>
+            <input type="text" id="nationalId" class="form-control touch-feedback" placeholder="مثال: A123456 أو AB123456" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="phone" id="phoneLabel">رقم الهاتف</label>
+            <input type="tel" id="phone" class="form-control touch-feedback" placeholder="06XXXXXXXX أو 07XXXXXXXX" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="email" id="emailLabel">البريد الإلكتروني</label>
+            <input type="email" id="email" class="form-control touch-feedback" placeholder="example@email.com" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="password" id="passwordLabel">كلمة المرور</label>
+            <input type="password" id="password" class="form-control touch-feedback" placeholder="أدخل كلمة المرور" required minlength="6">
+          </div>
+          
+          <div class="form-group">
+            <label for="confirmPassword" id="confirmPasswordLabel">تأكيد كلمة المرور</label>
+            <input type="password" id="confirmPassword" class="form-control touch-feedback" placeholder="أعد إدخال كلمة المرور" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="vehicleType" id="vehicleTypeLabel">نوع المركبة</label>
+            <select id="vehicleType" class="form-control touch-feedback" required>
+              <option value="" id="vehiclePlaceholder">اختر نوع المركبة</option>
+              <option value="motorcycle" id="vehicleMotorcycle">دراجة نارية</option>
+              <option value="car" id="vehicleCar">سيارة</option>
+              <option value="truck" id="vehicleTruck">شاحنة</option>
+            </select>
+          </div>
+          
+          <div class="btn-group">
+            <button class="btn btn-primary touch-feedback" onclick="nextStep(1)" id="nextBtn1">
+              <span id="nextBtnText1">التالي</span>
+              <i class="fas fa-arrow-left"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- الخطوة 2: تحميل الوثائق -->
+        <div class="form-step" id="step2Content">
+          <div class="form-group">
+            <label id="cinFrontLabel">البطاقة الوطنية (الأمام)</label>
+            <div class="file-input-wrapper">
+              <input type="file" id="cinFront" accept="image/*" required onchange="handleFileSelect('cinFront')">
+              <div class="file-input-label touch-feedback">
+                <i class="fas fa-upload"></i> اختر ملف
+              </div>
+            </div>
+            <span class="file-name" id="cinFrontFileName"></span>
+          </div>
+          
+          <div class="form-group">
+            <label id="cinBackLabel">البطاقة الوطنية (الخلف)</label>
+            <div class="file-input-wrapper">
+              <input type="file" id="cinBack" accept="image/*" required onchange="handleFileSelect('cinBack')">
+              <div class="file-input-label touch-feedback">
+                <i class="fas fa-upload"></i> اختر ملف
+              </div>
+            </div>
+            <span class="file-name" id="cinBackFileName"></span>
+          </div>
+          
+          <div class="form-group">
+            <label id="licenseLabel">رخصة السياقة</label>
+            <div class="file-input-wrapper">
+              <input type="file" id="license" accept="image/*" required onchange="handleFileSelect('license')">
+              <div class="file-input-label touch-feedback">
+                <i class="fas fa-upload"></i> اختر ملف
+              </div>
+            </div>
+            <span class="file-name" id="licenseFileName"></span>
+          </div>
+          
+          <div class="btn-group">
+            <button class="btn btn-secondary touch-feedback" onclick="prevStep(2)" id="prevBtn2">
+              <i class="fas fa-arrow-right"></i>
+              <span id="prevBtnText2">السابق</span>
+            </button>
+            <button class="btn btn-primary touch-feedback" onclick="nextStep(2)" id="nextBtn2">
+              <span id="nextBtnText2">التالي</span>
+              <i class="fas fa-arrow-left"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- الخطوة 3: التأكيد -->
+        <div class="form-step" id="step3Content">
+          <div class="info-box" id="summaryBoxTitle">
+            <strong>ملخص المعلومات:</strong>
+            <div class="summary-box">
+              <div class="summary-item">
+                <span class="summary-label" id="summaryNameLabel">الاسم:</span>
+                <span class="summary-value" id="summaryName">-</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label" id="summaryIdLabel">رقم البطاقة الوطنية:</span>
+                <span class="summary-value" id="summaryId">-</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label" id="summaryPhoneLabel">رقم الهاتف:</span>
+                <span class="summary-value" id="summaryPhone">-</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label" id="summaryVehicleLabel">نوع المركبة:</span>
+                <span class="summary-value" id="summaryVehicle">-</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="btn-group">
+            <button class="btn btn-secondary touch-feedback" onclick="prevStep(3)" id="prevBtn3">
+              <i class="fas fa-arrow-right"></i>
+              <span id="prevBtnText3">السابق</span>
+            </button>
+            <button class="btn btn-primary touch-feedback" onclick="registerDriver()" id="registerBtn">
+              <i class="fas fa-check"></i>
+              <span id="registerBtnText">تأكيد التسجيل</span>
+            </button>
           </div>
         </div>
       </div>
-      
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="prevStep(3)" id="prevBtn3">
-          <i class="fas fa-arrow-right"></i> <span id="prevBtnText3">السابق</span>
-        </button>
-        <button class="btn btn-primary" onclick="registerDriver()" id="registerBtn">
-          <i class="fas fa-check"></i> <span id="registerBtnText">تأكيد التسجيل</span>
-          <span class="spinner" id="spinner" style="display:none;">
-            <i class="fas fa-spinner fa-spin"></i>
-          </span>
-        </button>
-      </div>
-    </div>
+    </main>
   </div>
   
+  <!-- الإشعارات -->
   <div class="notification" id="notification">
     <i class="fas fa-bell"></i>
     <span id="notificationText">مرحباً بك في ALLO BILAL</span>
+  </div>
+  
+  <!-- شاشة التحميل -->
+  <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+    <div class="loading-spinner"></div>
+    <div class="loading-text" id="loadingText">جاري المعالجة...</div>
   </div>
 
   <!-- Firebase SDK -->
@@ -586,12 +935,15 @@
     };
     
     if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);    }
+      firebase.initializeApp(firebaseConfig);
+    }
     
+    // متغيرات التطبيق
     let currentStep = 1;
     let currentLang = localStorage.getItem('appLanguage') || 'ar';
+    let isSubmitting = false;
     
-    // نظام اللغات الكامل
+    // نظام اللغات
     const translations = {
       ar: {
         pageTitle: "حساب سائق جديد",
@@ -631,19 +983,21 @@
         summaryVehicleLabel: "نوع المركبة:",
         notificationText: "مرحباً بك في ALLO BILAL",
         successNotification: "تم تغيير اللغة إلى العربية",
-        loginLink: "لديك حساب بالفعل؟ سجل الدخول",
         fullNameError: "الاسم يجب أن يكون أكثر من حرفين",
-        nationalIdError: "رقم البطاقة الوطنية غير صحيح (يجب أن يكون مثل A123456 أو AB123456)",
+        nationalIdError: "رقم البطاقة الوطنية غير صحيح (مثل A123456 أو AB123456)",
         phoneError: "رقم الهاتف غير صحيح (يجب أن يبدأ بـ 06 أو 07)",
-        emailError: "البريد الإلكتروني غير صحيح",        passwordError: "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+        emailError: "البريد الإلكتروني غير صحيح",
+        passwordError: "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
         passwordMismatch: "كلمتا المرور غير متطابقتين",
         vehicleTypeError: "يرجى اختيار نوع المركبة",
+        fileError: "يرجى رفع جميع الوثائق المطلوبة",
         registrationSuccess: "تم إنشاء الحساب بنجاح! سيتم مراجعة طلبك خلال 24 ساعة",
         registrationError: "حدث خطأ في التسجيل",
         emailInUse: "هذا البريد الإلكتروني مستخدم مسبقاً",
         weakPassword: "كلمة المرور ضعيفة جداً (6 أحرف على الأقل)",
         invalidEmail: "البريد الإلكتروني غير صحيح",
-        storageError: "غير مسموح برفع الملفات"
+        storageError: "غير مسموح برفع الملفات",
+        loadingText: "جاري المعالجة..."
       },
       fr: {
         pageTitle: "Nouveau compte chauffeur",
@@ -683,19 +1037,21 @@
         summaryVehicleLabel: "Véhicule:",
         notificationText: "Bienvenue sur ALLO BILAL",
         successNotification: "Langue changée en français",
-        loginLink: "Vous avez déjà un compte ? Connectez-vous",
-        fullNameError: "Le nom doit comporter plus de deux caractères",        nationalIdError: "Numéro de carte d'identité incorrect (doit être comme A123456 ou AB123456)",
-        phoneError: "Numéro de téléphone incorrect (doit commencer par 06 ou 07)",
+        fullNameError: "Le nom doit comporter plus de deux caractères",
+        nationalIdError: "Numéro de carte d'identité incorrect",
+        phoneError: "Numéro de téléphone incorrect",
         emailError: "Email incorrect",
         passwordError: "Le mot de passe doit comporter au moins 6 caractères",
         passwordMismatch: "Les mots de passe ne correspondent pas",
         vehicleTypeError: "Veuillez choisir le type de véhicule",
-        registrationSuccess: "Compte créé avec succès ! Votre demande sera examinée sous 24h",
+        fileError: "Veuillez télécharger tous les documents",
+        registrationSuccess: "Compte créé avec succès! Votre demande sera examinée sous 24h",
         registrationError: "Erreur lors de l'inscription",
         emailInUse: "Cet email est déjà utilisé",
-        weakPassword: "Mot de passe trop faible (au moins 6 caractères)",
+        weakPassword: "Mot de passe trop faible",
         invalidEmail: "Email incorrect",
-        storageError: "Chargement de fichiers non autorisé"
+        storageError: "Chargement de fichiers non autorisé",
+        loadingText: "Traitement en cours..."
       },
       en: {
         pageTitle: "New Driver Account",
@@ -733,105 +1089,75 @@
         summaryIdLabel: "ID Number:",
         summaryPhoneLabel: "Phone:",
         summaryVehicleLabel: "Vehicle:",
-        notificationText: "Welcome to ALLO BILAL",        successNotification: "Language changed to English",
-        loginLink: "Already have an account? Login",
+        notificationText: "Welcome to ALLO BILAL",
+        successNotification: "Language changed to English",
         fullNameError: "Name must be more than two characters",
-        nationalIdError: "Invalid ID number (must be like A123456 or AB123456)",
-        phoneError: "Incorrect phone number (must start with 06 or 07)",
+        nationalIdError: "Invalid ID number",
+        phoneError: "Incorrect phone number",
         emailError: "Incorrect email",
         passwordError: "Password must be at least 6 characters",
         passwordMismatch: "Passwords do not match",
         vehicleTypeError: "Please select vehicle type",
+        fileError: "Please upload all documents",
         registrationSuccess: "Account created successfully! Your request will be reviewed within 24 hours",
         registrationError: "Error during registration",
         emailInUse: "This email is already in use",
-        weakPassword: "Password too weak (at least 6 characters)",
+        weakPassword: "Password too weak",
         invalidEmail: "Incorrect email",
-        storageError: "File upload not allowed"
-      },
-      es: {
-        pageTitle: "Nueva cuenta de conductor",
-        pageSubtitle: "Únete a nuestro equipo y gana con nosotros",
-        infoBoxTitle: "Documentos requeridos para conductores en Marruecos:",
-        doc1: "Carné de identidad nacional (CIN) - Anverso y reverso",
-        doc2: "Licencia de conducir válida",
-        doc3: "Foto del vehículo con número de matrícula visible",
-        doc4: "Documento de seguro válido",
-        doc5: "Foto personal reciente",
-        fullNameLabel: "Nombre completo",
-        nationalIdLabel: "Número de identificación nacional (CIN)",
-        phoneLabel: "Número de teléfono",
-        emailLabel: "Correo electrónico",
-        passwordLabel: "Contraseña",
-        confirmPasswordLabel: "Confirmar contraseña",
-        vehicleTypeLabel: "Tipo de vehículo",
-        vehiclePlaceholder: "Seleccionar tipo de vehículo",
-        vehicleMotorcycle: "Motocicleta",
-        vehicleCar: "Coche",
-        vehicleTruck: "Camión",
-        cinFrontLabel: "Carné de identidad (Anverso)",
-        cinBackLabel: "Carné de identidad (Reverso)",
-        licenseLabel: "Licencia de conducir",
-        step1Label: "Información básica",
-        step2Label: "Documentos",
-        step3Label: "Confirmación",
-        nextBtnText1: "Siguiente",
-        prevBtnText2: "Anterior",
-        nextBtnText2: "Siguiente",
-        prevBtnText3: "Anterior",
-        registerBtnText: "Confirmar registro",
-        summaryBoxTitle: "Resumen de información:",
-        summaryNameLabel: "Nombre:",
-        summaryIdLabel: "Número de ID:",        summaryPhoneLabel: "Teléfono:",
-        summaryVehicleLabel: "Vehículo:",
-        notificationText: "Bienvenido a ALLO BILAL",
-        successNotification: "Idioma cambiado a español",
-        loginLink: "¿Ya tienes una cuenta? Iniciar sesión",
-        fullNameError: "El nombre debe tener más de dos caracteres",
-        nationalIdError: "Número de identificación incorrecto (debe ser como A123456 o AB123456)",
-        phoneError: "Número de teléfono incorrecto (debe comenzar con 06 o 07)",
-        emailError: "Correo electrónico incorrecto",
-        passwordError: "La contraseña debe tener al menos 6 caracteres",
-        passwordMismatch: "Las contraseñas no coinciden",
-        vehicleTypeError: "Por favor selecciona el tipo de vehículo",
-        registrationSuccess: "¡Cuenta creada con éxito! Tu solicitud será revisada en 24 horas",
-        registrationError: "Error durante el registro",
-        emailInUse: "Este correo electrónico ya está en uso",
-        weakPassword: "Contraseña demasiado débil (al menos 6 caracteres)",
-        invalidEmail: "Correo electrónico incorrecto",
-        storageError: "Carga de archivos no permitida"
+        storageError: "File upload not allowed",
+        loadingText: "Processing..."
       }
     };
     
-    // تحميل اللغة عند بدء التشغيل
+    // تهيئة التطبيق عند التحميل
     document.addEventListener('DOMContentLoaded', () => {
       setLanguage(currentLang, true);
       
-      // إشعار ترحيبي
+      // إضافة مستمعي الأحداث
+      initEventListeners();
+      
+      // عرض إشعار ترحيبي
       setTimeout(() => {
         showNotification(translations[currentLang].notificationText, 'success');
-      }, 800);
+      }, 1000);
     });
     
-    // دالة تغيير اللغة
+    // تهيئة مستمعي الأحداث
+    function initEventListeners() {
+      // أزرار اللغة
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const lang = btn.getAttribute('data-lang');
+          setLanguage(lang);
+        });
+      });
+      
+      // تحديث ملخص المعلومات عند تغيير المدخلات
+      ['fullName', 'nationalId', 'phone', 'vehicleType'].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.addEventListener('input', updateSummary);
+          element.addEventListener('change', updateSummary);
+        }
+      });
+    }
+    
+    // تغيير اللغة
     function setLanguage(lang, isInitialLoad = false) {
       currentLang = lang;
       localStorage.setItem('appLanguage', lang);
+      
+      // تحديث اتجاه الصفحة
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
       document.body.style.direction = lang === 'ar' ? 'rtl' : 'ltr';
       
-      // تحديث جميع العناصر النصية
+      // تحديث جميع النصوص
       Object.keys(translations[lang]).forEach(key => {
         const element = document.getElementById(key);
         if (element) {
           element.textContent = translations[lang][key];
         }
       });
-      
-      // تحديث خيارات القائمة المنسدلة
-      document.getElementById('vehiclePlaceholder').textContent = translations[lang].vehiclePlaceholder;
-      document.getElementById('vehicleMotorcycle').textContent = translations[lang].vehicleMotorcycle;
-      document.getElementById('vehicleCar').textContent = translations[lang].vehicleCar;      document.getElementById('vehicleTruck').textContent = translations[lang].vehicleTruck;
       
       // تحديث أزرار اللغة
       document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -841,62 +1167,52 @@
       // تحديث ملخص المعلومات
       updateSummary();
       
-      // عرض إشعار إلا عند التحميل الأولي
+      // عرض إشعار تغيير اللغة
       if (!isInitialLoad) {
         showNotification(translations[lang].successNotification, 'success');
       }
     }
     
-    // عرض الإشعار
-    function showNotification(message, type = 'info') {
-      const notification = document.getElementById('notification');
-      const notificationText = document.getElementById('notificationText');
-      
-      if (notificationText) {
-        notificationText.textContent = message;
-      }
-      
-      // إزالة الفئات القديمة
-      notification.className = 'notification';
-      
-      // إضافة فئة النوع
-      if (type === 'success') notification.classList.add('success');
-      else if (type === 'error') notification.classList.add('error');
-      
-      // إظهار الإشعار
-      notification.classList.add('show');
-      
-      // إخفاء تلقائي بعد 4 ثوانٍ
-      setTimeout(() => {
-        notification.classList.remove('show');
-      }, 4000);
-    }
-    
     // الانتقال للخطوة التالية
     function nextStep(step) {
       if (validateStep(step)) {
-        document.getElementById(`step${step}Content`).classList.remove('active');
-        document.getElementById(`step${step + 1}Content`).classList.add('active');
+        // تحديث مؤشر الخطوات
         document.getElementById(`step${step}`).classList.remove('active');
         document.getElementById(`step${step + 1}`).classList.add('active');
+        
+        // تحديث المحتوى
+        document.getElementById(`step${step}Content`).classList.remove('active');
+        document.getElementById(`step${step + 1}Content`).classList.add('active');
+        
         currentStep = step + 1;
-                // تحديث ملخص المعلومات
+        
+        // إذا كانت الخطوة 3، قم بتحديث الملخص
         if (step === 2) {
           updateSummary();
         }
+        
+        // تمرير إلى أعلى الصفحة
+        document.querySelector('.main-content').scrollTop = 0;
       }
     }
     
     // العودة للخطوة السابقة
     function prevStep(step) {
-      document.getElementById(`step${step}Content`).classList.remove('active');
-      document.getElementById(`step${step - 1}Content`).classList.add('active');
+      // تحديث مؤشر الخطوات
       document.getElementById(`step${step}`).classList.remove('active');
       document.getElementById(`step${step - 1}`).classList.add('active');
+      
+      // تحديث المحتوى
+      document.getElementById(`step${step}Content`).classList.remove('active');
+      document.getElementById(`step${step - 1}Content`).classList.add('active');
+      
       currentStep = step - 1;
+      
+      // تمرير إلى أعلى الصفحة
+      document.querySelector('.main-content').scrollTop = 0;
     }
     
-    // التحقق من الخطوة
+    // التحقق من صحة الخطوة
     function validateStep(step) {
       if (step === 1) {
         const fullName = document.getElementById('fullName').value.trim();
@@ -913,13 +1229,13 @@
           return false;
         }
         
-        // التحقق من رقم البطاقة الوطنية المغربية (حرف أو حرفين + 5-7 أرقام)
+        // التحقق من رقم البطاقة الوطنية
         if (!nationalId || !/^[A-Z]{1,2}\d{5,7}$/i.test(nationalId)) {
           showError(translations[currentLang].nationalIdError);
           return false;
         }
         
-        // التحقق من رقم الهاتف المغربي (06 أو 07 + 8 أرقام)
+        // التحقق من رقم الهاتف
         if (!phone.match(/^(06|07)\d{8}$/)) {
           showError(translations[currentLang].phoneError);
           return false;
@@ -929,7 +1245,8 @@
         if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
           showError(translations[currentLang].emailError);
           return false;
-        }        
+        }
+        
         // التحقق من كلمة المرور
         if (password.length < 6) {
           showError(translations[currentLang].passwordError);
@@ -948,8 +1265,17 @@
           return false;
         }
         
-        // تحديث ملخص المعلومات
-        updateSummary();
+        return true;
+      } else if (step === 2) {
+        // التحقق من رفع الملفات
+        const cinFront = document.getElementById('cinFront').files[0];
+        const cinBack = document.getElementById('cinBack').files[0];
+        const license = document.getElementById('license').files[0];
+        
+        if (!cinFront || !cinBack || !license) {
+          showError(translations[currentLang].fileError);
+          return false;
+        }
         
         return true;
       }
@@ -964,34 +1290,58 @@
       const phone = document.getElementById('phone').value.trim() || '-';
       const vehicleType = document.getElementById('vehicleType').value;
       
-      // تأكد من وجود العناصر قبل تحديثها
-      const summaryName = document.getElementById('summaryName');
-      const summaryId = document.getElementById('summaryId');
-      const summaryPhone = document.getElementById('summaryPhone');
-      const summaryVehicle = document.getElementById('summaryVehicle');
+      // تحديث قيم الملخص
+      document.getElementById('summaryName').textContent = fullName;
+      document.getElementById('summaryId').textContent = nationalId;
+      document.getElementById('summaryPhone').textContent = phone;
       
-      if (summaryName) summaryName.textContent = fullName;
-      if (summaryId) summaryId.textContent = nationalId;
-      if (summaryPhone) summaryPhone.textContent = phone;
-      
+      // تحديد نص نوع المركبة
       let vehicleText = '-';
-      if (vehicleType === 'motorcycle') vehicleText = translations[currentLang].vehicleMotorcycle;
-      else if (vehicleType === 'car') vehicleText = translations[currentLang].vehicleCar;
-      else if (vehicleType === 'truck') vehicleText = translations[currentLang].vehicleTruck;
-            if (summaryVehicle) summaryVehicle.textContent = vehicleText;
+      if (vehicleType === 'motorcycle') {
+        vehicleText = translations[currentLang].vehicleMotorcycle;
+      } else if (vehicleType === 'car') {
+        vehicleText = translations[currentLang].vehicleCar;
+      } else if (vehicleType === 'truck') {
+        vehicleText = translations[currentLang].vehicleTruck;
+      }
+      
+      document.getElementById('summaryVehicle').textContent = vehicleText;
+    }
+    
+    // معالجة اختيار الملف
+    function handleFileSelect(inputId) {
+      const input = document.getElementById(inputId);
+      const fileNameElement = document.getElementById(inputId + 'FileName');
+      
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        
+        // التحقق من حجم الملف (5MB كحد أقصى)
+        if (file.size > 5 * 1024 * 1024) {
+          showError('حجم الملف كبير جداً (الحد الأقصى 5MB)');
+          input.value = '';
+          fileNameElement.textContent = '';
+          return;
+        }
+        
+        // عرض اسم الملف
+        fileNameElement.textContent = file.name;
+      }
     }
     
     // تسجيل السائق
-    function registerDriver() {
-      const registerBtn = document.getElementById('registerBtn');
-      const spinner = document.getElementById('spinner');
-      const btnText = document.getElementById('registerBtnText');
+    async function registerDriver() {
+      if (isSubmitting) return;
       
-      // تعطيل الزر وعرض التحميل
-      registerBtn.disabled = true;
-      spinner.style.display = 'inline';
-      btnText.textContent = translations[currentLang].registrationSuccess.split('!')[0] + '...';
+      // التحقق النهائي من النموذج
+      if (!validateStep(1) || !validateStep(2)) {
+        return;
+      }
       
+      isSubmitting = true;
+      showLoading(true);
+      
+      // جمع بيانات النموذج
       const fullName = document.getElementById('fullName').value.trim();
       const nationalId = document.getElementById('nationalId').value.trim();
       const phone = document.getElementById('phone').value.trim();
@@ -999,87 +1349,139 @@
       const password = document.getElementById('password').value;
       const vehicleType = document.getElementById('vehicleType').value;
       
-      // التسجيل
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          
-          // إعدادات إضافية لتجنب مشكلة CORS
-          const storage = firebase.storage();
-          storage.settings = {
-            host: 'firebasestorage.googleapis.com',
-            protocol: 'https',
-            timeout: 30000
-          };
-          
-          // رفع الملفات
-          const files = [
-            { id: 'cinFront', name: 'cin_front' },
-            { id: 'cinBack', name: 'cin_back' },
-            { id: 'license', name: 'license' }
-          ];
-          
-          const uploadPromises = [];
-          
-          files.forEach(fileInfo => {
-            const fileInput = document.getElementById(fileInfo.id);
-            if (fileInput.files[0]) {
-              const storageRef = storage.ref(`drivers/${user.uid}/${fileInfo.name}`);
-              uploadPromises.push(storageRef.put(fileInput.files[0]));
-            }
-          });          
-          return Promise.all(uploadPromises).then(() => {
-            // حفظ معلومات السائق
-            const db = firebase.firestore();
-            return db.collection('users').doc(user.uid).set({
-              uid: user.uid,
-              fullName: fullName,
-              nationalId: nationalId,
-              phone: phone,
-              email: email,
-              role: 'driver',
-              vehicleType: vehicleType,
-              status: 'pending',
-              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-              language: currentLang
-            });
-          });
-        })
-        .then(() => {
-          // عرض رسالة نجاح
-          showNotification(translations[currentLang].registrationSuccess, 'success');
-          
-          // التوجيه بعد 3 ثوانٍ
-          setTimeout(() => {
-            window.location.href = 'driver-dashboard.html';
-          }, 3000);
-        })
-        .catch((error) => {
-          console.error('خطأ في التسجيل:', error);
-          let message = translations[currentLang].registrationError;
-          
-          if (error.code === 'auth/email-already-in-use') {
-            message = translations[currentLang].emailInUse;
-          } else if (error.code === 'auth/invalid-email') {
-            message = translations[currentLang].invalidEmail;
-          } else if (error.code === 'auth/weak-password') {
-            message = translations[currentLang].weakPassword;
-          } else if (error.code === 'storage/unauthorized') {
-            message = translations[currentLang].storageError;
+      try {
+        // 1. إنشاء مستخدم في Firebase Authentication
+        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+        
+        // 2. رفع الملفات إلى Firebase Storage
+        const files = [
+          { inputId: 'cinFront', name: 'cin_front' },
+          { inputId: 'cinBack', name: 'cin_back' },
+          { inputId: 'license', name: 'license' }
+        ];
+        
+        const fileUrls = {};
+        
+        for (const fileInfo of files) {
+          const input = document.getElementById(fileInfo.inputId);
+          if (input.files[0]) {
+            const storageRef = firebase.storage().ref(`drivers/${user.uid}/${fileInfo.name}`);
+            await storageRef.put(input.files[0]);
+            const downloadURL = await storageRef.getDownloadURL();
+            fileUrls[fileInfo.name] = downloadURL;
           }
-          
-          showError(message);
-        })
-        .finally(() => {
-          // إعادة تفعيل الزر
-          registerBtn.disabled = false;
-          spinner.style.display = 'none';
-          btnText.textContent = translations[currentLang].registerBtnText;
+        }
+        
+        // 3. حفظ معلومات السائق في Firestore
+        const db = firebase.firestore();
+        await db.collection('users').doc(user.uid).set({
+          uid: user.uid,
+          fullName: fullName,
+          nationalId: nationalId,
+          phone: phone,
+          email: email,
+          role: 'driver',
+          vehicleType: vehicleType,
+          documents: fileUrls,
+          status: 'pending',
+          language: currentLang,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
-    }    
+        
+        // 4. عرض رسالة النجاح
+        showNotification(translations[currentLang].registrationSuccess, 'success');
+        
+        // 5. إعادة التوجيه إلى لوحة التحكم بعد 2 ثانية
+        setTimeout(() => {
+          window.location.href = 'driver-dashboard.html';
+        }, 2000);
+        
+      } catch (error) {
+        console.error('خطأ في التسجيل:', error);
+        
+        // معالجة أخطاء Firebase الشائعة
+        let errorMessage = translations[currentLang].registrationError;
+        
+        switch (error.code) {
+          case 'auth/email-already-in-use':
+            errorMessage = translations[currentLang].emailInUse;
+            break;
+          case 'auth/invalid-email':
+            errorMessage = translations[currentLang].invalidEmail;
+            break;
+          case 'auth/weak-password':
+            errorMessage = translations[currentLang].weakPassword;
+            break;
+          case 'storage/unauthorized':
+            errorMessage = translations[currentLang].storageError;
+            break;
+          case 'storage/canceled':
+            errorMessage = 'تم إلغاء رفع الملف';
+            break;
+          default:
+            errorMessage = translations[currentLang].registrationError;
+        }
+        
+        showError(errorMessage);
+      } finally {
+        isSubmitting = false;
+        showLoading(false);
+      }
+    }
+    
+    // عرض/إخفاء شاشة التحميل
+    function showLoading(show) {
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      const loadingText = document.getElementById('loadingText');
+      
+      if (show) {
+        loadingText.textContent = translations[currentLang].loadingText;
+        loadingOverlay.style.display = 'flex';
+      } else {
+        loadingOverlay.style.display = 'none';
+      }
+    }
+    
+    // عرض الإشعار
+    function showNotification(message, type = 'info') {
+      const notification = document.getElementById('notification');
+      const notificationText = document.getElementById('notificationText');
+      
+      notificationText.textContent = message;
+      
+      // إعادة تعيين الفئات
+      notification.className = 'notification';
+      
+      // إضافة فئة النوع
+      if (type === 'success') {
+        notification.classList.add('success');
+      } else if (type === 'error') {
+        notification.classList.add('error');
+      }
+      
+      // إظهار الإشعار
+      notification.classList.add('show');
+      
+      // إخفاء تلقائي بعد 4 ثوانٍ
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 4000);
+    }
+    
     // عرض خطأ
     function showError(message) {
       showNotification(message, 'error');
+    }
+    
+    // الرجوع للخلف
+    function goBack() {
+      if (currentStep > 1) {
+        prevStep(currentStep);
+      } else {
+        window.location.href = 'index.html';
+      }
     }
   </script>
 </body>

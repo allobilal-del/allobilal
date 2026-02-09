@@ -2,501 +2,604 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="description" content="ALLO BILAL - خدمة توصيل سريعة بالدراجات النارية لطلباتك في أي وقت">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0f2027">
   <title>ALLO BILAL - توصيل سريع بالدراجات النارية</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  
-  <!-- Font Awesome - الرابط المبسط الذي يعمل دائماً -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏍️</text></svg>">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
+    /* إعادة ضبط التصميم لتطبيق الجوال */
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: fixed;
       font-family: 'Cairo', sans-serif;
+    }
+    
+    body {
       background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-      min-height: 100vh;
+      color: white;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overscroll-behavior: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
+    }
+    
+    /* منطقة آمنة للهواتف ذات الشقوق */
+    .app-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      overflow: hidden;
       position: relative;
-      overflow-x: hidden;
-      line-height: 1.5;
     }
-    body::before {
-      content: "";
+    
+    /* تأثيرات الإضاءة الخلفية */
+    .glow-effect {
       position: absolute;
-      top: -50%; left: -50%; width: 200%; height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 70%);
-      z-index: -1;
+      pointer-events: none;
     }
-    .glow {
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0) 70%);
-      border-radius: 50%;
-      filter: blur(40px);
-      z-index: -2;
-    }
-    .glow:nth-child(1) {
+    
+    .glow-effect:nth-child(1) {
       top: -100px;
       left: -50px;
-      width: 400px;      height: 400px;
-      background: radial-gradient(circle, rgba(79,172,254,0.25) 0%, rgba(79,172,254,0) 70%);
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(79, 172, 254, 0.25) 0%, rgba(79, 172, 254, 0) 70%);
+      border-radius: 50%;
+      filter: blur(40px);
+      z-index: 1;
     }
-    .glow:nth-child(2) {
+    
+    .glow-effect:nth-child(2) {
       bottom: -150px;
       right: -100px;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(255,107,107,0.2) 0%, rgba(255,107,107,0) 70%);
-      animation-delay: -5s;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255, 107, 107, 0.2) 0%, rgba(255, 107, 107, 0) 70%);
+      border-radius: 50%;
+      filter: blur(50px);
+      z-index: 1;
     }
-    .language-bar {
-      position: absolute;
-      top: 25px;
-      right: 25px;
+    
+    /* محتوى التطبيق */
+    .app-content {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      position: relative;
+      z-index: 2;
       display: flex;
-      gap: 8px;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 6px;
-      border-radius: 25px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      z-index: 20;
+      flex-direction: column;
+      padding: 20px 15px;
     }
-    .lang-btn {
-      background: none;
-      border: none;
-      color: rgba(255, 255, 255, 0.7);
-      font-family: 'Cairo', sans-serif;
-      font-size: 14px;
-      cursor: pointer;
-      padding: 6px 12px;
-      border-radius: 15px;
-      transition: all 0.3s;
-      font-weight: 500;
+    
+    /* رأس التطبيق */
+    .app-header {
+      text-align: center;
+      margin-bottom: 30px;
+      animation: slideDown 0.6s ease-out;
     }
-    .lang-btn.active, .lang-btn:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.15);
+    
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .logo-box {
-      margin-bottom: 40px;
-    }
+    
     .logo {
-      font-size: 100px;
+      font-size: 70px;
       margin-bottom: 15px;
-      text-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
       animation: pulse 2s infinite;
+      display: inline-block;
     }
-    @keyframes pulse {      0% { transform: scale(1); }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
       50% { transform: scale(1.05); }
       100% { transform: scale(1); }
     }
-    .brand {
+    
+    .brand-name {
       font-family: 'Orbitron', sans-serif;
-      font-size: 56px;
+      font-size: 32px;
       font-weight: 800;
       background: linear-gradient(90deg, #ff512f, #dd2476, #24c6dc, #4facfe, #ffd700);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-size: 300% 300%;
       animation: gradientBG 8s ease infinite;
-      letter-spacing: -1.5px;
       margin-bottom: 10px;
-      text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
-      white-space: nowrap;
-      position: relative;
-      display: inline-block;
     }
+    
     @keyframes gradientBG {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-    .brand::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, #ff512f, #dd2476, #24c6dc, #4facfe, #ffd700);
-      border-radius: 3px;
-      animation: gradientBG 8s ease infinite;
-    }
+    
     .tagline {
-      font-size: 26px;
+      font-size: 18px;
       color: rgba(255, 255, 255, 0.95);
-      margin-top: 15px;
+      margin-bottom: 15px;
       font-weight: 700;
-      letter-spacing: 1.5px;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-      background: linear-gradient(90deg, #ffd700, #ff512f, #dd2476);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: fadeInUp 1s ease-out 0.2s both;    }
-    .subtitle {
-      font-size: 20px;
-      color: rgba(255, 255, 255, 0.85);
-      margin-top: 12px;
-      font-weight: 400;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      margin-top: 20px;
-      padding: 0 15px;
-      line-height: 1.6;
-      animation: fadeInUp 1s ease-out 0.4s both;
+      line-height: 1.4;
     }
+    
+    .subtitle {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.5;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    /* إحصائيات التطبيق */
     .stats-container {
       display: flex;
       justify-content: center;
-      gap: 30px;
-      margin: 35px 0;
+      gap: 15px;
+      margin: 25px 0;
       flex-wrap: wrap;
-      animation: fadeInUp 1s ease-out 0.6s both;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
     }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
     .stat-item {
-      background: rgba(0, 0, 0, 0.25);
+      flex: 1;
+      min-width: 100px;
+      background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
-      padding: 15px 25px;
+      padding: 15px;
       border-radius: 16px;
-      min-width: 130px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      text-align: center;
     }
+    
     .stat-number {
-      font-size: 32px;
+      font-size: 24px;
       font-weight: 800;
       background: linear-gradient(90deg, #ffd700, #ff512f);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 5px;
     }
+    
     .stat-label {
-      font-size: 15px;
+      font-size: 13px;
       color: rgba(255, 255, 255, 0.8);
       font-weight: 500;
     }
-    .buttons {
-      max-width: 500px;
-      width: 100%;
+    
+    /* أزرار التطبيق الرئيسية */
+    .app-buttons {
       display: flex;
       flex-direction: column;
-      gap: 22px;
-      animation: fadeInUp 1s ease-out 0.8s both;      margin-top: 10px;
-      z-index: 10;
+      gap: 15px;
+      margin: 20px 0;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
     }
-    .btn {
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(12px);
-      padding: 24px 30px;
-      border-radius: 20px;
-      text-align: center;
-      font-size: 26px;
+    
+    .app-btn {
+      padding: 20px;
+      border-radius: 16px;
+      border: none;
+      font-size: 18px;
       font-weight: 700;
+      font-family: 'Cairo', sans-serif;
       cursor: pointer;
-      transition: all 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 15px;
-      letter-spacing: 0.8px;
+      gap: 12px;
       position: relative;
       overflow: hidden;
-      z-index: 1;
-      width: 100%;
-      font-family: 'Cairo', sans-serif;
-      -webkit-tap-highlight-color: transparent;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: white;
+      text-decoration: none;
     }
-    .btn::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
-      z-index: -1;
-      transform: translateX(-100%);
-      transition: transform 0.7s ease;
+    
+    .app-btn:active {
+      transform: translateY(2px);
+      background: rgba(255, 255, 255, 0.2);
     }
-    .btn:hover::before {
-      transform: translateX(100%);
-    }
-    .btn:hover {
-      transform: translateY(-4px) scale(1.03);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
-      background: rgba(255, 255, 255, 0.18);
-      border-color: rgba(255, 255, 255, 0.35);
-    }
-    .btn:active {
-      transform: translateY(2px) scale(0.99);      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    }
-    .btn:focus-visible {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4), 0 0 0 6px rgba(74, 144, 226, 0.6);
-    }
-    .btn-login { 
-      color: #4facfe; 
-      background: rgba(79, 172, 254, 0.1);
+    
+    .app-btn.login {
+      background: rgba(79, 172, 254, 0.15);
       border-color: rgba(79, 172, 254, 0.3);
     }
-    .btn-customer { 
-      color: #ffd700; 
-      background: rgba(255, 215, 0, 0.12);
+    
+    .app-btn.customer {
+      background: rgba(255, 215, 0, 0.15);
       border-color: rgba(255, 215, 0, 0.3);
     }
-    .btn-driver { 
-      color: #ff6b6b; 
-      background: rgba(255, 107, 107, 0.12);
+    
+    .app-btn.driver {
+      background: rgba(255, 107, 107, 0.15);
       border-color: rgba(255, 107, 107, 0.3);
     }
-    .btn-login:hover { background: rgba(79, 172, 254, 0.2); }
-    .btn-customer:hover { background: rgba(255, 215, 0, 0.2); }
-    .btn-driver:hover { background: rgba(255, 107, 107, 0.2); }
+    
+    /* مزايا التطبيق */
+    .features-section {
+      margin-top: 30px;
+      animation: fadeInUp 0.8s ease-out 0.6s both;
+    }
+    
+    .features-title {
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 20px;
+      color: rgba(255, 255, 255, 0.95);
+    }
+    
     .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-      max-width: 1000px;
-      margin-top: 50px;
-      padding: 0 20px;
-      animation: fadeInUp 1s ease-out 1s both;
+      grid-template-columns: 1fr;
+      gap: 15px;
     }
+    
     .feature-card {
-      background: rgba(0, 0, 0, 0.25);
+      background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 25px;
-      text-align: center;
+      border-radius: 16px;
+      padding: 20px;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      transition: transform 0.3s ease;
     }
-    .feature-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-      background: rgba(0, 0, 0, 0.3);
+    
+    .feature-card:active {
+      transform: translateY(-2px);
     }
+    
     .feature-icon {
-      font-size: 48px;
-      margin-bottom: 15px;      background: linear-gradient(90deg, #ffd700, #ff512f, #dd2476, #24c6dc, #4facfe);
+      font-size: 32px;
+      margin-bottom: 12px;
+      background: linear-gradient(90deg, #ffd700, #ff512f, #dd2476);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+    
     .feature-title {
-      font-size: 22px;
+      font-size: 17px;
       font-weight: 700;
-      margin-bottom: 12px;
-      color: #fff;
-    }
-    .feature-desc {
-      font-size: 16px;
-      color: rgba(255, 255, 255, 0.75);
-      line-height: 1.6;
-    }
-    .version {
-      position: fixed;
-      bottom: 20px;
-      font-size: 15px;
-      color: rgba(255, 255, 255, 0.6);
-      letter-spacing: 1.2px;
-      animation: fadeIn 2s ease-out;
-      direction: ltr;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 5px 15px;
-      border-radius: 30px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .notification {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-150%);
-      background: rgba(40, 40, 60, 0.95);
+      margin-bottom: 8px;
       color: white;
-      padding: 16px 35px;
+    }
+    
+    .feature-desc {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.5;
+    }
+    
+    /* شريط اللغة */
+    .language-bar {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px;
+      border-radius: 25px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 100;
+    }
+    
+    .lang-btn {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-family: 'Cairo', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 15px;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    
+    .lang-btn.active, .lang-btn:active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    /* إشعارات التطبيق */
+    .notification-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+    }
+    
+    .notification {
+      background: rgba(40, 40, 60, 0.95);
+      backdrop-filter: blur(20px);
+      color: white;
+      padding: 16px 30px;
       border-radius: 50px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
-      z-index: 10000;
-      font-size: 19px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      font-size: 16px;
       font-weight: 600;
-      transition: transform 0.45s ease, opacity 0.45s ease;
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      max-width: 90%;
-      text-align: center;
+      margin-top: 20px;
+      transform: translateY(-100px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       display: flex;
       align-items: center;
       gap: 12px;
-    }    .notification.show {
-      transform: translateX(-50%) translateY(0);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      max-width: 90%;
+    }
+    
+    .notification.show {
+      transform: translateY(0);
       opacity: 1;
+      pointer-events: auto;
     }
-    .notification.success { background: rgba(34, 197, 94, 0.9); border-color: rgba(34, 197, 94, 0.3); }
-    .notification.error { background: rgba(239, 68, 68, 0.9); border-color: rgba(239, 68, 68, 0.3); }
-    .notification.warning { background: rgba(245, 158, 11, 0.9); border-color: rgba(245, 158, 11, 0.3); }
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
+    
+    .notification.success {
+      background: rgba(34, 197, 94, 0.95);
+      border-color: rgba(34, 197, 94, 0.4);
+    }
+    
+    .notification.error {
+      background: rgba(239, 68, 68, 0.95);
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+    
+    /* تذييل التطبيق */
+    .app-footer {
+      text-align: center;
+      padding: 20px 15px;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+    }
+    
+    /* تحسينات للأجهزة المختلفة */
+    @media (min-width: 768px) {
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      
+      .app-content {
+        max-width: 500px;
+        margin: 0 auto;
+        width: 100%;
       }
     }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    
     @media (max-width: 480px) {
       .logo {
-        font-size: 75px;
+        font-size: 60px;
       }
-      .brand {
-        font-size: 42px;
-      }
-      .tagline {
-        font-size: 22px;
-      }
-      .subtitle {
-        font-size: 18px;
-      }
-      .stat-number {
+      
+      .brand-name {
         font-size: 28px;
       }
-      .btn {
-        padding: 20px 25px;
-        font-size: 23px;
-        border-radius: 18px;
+      
+      .tagline {
+        font-size: 16px;
       }
-      .buttons {
-        gap: 18px;
-        width: 95%;
+      
+      .subtitle {
+        font-size: 14px;
       }
-      .feature-title {
+      
+      .stat-number {
         font-size: 20px;
       }
-      .feature-desc {        font-size: 15px;
+      
+      .stat-label {
+        font-size: 12px;
       }
-      body {
+      
+      .app-btn {
+        padding: 18px;
+        font-size: 16px;
+      }
+      
+      .feature-card {
         padding: 15px;
       }
-      .notification {
-        padding: 14px 28px;
-        font-size: 17px;
-        border-radius: 45px;
+      
+      .feature-title {
+        font-size: 16px;
       }
-      .language-bar {
-        flex-wrap: wrap;
-        padding: 4px 12px;
-      }
-      .lang-btn {
+      
+      .feature-desc {
         font-size: 13px;
-        padding: 4px 8px;
       }
+      
+      .language-bar {
+        top: 10px;
+        right: 10px;
+      }
+      
+      .lang-btn {
+        font-size: 12px;
+        padding: 5px 10px;
+      }
+    }
+    
+    /* دعم الشقوق والأجهزة الحديثة */
+    @supports (padding: max(0px)) {
+      .app-wrapper {
+        padding-top: max(env(safe-area-inset-top), 0px);
+        padding-bottom: max(env(safe-area-inset-bottom), 0px);
+        padding-left: max(env(safe-area-inset-left), 15px);
+        padding-right: max(env(safe-area-inset-right), 15px);
+      }
+    }
+    
+    /* تأثيرات اللمس */
+    .touch-feedback {
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    
+    .touch-feedback:active {
+      opacity: 0.8;
+    }
+    
+    /* منع التحديد */
+    .no-select {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    
+    /* شريط التمرير المخفي */
+    .app-content::-webkit-scrollbar {
+      width: 0;
+      background: transparent;
     }
   </style>
 </head>
-<body>
-  <!-- تأثيرات الإضاءة -->
-  <div class="glow"></div>
-  <div class="glow"></div>
+<body class="no-select">
+  <!-- تأثيرات الإضاءة الخلفية -->
+  <div class="glow-effect"></div>
+  <div class="glow-effect"></div>
   
-  <!-- شريط اختيار اللغة -->
-  <div class="language-bar" id="languageBar">
-    <button class="lang-btn active" data-lang="ar" onclick="setLanguage('ar')">العربية</button>
-    <button class="lang-btn" data-lang="fr" onclick="setLanguage('fr')">Français</button>
-    <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">English</button>
-    <button class="lang-btn" data-lang="es" onclick="setLanguage('es')">Español</button>
-  </div>
-
-  <div class="logo-box">
-    <div class="logo">🏍️</div>
-    <div class="brand" id="brandText">ALLO BILAL</div>
-    <div class="tagline" id="tagline">توصيل سريع • دراجات نارية • سيارات • شاحنات</div>
-    <div class="subtitle" id="subtitle">خدمة توصيل فورية لطلباتك في جميع أنحاء المغرب بأسعار تنافسية وأسرع وقت ممكن. سجل الآن وابدأ رحلتك معنا!</div>
-  </div>
-
-  <!-- الإحصائيات -->
-  <div class="stats-container">
-    <div class="stat-item">
-      <div class="stat-number" id="driversCount">1,250+</div>
-      <div class="stat-label" id="driversLabel">سائق نشط</div>
+  <!-- حاوية التطبيق -->
+  <div class="app-wrapper">
+    <!-- شريط اللغة -->
+    <div class="language-bar" id="languageBar">
+      <button class="lang-btn active touch-feedback" data-lang="ar">العربية</button>
+      <button class="lang-btn touch-feedback" data-lang="fr">Français</button>
+      <button class="lang-btn touch-feedback" data-lang="en">English</button>
     </div>
-    <div class="stat-item">
-      <div class="stat-number" id="ordersCount">50,000+</div>
-      <div class="stat-label" id="ordersLabel">توصيلة ناجحة</div>    </div>
-    <div class="stat-item">
-      <div class="stat-number" id="citiesCount">25+</div>
-      <div class="stat-label" id="citiesLabel">مدينة</div>
-    </div>
-  </div>
-
-  <!-- الأزرار الرئيسية -->
-  <div class="buttons">
-    <button class="btn btn-login" id="login-btn" onclick="window.location.href='login.html'">
-      <i class="fas fa-sign-in-alt"></i>
-      <span id="loginBtnText">تسجيل الدخول</span>
-    </button>
-    <button class="btn btn-customer" id="customer-btn" onclick="window.location.href='register-customer.html'">
-      <i class="fas fa-user"></i>
-      <span id="customerBtnText">إنشاء حساب زبون</span>
-    </button>
-    <button class="btn btn-driver" id="driver-btn" onclick="window.location.href='register-driver.html'">
-      <i class="fas fa-motorcycle"></i>
-      <span id="driverBtnText">إنشاء حساب سائق</span>
-    </button>
+    
+    <!-- المحتوى الرئيسي -->
+    <main class="app-content">
+      <!-- رأس التطبيق -->
+      <header class="app-header">
+        <div class="logo">🏍️</div>
+        <h1 class="brand-name" id="brandText">ALLO BILAL</h1>
+        <p class="tagline" id="tagline">توصيل سريع • دراجات نارية • سيارات • شاحنات</p>
+        <p class="subtitle" id="subtitle">خدمة توصيل فورية لطلباتك في جميع أنحاء المغرب بأسعار تنافسية وأسرع وقت ممكن</p>
+      </header>
+      
+      <!-- الإحصائيات -->
+      <div class="stats-container">
+        <div class="stat-item">
+          <div class="stat-number" id="driversCount">1,250+</div>
+          <div class="stat-label" id="driversLabel">سائق نشط</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="ordersCount">50,000+</div>
+          <div class="stat-label" id="ordersLabel">توصيلة ناجحة</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="citiesCount">25+</div>
+          <div class="stat-label" id="citiesLabel">مدينة</div>
+        </div>
+      </div>
+      
+      <!-- الأزرار الرئيسية -->
+      <div class="app-buttons">
+        <a href="login.html" class="app-btn login touch-feedback">
+          <i class="fas fa-sign-in-alt"></i>
+          <span id="loginBtnText">تسجيل الدخول</span>
+        </a>
+        
+        <a href="register-customer.html" class="app-btn customer touch-feedback">
+          <i class="fas fa-user"></i>
+          <span id="customerBtnText">إنشاء حساب زبون</span>
+        </a>
+        
+        <a href="register-driver.html" class="app-btn driver touch-feedback">
+          <i class="fas fa-motorcycle"></i>
+          <span id="driverBtnText">إنشاء حساب سائق</span>
+        </a>
+      </div>
+      
+      <!-- مزايا التطبيق -->
+      <section class="features-section">
+        <h2 class="features-title">مزايا التطبيق</h2>
+        <div class="features-grid">
+          <div class="feature-card touch-feedback">
+            <div class="feature-icon">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <div class="feature-title" id="feature1Title">تتبع حي</div>
+            <div class="feature-desc" id="feature1Desc">تابع طلبك على الخريطة في الوقت الحقيقي مع تحديثات فورية لموقع السائق</div>
+          </div>
+          
+          <div class="feature-card touch-feedback">
+            <div class="feature-icon">
+              <i class="fas fa-headset"></i>
+            </div>
+            <div class="feature-title" id="feature2Title">دعم فني مباشر</div>
+            <div class="feature-desc" id="feature2Desc">فريق دعم متاح 24/7 لمساعدتك في أي وقت وحل أي مشكلة فورًا</div>
+          </div>
+          
+          <div class="feature-card touch-feedback">
+            <div class="feature-icon">
+              <i class="fas fa-comments"></i>
+            </div>
+            <div class="feature-title" id="feature3Title">دردشة متقدمة</div>
+            <div class="feature-desc" id="feature3Desc">دردشة نصية مع إرسال رسائل صوتية وصور للتواصل الفعّال مع السائق</div>
+          </div>
+          
+          <div class="feature-card touch-feedback">
+            <div class="feature-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="feature-title" id="feature4Title">نظام تقييم</div>
+            <div class="feature-desc" id="feature4Desc">قيم السائقين والزبائن لضمان جودة الخدمة وتحسين التجربة للجميع</div>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <!-- تذييل التطبيق -->
+    <footer class="app-footer">
+      <div>v4.0.0 • تطبيق مجاني 100%</div>
+    </footer>
   </div>
   
-  <!-- المزايا -->
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon">
-        <i class="fas fa-map-marked-alt"></i>
-      </div>
-      <div class="feature-title" id="feature1Title">تتبع حي</div>
-      <div class="feature-desc" id="feature1Desc">تابع طلبك على الخريطة في الوقت الحقيقي مع تحديثات فورية لموقع السائق</div>
+  <!-- الإشعارات -->
+  <div class="notification-container">
+    <div class="notification" id="notification">
+      <i class="fas fa-bell"></i>
+      <span id="notificationText">مرحباً بك في خدمة ALLO BILAL للتوصيل السريع!</span>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">
-        <i class="fas fa-headset"></i>
-      </div>
-      <div class="feature-title" id="feature2Title">دعم فني مباشر</div>
-      <div class="feature-desc" id="feature2Desc">فريق دعم متاح 24/7 لمساعدتك في أي وقت وحل أي مشكلة فورًا</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">
-        <i class="fas fa-comments"></i>
-      </div>
-      <div class="feature-title" id="feature3Title">دردشة متقدمة</div>
-      <div class="feature-desc" id="feature3Desc">دردشة نصية مع إرسال رسائل صوتية وصور للتواصل الفعّال مع السائق</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">
-        <i class="fas fa-star"></i>
-      </div>      <div class="feature-title" id="feature4Title">نظام تقييم</div>
-      <div class="feature-desc" id="feature4Desc">قيم السائقين والزبائن لضمان جودة الخدمة وتحسين التجربة للجميع</div>
-    </div>
-  </div>
-  
-  <div class="version">v4.0.0 • تطبيق مجاني 100%</div>
-  <div class="notification" id="notification">
-    <i class="fas fa-bell"></i>
-    <span id="notificationText">مرحباً بك في خدمة ALLO BILAL للتوصيل السريع!</span>
   </div>
 
   <!-- Firebase SDK -->
@@ -524,7 +627,7 @@
       ar: {
         brandText: "ALLO BILAL",
         tagline: "توصيل سريع • دراجات نارية • سيارات • شاحنات",
-        subtitle: "خدمة توصيل فورية لطلباتك في جميع أنحاء المغرب بأسعار تنافسية وأسرع وقت ممكن. سجل الآن وابدأ رحلتك معنا!",
+        subtitle: "خدمة توصيل فورية لطلباتك في جميع أنحاء المغرب بأسعار تنافسية وأسرع وقت ممكن",
         driversLabel: "سائق نشط",
         ordersLabel: "توصيلة ناجحة",
         citiesLabel: "مدينة",
@@ -537,14 +640,15 @@
         feature2Desc: "فريق دعم متاح 24/7 لمساعدتك في أي وقت وحل أي مشكلة فورًا",
         feature3Title: "دردشة متقدمة",
         feature3Desc: "دردشة نصية مع إرسال رسائل صوتية وصور للتواصل الفعّال مع السائق",
-        feature4Title: "نظام تقييم",        feature4Desc: "قيم السائقين والزبائن لضمان جودة الخدمة وتحسين التجربة للجميع",
+        feature4Title: "نظام تقييم",
+        feature4Desc: "قيم السائقين والزبائن لضمان جودة الخدمة وتحسين التجربة للجميع",
         notificationText: "مرحباً بك في خدمة ALLO BILAL للتوصيل السريع!",
         successNotification: "تم تغيير اللغة إلى العربية"
       },
       fr: {
         brandText: "ALLO BILAL",
         tagline: "Livraison rapide • Moto • Voiture • Camion",
-        subtitle: "Service de livraison instantané pour vos commandes partout au Maroc à des prix compétitifs et dans les plus brefs délais. Inscrivez-vous maintenant et commencez votre voyage avec nous !",
+        subtitle: "Service de livraison instantané pour vos commandes partout au Maroc à des prix compétitifs",
         driversLabel: "Conducteurs actifs",
         ordersLabel: "Livraisons réussies",
         citiesLabel: "Villes",
@@ -552,20 +656,20 @@
         customerBtnText: "Créer un compte client",
         driverBtnText: "Créer un compte chauffeur",
         feature1Title: "Suivi en direct",
-        feature1Desc: "Suivez votre commande sur la carte en temps réel avec des mises à jour instantanées de l'emplacement du conducteur",
+        feature1Desc: "Suivez votre commande sur la carte en temps réel avec des mises à jour instantanées",
         feature2Title: "Support technique direct",
-        feature2Desc: "Une équipe de support disponible 24h/24 et 7j/7 pour vous aider à tout moment et résoudre tout problème immédiatement",
+        feature2Desc: "Une équipe de support disponible 24h/24 et 7j/7 pour vous aider à tout moment",
         feature3Title: "Chat avancé",
-        feature3Desc: "Chat textuel avec envoi de messages vocaux et d'images pour une communication efficace avec le conducteur",
+        feature3Desc: "Chat textuel avec envoi de messages vocaux et d'images pour une communication efficace",
         feature4Title: "Système d'évaluation",
-        feature4Desc: "Évaluez les conducteurs et les clients pour garantir la qualité du service et améliorer l'expérience pour tous",
+        feature4Desc: "Évaluez les conducteurs et les clients pour garantir la qualité du service",
         notificationText: "Bienvenue dans le service ALLO BILAL de livraison rapide !",
         successNotification: "Langue changée en français"
       },
       en: {
         brandText: "ALLO BILAL",
         tagline: "Fast Delivery • Motorcycle • Car • Truck",
-        subtitle: "Instant delivery service for your orders all over Morocco at competitive prices and in the shortest time possible. Sign up now and start your journey with us!",
+        subtitle: "Instant delivery service for your orders all over Morocco at competitive prices",
         driversLabel: "Active Drivers",
         ordersLabel: "Successful Deliveries",
         citiesLabel: "Cities",
@@ -573,51 +677,32 @@
         customerBtnText: "Create Customer Account",
         driverBtnText: "Create Driver Account",
         feature1Title: "Live Tracking",
-        feature1Desc: "Track your order on the map in real-time with instant updates of the driver's location",
+        feature1Desc: "Track your order on the map in real-time with instant updates",
         feature2Title: "Direct Technical Support",
-        feature2Desc: "Support team available 24/7 to help you at any time and solve any problem immediately",
+        feature2Desc: "Support team available 24/7 to help you at any time",
         feature3Title: "Advanced Chat",
-        feature3Desc: "Text chat with voice messages and image sending for effective communication with the driver",
+        feature3Desc: "Text chat with voice messages and image sending for effective communication",
         feature4Title: "Rating System",
-        feature4Desc: "Rate drivers and customers to ensure service quality and improve the experience for everyone",
+        feature4Desc: "Rate drivers and customers to ensure service quality",
         notificationText: "Welcome to ALLO BILAL fast delivery service!",
         successNotification: "Language changed to English"
-      },
-      es: {
-        brandText: "ALLO BILAL",
-        tagline: "Entrega rápida • Motocicleta • Coche • Camión",
-        subtitle: "Servicio de entrega instantánea para tus pedidos en todo Marruecos a precios competitivos y en el menor tiempo posible. ¡Regístrate ahora y comienza tu viaje con nosotros!",        driversLabel: "Conductores activos",
-        ordersLabel: "Entregas exitosas",
-        citiesLabel: "Ciudades",
-        loginBtnText: "Iniciar sesión",
-        customerBtnText: "Crear cuenta de cliente",
-        driverBtnText: "Crear cuenta de conductor",
-        feature1Title: "Seguimiento en vivo",
-        feature1Desc: "Rastrea tu pedido en el mapa en tiempo real con actualizaciones instantáneas de la ubicación del conductor",
-        feature2Title: "Soporte técnico directo",
-        feature2Desc: "Equipo de soporte disponible 24/7 para ayudarte en cualquier momento y resolver cualquier problema inmediatamente",
-        feature3Title: "Chat avanzado",
-        feature3Desc: "Chat de texto con mensajes de voz y envío de imágenes para una comunicación efectiva con el conductor",
-        feature4Title: "Sistema de calificación",
-        feature4Desc: "Califica a conductores y clientes para garantizar la calidad del servicio y mejorar la experiencia para todos",
-        notificationText: "¡Bienvenido al servicio de entrega rápida ALLO BILAL!",
-        successNotification: "Idioma cambiado a español"
       }
     };
     
-    // تهيئة اللغة
+    // تهيئة التطبيق
     let currentLang = localStorage.getItem('appLanguage') || 'ar';
     
-    // تحميل اللغة عند بدء التشغيل
     document.addEventListener('DOMContentLoaded', () => {
-      // التحقق إذا كان المستخدم قد رأى شاشة الترحيب
-      if (!sessionStorage.getItem('splashSeen')) {
-        window.location.href = 'splash.html';
-        sessionStorage.setItem('splashSeen', 'true');
-        return;
-      }
-      
+      // تعيين اللغة الافتراضية
       setLanguage(currentLang, true);
+      
+      // إضافة مستمعي الأحداث لأزرار اللغة
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const lang = btn.getAttribute('data-lang');
+          setLanguage(lang);
+        });
+      });
       
       // التحقق من تسجيل الدخول
       firebase.auth().onAuthStateChanged((user) => {
@@ -635,13 +720,14 @@
           });
         }
       });
-            // إشعار ترحيبي
+      
+      // عرض إشعار ترحيبي
       setTimeout(() => {
         showNotification(translations[currentLang].notificationText, 'success');
       }, 1000);
     });
     
-    // دالة تغيير اللغة
+    // تغيير اللغة
     function setLanguage(lang, isInitialLoad = false) {
       currentLang = lang;
       localStorage.setItem('appLanguage', lang);
@@ -650,7 +736,7 @@
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
       document.body.style.direction = lang === 'ar' ? 'rtl' : 'ltr';
       
-      // تحديث جميع العناصر النصية
+      // تحديث جميع النصوص
       Object.keys(translations[lang]).forEach(key => {
         const element = document.getElementById(key);
         if (element) {
@@ -663,7 +749,7 @@
         btn.classList.toggle('active', btn.dataset.lang === lang);
       });
       
-      // عرض إشعار إلا عند التحميل الأولي
+      // عرض إشعار تغيير اللغة
       if (!isInitialLoad) {
         showNotification(translations[lang].successNotification, 'success');
       }
@@ -674,17 +760,18 @@
       const notification = document.getElementById('notification');
       const notificationText = document.getElementById('notificationText');
       
-      if (notificationText) {
-        notificationText.textContent = message;
-      }
+      notificationText.textContent = message;
       
-      // إزالة الفئات القديمة
+      // إعادة تعيين الفئات
       notification.className = 'notification';
       
       // إضافة فئة النوع
-      if (type === 'success') notification.classList.add('success');
-      else if (type === 'error') notification.classList.add('error');
-      else if (type === 'warning') notification.classList.add('warning');      
+      if (type === 'success') {
+        notification.classList.add('success');
+      } else if (type === 'error') {
+        notification.classList.add('error');
+      }
+      
       // إظهار الإشعار
       notification.classList.add('show');
       
