@@ -1,12 +1,305 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // السماح بالوصول فقط للمستخدمين المسجلين دخولهم
+    // === قاعدة عامة: رفض كل شيء بشكل افتراضي ===
     match /{document=**} {
-      allow read, write: if request.auth != null;
+      allow read, write: if false;
     }
     
-    // قواعد المستخدمين
+    // === قواعد المستخدمين ===
     match /users/{userId} {
       allow read: if request.auth != null;
-      allow write: if request.auth != null && request.auth.uid == userId
+      allow create: if 
+        request.auth != null &&
+        request.auth.uid == userId &&
+        request.resource.data.role in ['customer', 'driver', 'admin'] &&
+        request.resource.data.name is string &&
+        request.resource.data.name.size() >= 2;
+      
+      allow update: if 
+        request.auth != null &&
+        request.auth.uid == userId &&
+        (
+          // السماح بتحديث الحقول المسموح بها فقط
+          request.resource.data.keys().hasOnly([
+            'name', 'phone', 'profileImage', 'vehicleType', 
+            'licensePlate', 'location', 'status', 'rating', 
+            'totalOrders', 'completedOrders', 'fcmToken',
+            'lastActive', 'notificationsEnabled'
+          ])
+        );
+      
+      allow delete: if false; // منع حذف الحسابات
+    }
+    
+    // === قواعد الطلبات ===
+    match /orders/{orderId} {
+      allow read: if 
+        request.auth != null &&
+        (
+          // الزبون يمكنه رؤية طلباته فقط
+          resource.data.customerId == request.auth.uid ||
+          // السائق يمكنه رؤية الطلبات المتاحة والمقبولة
+          (resource.data.driverId == request.auth.uid) ||
+          // الطلبات المتاحة للجميع
+          resource.data.status == 'pending'
+        );
+      
+      allow create: if 
+        request.auth != null &&
+        // يجب أن يكون المستخدم زبوناً لإنشاء طلب
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'customer' &&
+        // التحقق من البيانات المطلوبة
+        request.resource.data.customerId == request.auth.uid &&
+        request.resource.data.pickupLocation is string &&
+        request.resource.data.deliveryLocation is string &&
+        request.resource.data.vehicleType in ['motorcycle', 'car', 'truck'] &&
+        request.resource.data.status == 'pending';
+      
+      allow update: if 
+        request.auth != null &&
+        (
+          // الزبون يمكنه تحديث بعض الحقول قبل قبول الطلب
+          (
+            request.auth.uid == resource.data.customerId &&
+            resource.data.status == 'pending' &&
+            request.resource.data.keys().hasOnly([
+              'packageDescription', 'suggestedPrice'
+            ])
+          ) ||
+          // السائق يمكنه قبول الطلب أو تحديث حالته
+          (
+            request.auth.uid == resource.data.driverId &&
+            request.resource.data.keys().hasOnly([
+              'status', 'driverLocation', 'estimatedArrival', 'actualPickupTime',
+              'actualDeliveryTime', 'finalPrice', 'driverNotes'
+            ]) &&
+            // التحقق من تسلسل الحالة
+            (
+              (resource.data.status == 'pending' && request.resource.data.status == 'accepted') ||
+              (resource.data.status == 'accepted' && request.resource.data.status == 'picked_up') ||
+              (resource.data.status == 'picked_up' && request.resource.data.status == 'completed') ||
+              (resource.data.status == 'completed' && request.resource.data.status == 'completed') ||
+              // إلغاء الطلب
+              (
+                request.resource.data.status == 'cancelled' &&
+                request.resource.data.cancellationReason is string
+              )
+            )
+          ) ||
+          // المسؤول يمكنه تحديث أي حقل
+          (
+            exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+            get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
+          )
+        );
+      
+      allow delete: if 
+        request.auth != null &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // === قواعد المحادثات ===
+    match /orders/{orderId}/messages/{messageId} {
+      allow read: if 
+        request.auth != null &&
+        (
+          request.auth.uid == resource.data.senderId ||
+          request.auth.uid == resource.data.receiverId ||
+          (
+            exists(/databases/$(database)/documents/orders/$(orderId)) &&
+            (
+              get(/databases/$(database)/documents/orders/$(orderId)).data.customerId == request.auth.uid ||
+              get(/databases/$(database)/documents/orders/$(orderId)).data.driverId == request.auth.uid
+            )
+          )
+        );
+      
+      allow create: if 
+        request.auth != null &&
+        exists(/databases/$(database)/documents/orders/$(orderId)) &&
+        (
+          // يجب أن يكون المستخدم مرتبطاً بالطلب
+          get(/databases/$(database)/documents/orders/$(orderId)).data.customerId == request.auth.uid ||
+          get(/databases/$(database)/documents/orders/$(orderId)).data.driverId == request.auth.uid
+        ) &&
+        // التحقق من البيانات
+        request.resource.data.senderId == request.auth.uid &&
+        request.resource.data.text is string &&
+        request.resource.data.text.size() <= 1000 &&
+        request.resource.data.timestamp == request.time;
+      
+      allow update, delete: if false;
+    }
+    
+    // === قواعد سجلات المكالمات ===
+    match /orders/{orderId}/callLogs/{callId} {
+      allow read: if 
+        request.auth != null &&
+        exists(/databases/$(database)/documents/orders/$(orderId)) &&
+        (
+          get(/databases/$(database)/documents/orders/$(orderId)).data.customerId == request.auth.uid ||
+          get(/databases/$(database)/documents/orders/$(orderId)).data.driverId == request.auth.uid
+        );
+      
+      allow create: if 
+        request.auth != null &&
+        exists(/databases/$(database)/documents/orders/$(orderId)) &&
+        (
+          get(/databases/$(database)/documents/orders/$(orderId)).data.customerId == request.auth.uid ||
+          get(/databases/$(database)/documents/orders/$(orderId)).data.driverId == request.auth.uid
+        ) &&
+        request.resource.data.callerId == request.auth.uid;
+    }
+    
+    // === قواعد التقييمات ===
+    match /orders/{orderId}/ratings/{ratingId} {
+      allow read: if request.auth != null;
+      
+      allow create: if 
+        request.auth != null &&
+        exists(/databases/$(database)/documents/orders/$(orderId)) &&
+        (
+          // الزبون يمكنه تقييم السائق بعد اكتمال الطلب
+          (
+            request.auth.uid == get(/databases/$(database)/documents/orders/$(orderId)).data.customerId &&
+            get(/databases/$(database)/documents/orders/$(orderId)).data.status == 'completed' &&
+            request.resource.data.type == 'driver_rating' &&
+            request.resource.data.ratedUserId == get(/databases/$(database)/documents/orders/$(orderId)).data.driverId &&
+            request.resource.data.rating >= 1 &&
+            request.resource.data.rating <= 5
+          ) ||
+          // السائق يمكنه تقييم الزبون بعد اكتمال الطلب
+          (
+            request.auth.uid == get(/databases/$(database)/documents/orders/$(orderId)).data.driverId &&
+            get(/databases/$(database)/documents/orders/$(orderId)).data.status == 'completed' &&
+            request.resource.data.type == 'customer_rating' &&
+            request.resource.data.ratedUserId == get(/databases/$(database)/documents/orders/$(orderId)).data.customerId &&
+            request.resource.data.rating >= 1 &&
+            request.resource.data.rating <= 5
+          )
+        );
+      
+      allow update, delete: if false;
+    }
+    
+    // === قواعد الإشعارات ===
+    match /notifications/{notificationId} {
+      allow read: if 
+        request.auth != null &&
+        request.auth.uid == resource.data.userId;
+      
+      allow create: if 
+        request.auth != null &&
+        exists(/databases/$(database)/documents/users/$(request.resource.data.userId)) &&
+        // فقط المسؤول أو النظام يمكنه إرسال إشعارات
+        (
+          exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
+        );
+      
+      allow update: if 
+        request.auth != null &&
+        request.auth.uid == resource.data.userId &&
+        request.resource.data.keys().hasOnly(['read']) &&
+        request.resource.data.read is bool;
+    }
+    
+    // === قواعد الدفع ===
+    match /payments/{paymentId} {
+      allow read: if 
+        request.auth != null &&
+        (
+          request.auth.uid == resource.data.customerId ||
+          request.auth.uid == resource.data.driverId ||
+          (
+            exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+            get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
+          )
+        );
+      
+      allow create: if 
+        request.auth != null &&
+        // فقط المسؤول أو نظام الدفع يمكنه إنشاء مدفوعات
+        (
+          exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
+        );
+      
+      allow update: if 
+        request.auth != null &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' &&
+        request.resource.data.keys().hasOnly(['status', 'transactionId', 'processedAt']);
+    }
+    
+    // === قواعد الإحصائيات ===
+    match /statistics/{statId} {
+      allow read: if request.auth != null;
+      allow write: if 
+        request.auth != null &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // === قائمة سوداء للمستخدمين المحظورين ===
+    match /blacklist/{userId} {
+      allow read: if 
+        request.auth != null &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      
+      allow write: if 
+        request.auth != null &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // === قواعد الدعم الفني ===
+    match /support/{ticketId} {
+      allow read: if 
+        request.auth != null &&
+        (
+          request.auth.uid == resource.data.userId ||
+          (
+            exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+            get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
+          )
+        );
+      
+      allow create: if 
+        request.auth != null &&
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.subject is string &&
+        request.resource.data.message is string &&
+        request.resource.data.status == 'open';
+      
+      allow update: if 
+        request.auth != null &&
+        (
+          // المستخدم يمكنه تحديث تذكرة الدعم الخاصة به
+          (
+            request.auth.uid == resource.data.userId &&
+            request.resource.data.keys().hasOnly(['status']) &&
+            request.resource.data.status == 'closed'
+          ) ||
+          // المسؤول يمكنه تحديث أي حقل
+          (
+            exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+            get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
+          )
+        );
+    }
+    
+    // === قواعد الضوابط الإدارية ===
+    match /settings/{settingId} {
+      allow read: if request.auth != null;
+      allow write: if 
+        request.auth != null &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+  }
+}

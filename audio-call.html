@@ -2,44 +2,87 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>مكالمة صوتية - ALLO BILAL</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+      -webkit-tap-highlight-color: transparent;
+    }
+    
     body {
       font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
       color: #fff;
       min-height: 100vh;
       position: relative;
-      overflow: hidden;
+      overflow-x: hidden;
+      touch-action: manipulation;
     }
-    body::before {
-      content: "";
-      position: absolute;
-      top: -50%; left: -50%; width: 200%; height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 70%);
-      z-index: -1;
-    }
+    
     .call-container {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      justify-content: space-between;
       min-height: 100vh;
-      padding: 20px;
+      padding: 20px 16px 100px;
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
     }
+    
+    /* Header/Back Button */
+    .call-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      margin-bottom: 20px;
+    }
+    
+    .back-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      width: 45px;
+      height: 45px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .back-btn:active {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(0.95);
+    }
+    
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #4facfe, #00f2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    /* Call Info Section */
     .call-info {
       text-align: center;
-      margin-bottom: 40px;
-      max-width: 500px;
-      width: 100%;
+      margin-top: 40px;
+      padding: 0 16px;
     }
+    
     .other-avatar {
-      width: 120px;
-      height: 120px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
       background: linear-gradient(135deg, #4facfe, #00f2fe);
       display: flex;
@@ -47,174 +90,366 @@
       justify-content: center;
       color: #0a1929;
       font-weight: 800;
-      font-size: 48px;
+      font-size: 36px;
       margin: 0 auto 20px;
-      box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4);
-      animation: pulse 2s infinite;
+      box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+      animation: pulse 2s infinite ease-in-out;
+      border: 3px solid rgba(255, 255, 255, 0.2);
     }
+    
     @keyframes pulse {
-      0% { transform: scale(1); box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4); }
-      50% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(79, 172, 254, 0.6); }
-      100% { transform: scale(1); box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4); }
+      0% { 
+        transform: scale(1); 
+        box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+      }
+      50% { 
+        transform: scale(1.05); 
+        box-shadow: 0 12px 35px rgba(79, 172, 254, 0.6);
+      }
+      100% { 
+        transform: scale(1); 
+        box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+      }
     }
+    
     .other-name {
-      font-size: 32px;
-      font-weight: 800;
-      margin-bottom: 10px;
-      background: linear-gradient(90deg, #4facfe, #00f2fe);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #f1f5f9;
     }
+    
     .call-status {
-      font-size: 20px;
-      color: rgba(255, 255, 255, 0.85);
-      margin-bottom: 15px;
+      font-size: 16px;
+      color: #94a3b8;
+      margin-bottom: 16px;
       font-weight: 500;
     }
+    
     .timer {
       font-size: 28px;
       font-weight: 700;
       color: #ffd700;
-      background: rgba(255, 215, 0, 0.15);
-      padding: 10px 20px;
-      border-radius: 12px;
+      background: rgba(255, 215, 0, 0.1);
+      padding: 12px 24px;
+      border-radius: 16px;
       display: inline-block;
-      margin-top: 10px;
+      margin-top: 8px;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
     }
+    
+    /* Controls Section */
     .controls {
       display: flex;
-      gap: 25px;
-      margin-top: 30px;
-      flex-wrap: wrap;
       justify-content: center;
+      gap: 20px;
+      margin-top: 40px;
+      padding: 20px;
+      background: rgba(15, 23, 42, 0.7);
+      border-radius: 24px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
     }
+    
     .control-btn {
-      width: 80px;
-      height: 80px;
+      width: 65px;
+      height: 65px;
       border-radius: 50%;
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 32px;
-      transition: all 0.3s;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      font-size: 24px;
+      transition: all 0.2s;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      position: relative;
     }
-    .control-btn:hover {
-      transform: scale(1.1);
-    }
+    
     .control-btn:active {
       transform: scale(0.95);
     }
+    
+    .control-btn::after {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: -6px;
+      right: -6px;
+      bottom: -6px;
+      border-radius: 50%;
+      background: transparent;
+      transition: all 0.3s;
+    }
+    
+    .control-btn:active::after {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
     .btn-mute {
       background: rgba(255, 255, 255, 0.15);
       color: white;
     }
+    
     .btn-mute.active {
       background: #ef4444;
       color: white;
       box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
     }
+    
     .btn-speaker {
       background: rgba(255, 255, 255, 0.15);
       color: white;
     }
+    
     .btn-speaker.active {
       background: #10b981;
       color: white;
       box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
     }
+    
     .btn-end {
+      width: 75px;
+      height: 75px;
       background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
       color: white;
-      width: 90px;
-      height: 90px;
-      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5);
-    }
-    .btn-end:hover {
-      box-shadow: 0 12px 35px rgba(239, 68, 68, 0.7);
-      transform: scale(1.12);
+      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.5);
+      position: relative;
     }
     
-    /* زر الطوارئ */
+    .btn-end:active {
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.5);
+    }
+    
+    /* Emergency Button */
     .emergency-btn {
       position: fixed;
-      bottom: 30px;
-      left: 30px;
+      bottom: 20px;
+      left: 20px;
       background: linear-gradient(135deg, #ef4444, #dc2626);
       color: white;
-      width: 70px;
-      height: 70px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 20px;
       font-weight: 800;
-      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5);
-      border: none;
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.3);
       cursor: pointer;
       z-index: 1000;
-      animation: pulse 2s infinite;
       transition: all 0.3s ease;
-    }
-    .emergency-btn:hover {
-      transform: scale(1.1) rotate(5deg);
-      box-shadow: 0 12px 35px rgba(239, 68, 68, 0.7);
+      text-decoration: none;
     }
     
+    .emergency-btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.6);
+    }
+    
+    /* Notification */
     .notification {
       position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-150%);
-      background: rgba(40, 40, 60, 0.95);
-      color: white;
-      padding: 14px 28px;
-      border-radius: 45px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
-      z-index: 10000;
-      font-size: 17px;
-      font-weight: 600;
-      transition: transform 0.45s ease;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      transform: translateY(-150%);
+      background: rgba(15, 23, 42, 0.95);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: white;
+      padding: 14px 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      z-index: 10000;
+      font-size: 15px;
+      font-weight: 600;
+      transition: transform 0.4s ease;
+      border: 1px solid rgba(79, 172, 254, 0.3);
       display: flex;
       align-items: center;
       gap: 10px;
+      max-width: 400px;
+      margin: 0 auto;
     }
+    
     .notification.show {
-      transform: translateX(-50%) translateY(0);
+      transform: translateY(0);
     }
-    .notification.success { background: rgba(34, 197, 94, 0.95); border-color: rgba(34, 197, 94, 0.4); }
-    .notification.error { background: rgba(239, 68, 68, 0.95); border-color: rgba(239, 68, 68, 0.4); }
-    @media (max-width: 480px) {
-      .call-info { margin-bottom: 30px; }
-      .other-avatar { width: 100px; height: 100px; font-size: 40px; }
-      .other-name { font-size: 28px; }
-      .call-status { font-size: 18px; }
-      .timer { font-size: 24px; padding: 8px 16px; }
-      .controls { gap: 15px; margin-top: 25px; }
-      .control-btn { width: 70px; height: 70px; font-size: 28px; }
-      .btn-end { width: 80px; height: 80px; }
-      .notification { padding: 12px 25px; font-size: 16px; }
-      .emergency-btn { width: 60px; height: 60px; font-size: 24px; }
+    
+    .notification.success {
+      background: rgba(16, 185, 129, 0.95);
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+    
+    .notification.error {
+      background: rgba(239, 68, 68, 0.95);
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+    
+    /* Network Status */
+    .network-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      margin: 16px auto;
+      max-width: 200px;
+      font-size: 14px;
+    }
+    
+    .network-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      animation: blink 2s infinite;
+    }
+    
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    /* Responsive Design */
+    @media (min-width: 400px) {
+      .other-avatar {
+        width: 120px;
+        height: 120px;
+        font-size: 42px;
+      }
+      
+      .other-name {
+        font-size: 28px;
+      }
+      
+      .timer {
+        font-size: 32px;
+        padding: 14px 28px;
+      }
+      
+      .control-btn {
+        width: 70px;
+        height: 70px;
+        font-size: 26px;
+      }
+      
+      .btn-end {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .emergency-btn {
+        width: 70px;
+        height: 70px;
+        font-size: 24px;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      .call-container {
+        padding: 30px 20px 120px;
+      }
+      
+      .controls {
+        gap: 30px;
+        padding: 30px;
+      }
+      
+      .control-btn {
+        width: 80px;
+        height: 80px;
+        font-size: 28px;
+      }
+      
+      .btn-end {
+        width: 90px;
+        height: 90px;
+      }
+      
+      .notification {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%) translateY(-150%);
+        min-width: 300px;
+      }
+      
+      .notification.show {
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+    
+    /* Landscape Mode */
+    @media (max-height: 600px) and (orientation: landscape) {
+      .call-container {
+        flex-direction: row;
+        align-items: center;
+        padding: 20px;
+      }
+      
+      .call-info {
+        margin-top: 0;
+        flex: 1;
+      }
+      
+      .controls {
+        margin-top: 0;
+        flex: 1;
+        max-width: 300px;
+      }
+      
+      .other-avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 32px;
+        margin-bottom: 10px;
+      }
+      
+      .other-name {
+        font-size: 20px;
+        margin-bottom: 4px;
+      }
+      
+      .call-status {
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+      
+      .timer {
+        font-size: 24px;
+        padding: 8px 16px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- زر الطوارئ 119 -->
-  <button class="emergency-btn" onclick="window.location.href='emergency.html'">
-    119
-  </button>
-  
   <div class="call-container">
+    <div class="call-header">
+      <button class="back-btn" onclick="goBack()">
+        <i class="fas fa-arrow-right"></i>
+      </button>
+      <div class="logo">ALLO BILAL</div>
+      <div style="width: 45px;"></div> <!-- Spacer -->
+    </div>
+    
     <div class="call-info">
-      <div class="other-avatar" id="otherAvatar">س</div>
+      <div class="other-avatar" id="otherAvatar">?</div>
       <div class="other-name" id="otherName">جاري الاتصال...</div>
-      <div class="call-status" id="callStatus">جاري الاتصال <span class="connecting">...</span></div>
+      <div class="call-status" id="callStatus">جاري تأسيس الاتصال</div>
       <div class="timer" id="timer">00:00</div>
+      
+      <div class="network-status">
+        <div class="network-dot"></div>
+        <span>الاتصال نشط</span>
+      </div>
     </div>
     
     <div class="controls">
@@ -230,12 +465,15 @@
     </div>
   </div>
   
+  <a href="emergency.html" class="emergency-btn" title="الاتصال بالطوارئ">
+    119
+  </a>
+  
   <div class="notification" id="notification">
     <i class="fas fa-bell"></i>
     <span id="notificationText">جاري بدء المكالمة...</span>
   </div>
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -260,34 +498,47 @@
     let timerInterval = null;
     let isMuted = false;
     let isSpeakerOn = false;
+    let currentUser = null;
+    let callActive = false;
     
-    // تهيئة التطبيق
     document.addEventListener('DOMContentLoaded', async () => {
-      // الحصول على معرف الطلب من URL
-      const urlParams = new URLSearchParams(window.location.search);
-      orderId = urlParams.get('orderId');
-      
-      if (!orderId) {
-        showNotification('لم يتم العثور على معرف الطلب', 'error');
+      // التحقق من تسجيل الدخول
+      firebase.auth().onAuthStateChanged(async (user) => {
+        if (!user) {
+          showNotification('يرجى تسجيل الدخول أولاً', 'error');
+          setTimeout(() => {
+            window.location.href = 'login.html';
+          }, 2000);
+          return;
+        }
+        
+        currentUser = user;
+        
+        // الحصول على معرف الطلب من URL
+        const urlParams = new URLSearchParams(window.location.search);
+        orderId = urlParams.get('orderId');
+        
+        if (!orderId) {
+          showNotification('لم يتم العثور على معرف الطلب', 'error');
+          setTimeout(() => {
+            window.location.href = 'customer-dashboard.html';
+          }, 2000);
+          return;
+        }
+        
+        // بدء المكالمة
+        await startCall();
+        
+        // بدء المؤقت
+        startTimer();
+        
+        // إشعار ترحيبي
         setTimeout(() => {
-          window.location.href = 'customer-dashboard.html';
-        }, 2000);
-        return;
-      }
-      
-      // بدء المكالمة
-      startCall();
-      
-      // بدء العد التنازلي
-      startTimer();
-      
-      // إشعار ترحيبي
-      setTimeout(() => {
-        showNotification('تم الاتصال بنجاح!', 'success');
-      }, 1500);
+          showNotification('تم الاتصال بنجاح!', 'success');
+        }, 1000);
+      });
     });
     
-    // بدء المكالمة
     async function startCall() {
       try {
         const db = firebase.firestore();
@@ -296,33 +547,58 @@
         if (orderDoc.exists) {
           const order = orderDoc.data();
           
-          // تحميل معلومات الطرف الآخر
+          // تحديد الطرف الآخر
           let otherUserId;
-          if (firebase.auth().currentUser.uid === order.customerId) {
+          let userRole = 'customer';
+          
+          // محاولة الحصول على دور المستخدم
+          const userDoc = await db.collection('users').doc(currentUser.uid).get();
+          if (userDoc.exists) {
+            const userData = userDoc.data();
+            userRole = userData.role || 'customer';
+          }
+          
+          if (userRole === 'customer') {
             otherUserId = order.driverId;
           } else {
             otherUserId = order.customerId;
           }
           
+          // تحميل معلومات الطرف الآخر
           if (otherUserId) {
             const otherDoc = await db.collection('users').doc(otherUserId).get();
             if (otherDoc.exists) {
               const otherData = otherDoc.data();
-              document.getElementById('otherName').textContent = otherData.name || otherData.fullName || 'الطرف الآخر';
+              const displayName = otherData.name || otherData.fullName || 'الطرف الآخر';
+              document.getElementById('otherName').textContent = displayName;
               
-              // تحديث الأفاتار
-              const initials = (otherData.name || otherData.fullName || 'س').charAt(0);
+              const initials = displayName.charAt(0);
               document.getElementById('otherAvatar').textContent = initials.toUpperCase();
             }
           }
+          
+          // تحديث حالة الاتصال
+          document.getElementById('callStatus').textContent = 'متصل الآن';
+          callActive = true;
+          
+          // تسجيل بدء المكالمة
+          callStartTime = new Date();
+          
+          // حفظ سجل المكالمة
+          await db.collection('orders').doc(orderId).collection('callLogs').add({
+            type: 'audio',
+            callerId: currentUser.uid,
+            startedAt: callStartTime,
+            status: 'started',
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          
+        } else {
+          showNotification('لم يتم العثور على الطلب', 'error');
+          setTimeout(() => {
+            window.history.back();
+          }, 2000);
         }
-        
-        // عرض رسالة نجاح
-        showNotification('تم الاتصال بنجاح!', 'success');
-        document.getElementById('callStatus').textContent = 'متصل الآن';
-        
-        // تسجيل وقت بدء المكالمة
-        callStartTime = new Date();
         
       } catch (error) {
         console.error('خطأ في بدء المكالمة:', error);
@@ -330,7 +606,6 @@
       }
     }
     
-    // بدء العد التنازلي
     function startTimer() {
       timerInterval = setInterval(() => {
         if (!callStartTime) return;
@@ -346,41 +621,61 @@
       }, 1000);
     }
     
-    // إنهاء المكالمة
-    function endCall() {
+    async function endCall() {
+      if (!callActive) {
+        window.history.back();
+        return;
+      }
+      
       clearInterval(timerInterval);
+      callActive = false;
       
-      // حفظ سجل المكالمة
-      saveCallLog();
+      const duration = document.getElementById('timer').textContent;
       
-      showNotification('تم إنهاء المكالمة', 'success');
-      
-      // الرجوع بعد ثانيتين
-      setTimeout(() => {
-        window.location.href = `chat.html?orderId=${orderId}`;
-      }, 2000);
-    }
-    
-    // حفظ سجل المكالمة
-    async function saveCallLog() {
       try {
         const db = firebase.firestore();
-        const duration = document.getElementById('timer').textContent;
         
-        await db.collection('orders').doc(orderId).collection('callLogs').add({
-          type: 'audio',
-          callerId: firebase.auth().currentUser.uid,
-          duration: duration,
-          startedAt: callStartTime,
-          endedAt: new Date(),
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
+        // تحديث سجل المكالمة
+        await db.collection('orders').doc(orderId).collection('callLogs')
+          .where('callerId', '==', currentUser.uid)
+          .where('status', '==', 'started')
+          .orderBy('timestamp', 'desc')
+          .limit(1)
+          .get()
+          .then(async (snapshot) => {
+            if (!snapshot.empty) {
+              const callLogId = snapshot.docs[0].id;
+              await db.collection('orders').doc(orderId).collection('callLogs')
+                .doc(callLogId)
+                .update({
+                  status: 'ended',
+                  duration: duration,
+                  endedAt: new Date()
+                });
+            }
+          });
+          
+        showNotification('تم إنهاء المكالمة', 'success');
+        
+        setTimeout(() => {
+          const userRole = localStorage.getItem('userRole') || 'customer';
+          if (userRole === 'customer') {
+            window.location.href = `customer-dashboard.html`;
+          } else {
+            window.location.href = `driver-dashboard.html`;
+          }
+        }, 1500);
+        
       } catch (error) {
         console.error('خطأ في حفظ سجل المكالمة:', error);
+        showNotification('تم إنهاء المكالمة', 'success');
+        
+        setTimeout(() => {
+          window.history.back();
+        }, 1500);
       }
     }
     
-    // تبديل الكتم
     function toggleMute() {
       isMuted = !isMuted;
       const btn = document.getElementById('muteBtn');
@@ -389,13 +684,14 @@
       if (isMuted) {
         btn.classList.add('active');
         icon.className = 'fas fa-microphone-slash';
+        showNotification('تم كتم الصوت', 'success');
       } else {
         btn.classList.remove('active');
         icon.className = 'fas fa-microphone';
+        showNotification('تم إلغاء كتم الصوت', 'success');
       }
     }
     
-    // تبديل مكبر الصوت
     function toggleSpeaker() {
       isSpeakerOn = !isSpeakerOn;
       const btn = document.getElementById('speakerBtn');
@@ -404,39 +700,56 @@
       if (isSpeakerOn) {
         btn.classList.add('active');
         icon.className = 'fas fa-volume-mute';
+        showNotification('تم تشغيل مكبر الصوت', 'success');
       } else {
         btn.classList.remove('active');
         icon.className = 'fas fa-volume-up';
+        showNotification('تم إيقاف مكبر الصوت', 'success');
       }
     }
     
-    // عرض الإشعار
+    function goBack() {
+      if (callActive) {
+        if (confirm('هل تريد إنهاء المكالمة؟')) {
+          endCall();
+        }
+      } else {
+        window.history.back();
+      }
+    }
+    
     function showNotification(message, type = 'info') {
       const notification = document.getElementById('notification');
       const notificationText = document.getElementById('notificationText');
       
-      if (notificationText) {
-        notificationText.textContent = message;
-      }
-      
-      // إزالة الفئات القديمة
+      notificationText.textContent = message;
       notification.className = 'notification';
       
-      // إضافة فئة النوع
       if (type === 'success') notification.classList.add('success');
       else if (type === 'error') notification.classList.add('error');
       
-      // إظهار الإشعار
       notification.classList.add('show');
       
-      // إخفاء تلقائي بعد 4 ثوانٍ
       setTimeout(() => {
         notification.classList.remove('show');
-      }, 4000);
+      }, 3000);
     }
     
     // إنهاء المكالمة عند إغلاق الصفحة
-    window.addEventListener('beforeunload', endCall);
+    window.addEventListener('beforeunload', (e) => {
+      if (callActive) {
+        e.preventDefault();
+        e.returnValue = 'هل تريد إنهاء المكالمة؟';
+        endCall();
+      }
+    });
+    
+    // منع الخلفية من التحديث عند سحب للأسفل على الهواتف
+    document.addEventListener('touchmove', (e) => {
+      if (e.target === document.body || e.target === document.documentElement) {
+        e.preventDefault();
+      }
+    }, { passive: false });
   </script>
 </body>
 </html>

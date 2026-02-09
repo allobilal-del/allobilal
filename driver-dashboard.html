@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>تسجيل سائق - ALLO BILAL</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -23,10 +23,13 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center;
-      padding: 20px;
+      align-items: flex-start;
+      padding: 12px;
       position: relative;
       overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
     }
     body::before {
       content: "";
@@ -35,30 +38,50 @@
       background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 70%);
       z-index: -1;
     }
+    
+    /* تحسينات الحاوية الرئيسية */
     .container {
       background: rgba(0, 0, 0, 0.35);
       backdrop-filter: blur(12px);
-      border-radius: 28px;
-      padding: 40px 30px;
-      max-width: 550px;
+      border-radius: 18px;
+      padding: 15px 12px;
+      max-width: 480px;
       width: 100%;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
       border: 1px solid rgba(255, 255, 255, 0.15);
       position: relative;
       z-index: 10;
       animation: fadeInUp 0.6s ease-out;
-      margin: 20px;    }
+      margin: 5px 0 10px;
+      max-height: 95vh;
+      display: flex;
+      flex-direction: column;
+    }
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    
+    /* تحسين شريط العنوان */
+    .header-section {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(10px);
+      border-radius: 15px 15px 8px 8px;
+      padding: 10px 12px 8px;
+      margin: -15px -12px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
     .logo-box {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 8px;
     }
     .logo {
-      font-size: 60px;
-      margin-bottom: 15px;
+      font-size: 36px;
+      margin-bottom: 5px;
       animation: pulse 2s infinite;
     }
     @keyframes pulse {
@@ -68,38 +91,78 @@
     }
     .brand {
       font-family: 'Orbitron', sans-serif;
-      font-size: 36px;
+      font-size: 22px;
       font-weight: 800;
       background: linear-gradient(90deg, #ff512f, #dd2476, #24c6dc, #4facfe, #ffd700);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-size: 300% 300%;
       animation: gradientBG 8s ease infinite;
+      margin-bottom: 2px;
+      line-height: 1.2;
     }
     @keyframes gradientBG {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
+    .page-subtitle {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 12px;
+      margin-top: 1px;
+      line-height: 1.3;
+    }
+    
+    /* تحسينات منطقة النموذج */
+    .form-container {
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 0 2px;
+      flex: 1;
+      max-height: calc(95vh - 150px);
+    }
+    
+    .form-section {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .section-title {
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       text-align: right;
     }
     .form-group label {
       display: block;
-      margin-bottom: 10px;
-      font-size: 17px;
+      margin-bottom: 4px;
+      font-size: 12px;
       font-weight: 600;
       color: #fff;
       text-align: right;
+      line-height: 1.3;
     }
     .form-control {
       width: 100%;
-      padding: 16px 20px;
-      border-radius: 16px;      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
       background: rgba(255, 255, 255, 0.1);
       color: #fff;
-      font-size: 17px;
+      font-size: 13px;
       font-family: 'Cairo', sans-serif;
       transition: all 0.3s;
     }
@@ -107,46 +170,64 @@
       outline: none;
       border-color: var(--primary);
       background: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.3);
+      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.3);
     }
     .form-control::placeholder {
       color: rgba(255, 255, 255, 0.5);
+      font-size: 12px;
     }
+    
+    /* تحسينات رفع الملفات */
     .document-upload {
       border: 2px dashed rgba(255, 255, 255, 0.3);
-      border-radius: 16px;
-      padding: 25px;
+      border-radius: 8px;
+      padding: 10px 8px;
       text-align: center;
       background: rgba(255, 255, 255, 0.05);
       cursor: pointer;
       transition: all 0.3s;
-      margin-top: 10px;
+      margin-top: 4px;
+      min-height: 65px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      touch-action: manipulation;
     }
-    .document-upload:hover {
+    .document-upload:active {
       border-color: var(--primary);
       background: rgba(79, 172, 254, 0.1);
     }
     .document-upload i {
-      font-size: 40px;
+      font-size: 22px;
       color: var(--primary);
-      margin-bottom: 10px;
+      margin-bottom: 4px;
     }
     .document-upload p {
       color: rgba(255, 255, 255, 0.8);
-      font-size: 16px;
-      margin-top: 8px;
+      font-size: 11px;
+      margin: 0;
+      line-height: 1.2;
     }
     .document-upload input {
       display: none;
     }
+    
+    /* تحسينات العرض المتعدد للملفات */
+    .uploaded-files-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    
     .uploaded-file {
       background: rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 12px 15px;
-      margin-top: 10px;
-      display: none;
-    }    .uploaded-file.show {
-      display: block;
+      border-radius: 6px;
+      padding: 6px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       animation: fadeIn 0.3s;
     }
     @keyframes fadeIn {
@@ -157,14 +238,35 @@
       color: var(--primary);
       font-weight: 600;
       word-break: break-all;
-      font-size: 15px;
+      font-size: 11px;
+      flex: 1;
     }
+    .file-size {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 10px;
+      margin-right: 5px;
+    }
+    .remove-file {
+      color: var(--danger);
+      background: none;
+      border: none;
+      font-size: 12px;
+      cursor: pointer;
+      padding: 2px 5px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .remove-file:active {
+      background: rgba(239, 68, 68, 0.2);
+    }
+    
+    /* تحسينات الأزرار */
     .btn {
       width: 100%;
-      padding: 18px;
+      padding: 12px;
       border: none;
-      border-radius: 16px;
-      font-size: 20px;
+      border-radius: 10px;
+      font-size: 15px;
       font-weight: 700;
       font-family: 'Cairo', sans-serif;
       cursor: pointer;
@@ -175,7 +277,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 8px;
+      touch-action: manipulation;
     }
     .btn::after {
       content: '';
@@ -186,98 +289,116 @@
       transform: translateX(-100%);
       transition: transform 0.6s;
     }
-    .btn:hover::after { transform: translateX(100%); }
+    .btn:active::after { transform: translateX(100%); }
     .btn-primary {
       background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
       color: var(--dark);
-      box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+      box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
     }
-    .btn-primary:hover {
+    .btn-primary:active {
       transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(79, 172, 254, 0.6);    }
+      box-shadow: 0 6px 16px rgba(79, 172, 254, 0.6);
+    }
     .btn-primary:disabled {
       opacity: 0.7;
       cursor: not-allowed;
       transform: none !important;
     }
+    
+    /* تحسينات الروابط */
     .links {
       display: flex;
-      justify-content: space-between;
-      margin-top: 25px;
-      padding-top: 20px;
+      justify-content: center;
+      margin-top: 12px;
+      padding-top: 12px;
       border-top: 1px solid rgba(255, 255, 255, 0.15);
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 8px;
     }
     .links a {
       color: var(--primary);
       text-decoration: none;
       font-weight: 600;
-      font-size: 17px;
+      font-size: 12px;
       transition: all 0.3s;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
     }
-    .links a:hover { 
+    .links a:active { 
       color: #ffd700; 
       text-decoration: underline;
     }
+    
+    /* تحسينات الإشعارات */
     .notification {
       position: fixed;
-      top: 20px;
+      top: 12px;
       left: 50%;
       transform: translateX(-50%) translateY(-150%);
       background: rgba(40, 40, 60, 0.95);
       color: white;
-      padding: 14px 28px;
+      padding: 8px 16px;
       border-radius: 45px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
       z-index: 10000;
-      font-size: 17px;
+      font-size: 13px;
       font-weight: 600;
-      transition: transform 0.45s ease;
+      transition: transform 0.4s ease;
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.15);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      max-width: 90%;
+      text-align: center;
     }
-    .notification.show {      transform: translateX(-50%) translateY(0);
+    .notification.show {
+      transform: translateX(-50%) translateY(0);
     }
-    .notification.success { background: rgba(34, 197, 94, 0.95); border-color: rgba(34, 197, 94, 0.4); }
-    .notification.error { background: rgba(239, 68, 68, 0.95); border-color: rgba(239, 68, 68, 0.4); }
+    .notification.success { 
+      background: rgba(34, 197, 94, 0.95); 
+      border-color: rgba(34, 197, 94, 0.4); 
+    }
+    .notification.error { 
+      background: rgba(239, 68, 68, 0.95); 
+      border-color: rgba(239, 68, 68, 0.4); 
+    }
+    
+    /* تحسينات أزرار التنقل */
     .back-btn {
-      position: absolute;
-      top: 20px;
-      left: 20px;
+      position: fixed;
+      top: 10px;
+      left: 10px;
       background: rgba(0, 0, 0, 0.4);
       color: white;
       border: none;
-      width: 45px;
-      height: 45px;
+      width: 35px;
+      height: 35px;
       border-radius: 50%;
-      font-size: 20px;
+      font-size: 15px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all 0.3s;
       z-index: 20;
+      touch-action: manipulation;
     }
-    .back-btn:hover {
+    .back-btn:active {
       background: rgba(255, 255, 255, 0.15);
-      transform: scale(1.1);
+      transform: scale(0.95);
     }
+    
     .language-bar {
-      position: absolute;
-      top: 20px;
-      right: 20px;
+      position: fixed;
+      top: 10px;
+      right: 10px;
       display: flex;
-      gap: 6px;
+      gap: 4px;
       background: rgba(0, 0, 0, 0.4);
-      padding: 4px;
-      border-radius: 20px;
+      padding: 3px;
+      border-radius: 18px;
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       z-index: 20;
@@ -287,53 +408,235 @@
       border: none;
       color: rgba(255, 255, 255, 0.7);
       font-family: 'Cairo', sans-serif;
-      font-size: 13px;
+      font-size: 11px;
       cursor: pointer;
-      padding: 4px 10px;
-      border-radius: 12px;
+      padding: 3px 7px;
+      border-radius: 10px;
       transition: all 0.3s;
-      font-weight: 500;    }
-    .lang-btn.active, .lang-btn:hover {
+      font-weight: 500;
+      touch-action: manipulation;
+    }
+    .lang-btn.active, .lang-btn:active {
       color: #fff;
       background: rgba(255, 255, 255, 0.15);
     }
+    
+    /* تحسينات المؤشرات */
     .spinner {
       display: inline-block;
-      margin-left: 10px;
+      margin-left: 6px;
     }
     .spinner i {
-      font-size: 20px;
+      font-size: 14px;
       animation: spin 1s linear infinite;
     }
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-    @media (max-width: 480px) {
-      .container {
-        padding: 30px 20px;
-        margin: 10px;
-        border-radius: 24px;
+    
+    /* شريط التقدم */
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      margin: 8px 0 12px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+    
+    /* تحسينات التمرير */
+    .form-container::-webkit-scrollbar {
+      width: 5px;
+    }
+    .form-container::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+    .form-container::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 10px;
+    }
+    
+    /* تحسينات للهواتف الصغيرة جداً */
+    @media (max-width: 360px) {
+      body {
+        padding: 8px;
       }
-      .logo { font-size: 50px; }
-      .brand { font-size: 30px; }
-      .form-control { padding: 14px 15px; font-size: 16px; }
-      .btn { padding: 16px; font-size: 19px; }
-      .links { flex-direction: column; align-items: center; gap: 10px; }
-      .links a { font-size: 16px; }
-      .back-btn { width: 40px; height: 40px; font-size: 18px; }
-      .language-bar { top: 15px; right: 15px; padding: 3px; }
-      .lang-btn { font-size: 12px; padding: 3px 8px; }
-      .notification { padding: 12px 25px; font-size: 16px; }
-      .uploaded-file-name { font-size: 14px; }
+      .container {
+        padding: 12px 10px;
+        margin: 3px 0 8px;
+        border-radius: 16px;
+      }
+      
+      .header-section {
+        padding: 8px 10px 6px;
+        margin: -12px -10px 10px;
+      }
+      
+      .logo {
+        font-size: 32px;
+      }
+      .brand {
+        font-size: 20px;
+      }
+      .page-subtitle {
+        font-size: 11px;
+      }
+      
+      .form-container {
+        max-height: calc(95vh - 130px);
+      }
+      
+      .section-title {
+        font-size: 13px;
+      }
+      
+      .form-group {
+        margin-bottom: 8px;
+      }
+      .form-group label {
+        font-size: 11px;
+      }
+      .form-control {
+        padding: 9px 10px;
+        font-size: 12px;
+        border-radius: 7px;
+      }
+      
+      .document-upload {
+        padding: 8px 6px;
+        min-height: 60px;
+      }
+      .document-upload i {
+        font-size: 20px;
+      }
+      .document-upload p {
+        font-size: 10px;
+      }
+      
+      .btn {
+        padding: 11px;
+        font-size: 14px;
+        border-radius: 8px;
+      }
+      
+      .links {
+        margin-top: 10px;
+        padding-top: 10px;
+      }
+      .links a {
+        font-size: 11px;
+      }
+      
+      .back-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+        top: 8px;
+        left: 8px;
+      }
+      
+      .language-bar {
+        top: 8px;
+        right: 8px;
+      }
+      .lang-btn {
+        font-size: 10px;
+        padding: 2px 6px;
+      }
+      
+      .notification {
+        padding: 7px 14px;
+        font-size: 12px;
+        top: 10px;
+      }
+      
+      .uploaded-file-name {
+        font-size: 10px;
+      }
+    }
+    
+    /* للوضع الأفقي - تقليل الارتفاع */
+    @media (max-height: 700px) and (orientation: landscape) {
+      .container {
+        max-height: 85vh;
+      }
+      
+      .form-container {
+        max-height: calc(85vh - 130px);
+      }
+      
+      .form-section {
+        padding: 8px;
+        margin-bottom: 8px;
+      }
+      
+      .logo {
+        font-size: 30px;
+      }
+      
+      .brand {
+        font-size: 18px;
+      }
+      
+      .page-subtitle {
+        font-size: 10px;
+      }
+      
+      .form-group {
+        margin-bottom: 7px;
+      }
+      
+      .document-upload {
+        padding: 7px 5px;
+        min-height: 55px;
+      }
+      
+      .btn {
+        padding: 10px;
+        font-size: 13px;
+      }
+    }
+    
+    /* تحسينات للشاشات متوسطة الحجم */
+    @media (min-width: 375px) and (max-width: 414px) {
+      .brand {
+        font-size: 24px;
+      }
+      .page-subtitle {
+        font-size: 13px;
+      }
+    }
+    
+    /* تحسينات للأجهزة اللوحية */
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .container {
+        max-width: 500px;
+        padding: 20px 18px;
+      }
+    }
+    
+    /* منع التمرير الأفقي */
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
     }
   </style>
 </head>
 <body>
   <div class="language-bar">
     <button class="lang-btn active" data-lang="ar" onclick="setLanguage('ar')">العربية</button>
-    <button class="lang-btn" data-lang="fr" onclick="setLanguage('fr')">Français</button>
-    <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">English</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLanguage('fr')">FR</button>
+    <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
   </div>
 
   <button class="back-btn" onclick="window.location.href='index.html'">
@@ -341,90 +644,128 @@
   </button>
   
   <div class="container">
-    <div class="logo-box">      <div class="logo">🏍️</div>
-      <div class="brand" id="pageTitle">حساب سائق جديد</div>
+    <div class="header-section">
+      <div class="logo-box">
+        <div class="logo">🏍️</div>
+        <div class="brand" id="pageTitle">تسجيل سائق</div>
+        <div class="page-subtitle">انضم إلى شبكتنا وابدأ الربح الآن</div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
     </div>
     
-    <form id="registerForm">
-      <div class="form-group">
-        <label for="fullName" id="fullNameLabel">الاسم الكامل</label>
-        <input type="text" id="fullName" class="form-control" placeholder="أدخل اسمك الكامل" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="phone" id="phoneLabel">رقم الهاتف</label>
-        <input type="tel" id="phone" class="form-control" placeholder="06XXXXXXXX أو 07XXXXXXXX" required pattern="^(06|07)\d{8}$">
-      </div>
-      
-      <div class="form-group">
-        <label for="email" id="emailLabel">البريد الإلكتروني</label>
-        <input type="email" id="email" class="form-control" placeholder="example@email.com" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="password" id="passwordLabel">كلمة المرور</label>
-        <input type="password" id="password" class="form-control" placeholder="أدخل كلمة المرور" required minlength="6">
-      </div>
-      
-      <div class="form-group">
-        <label for="confirmPassword" id="confirmPasswordLabel">تأكيد كلمة المرور</label>
-        <input type="password" id="confirmPassword" class="form-control" placeholder="أعد إدخال كلمة المرور" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="vehicleType" id="vehicleTypeLabel">نوع المركبة</label>
-        <select id="vehicleType" class="form-control" required>
-          <option value="">اختر نوع المركبة</option>
-          <option value="motorcycle">دراجة نارية</option>
-          <option value="car">سيارة</option>
-          <option value="truck">شاحنة</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label id="nationalIdLabel">البطاقة الوطنية (صورة)</label>
-        <div class="document-upload" onclick="document.getElementById('nationalId').click()">
-          <i class="fas fa-id-card"></i>
-          <p id="uploadNationalIdText">انقر لرفع صورة البطاقة الوطنية</p>
-          <input type="file" id="nationalId" accept="image/*" required onchange="previewFile(this, 'nationalIdPreview')">
+    <div class="form-container" id="formContainer">
+      <form id="registerForm">
+        <div class="form-section">
+          <div class="section-title">
+            <i class="fas fa-user"></i>
+            <span>المعلومات الشخصية</span>
+          </div>
+          
+          <div class="form-group">
+            <label for="fullName" id="fullNameLabel">الاسم الكامل</label>
+            <input type="text" id="fullName" class="form-control" placeholder="أدخل اسمك الكامل" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="phone" id="phoneLabel">رقم الهاتف</label>
+            <input type="tel" id="phone" class="form-control" placeholder="06XXXXXXXX أو 07XXXXXXXX" required pattern="^(06|07)\d{8}$">
+          </div>
+          
+          <div class="form-group">
+            <label for="email" id="emailLabel">البريد الإلكتروني</label>
+            <input type="email" id="email" class="form-control" placeholder="example@email.com" required>
+          </div>
         </div>
-        <div class="uploaded-file" id="nationalIdPreview"></div>
-      </div>
-            <div class="form-group">
-        <label id="drivingLicenseLabel">رخصة السياقة (صورة)</label>
-        <div class="document-upload" onclick="document.getElementById('drivingLicense').click()">
-          <i class="fas fa-file-contract"></i>
-          <p id="uploadLicenseText">انقر لرفع صورة رخصة السياقة</p>
-          <input type="file" id="drivingLicense" accept="image/*" required onchange="previewFile(this, 'licensePreview')">
+        
+        <div class="form-section">
+          <div class="section-title">
+            <i class="fas fa-lock"></i>
+            <span>كلمة المرور</span>
+          </div>
+          
+          <div class="form-group">
+            <label for="password" id="passwordLabel">كلمة المرور</label>
+            <input type="password" id="password" class="form-control" placeholder="أدخل كلمة المرور" required minlength="6">
+          </div>
+          
+          <div class="form-group">
+            <label for="confirmPassword" id="confirmPasswordLabel">تأكيد كلمة المرور</label>
+            <input type="password" id="confirmPassword" class="form-control" placeholder="أعد إدخال كلمة المرور" required>
+          </div>
         </div>
-        <div class="uploaded-file" id="licensePreview"></div>
-      </div>
-      
-      <div class="form-group">
-        <label id="vehicleRegistrationLabel">بطاقة تسجيل المركبة (صورة)</label>
-        <div class="document-upload" onclick="document.getElementById('vehicleRegistration').click()">
-          <i class="fas fa-car"></i>
-          <p id="uploadRegistrationText">انقر لرفع صورة بطاقة تسجيل المركبة</p>
-          <input type="file" id="vehicleRegistration" accept="image/*" required onchange="previewFile(this, 'registrationPreview')">
+        
+        <div class="form-section">
+          <div class="section-title">
+            <i class="fas fa-car"></i>
+            <span>معلومات المركبة</span>
+          </div>
+          
+          <div class="form-group">
+            <label for="vehicleType" id="vehicleTypeLabel">نوع المركبة</label>
+            <select id="vehicleType" class="form-control" required>
+              <option value="">اختر نوع المركبة</option>
+              <option value="motorcycle">دراجة نارية</option>
+              <option value="car">سيارة</option>
+              <option value="truck">شاحنة</option>
+            </select>
+          </div>
         </div>
-        <div class="uploaded-file" id="registrationPreview"></div>
-      </div>
-      
-      <button type="button" class="btn btn-primary" id="registerBtn" onclick="registerDriver()">
-        <i class="fas fa-user-check"></i>
-        <span id="registerBtnText">تأكيد التسجيل</span>
-        <span class="spinner" id="spinner" style="display:none;">
-          <i class="fas fa-spinner fa-spin"></i>
-        </span>
-      </button>
-      
-      <div class="links">
-        <a href="login.html" id="loginLink">
-          <i class="fas fa-sign-in-alt"></i>
-          <span id="loginLinkText">لديك حساب بالفعل؟ سجل الدخول</span>
-        </a>
-      </div>
-    </form>
+        
+        <div class="form-section">
+          <div class="section-title">
+            <i class="fas fa-file-upload"></i>
+            <span>الوثائق المطلوبة</span>
+          </div>
+          
+          <div class="form-group">
+            <label id="nationalIdLabel">البطاقة الوطنية (صورة)</label>
+            <div class="document-upload" onclick="document.getElementById('nationalId').click()">
+              <i class="fas fa-id-card"></i>
+              <p id="uploadNationalIdText">انقر لرفع صورة البطاقة الوطنية</p>
+              <input type="file" id="nationalId" accept="image/*" required onchange="handleFileUpload(this, 'nationalId')">
+            </div>
+            <div class="uploaded-files-container" id="nationalIdContainer"></div>
+          </div>
+          
+          <div class="form-group">
+            <label id="drivingLicenseLabel">رخصة السياقة (صورة)</label>
+            <div class="document-upload" onclick="document.getElementById('drivingLicense').click()">
+              <i class="fas fa-file-contract"></i>
+              <p id="uploadLicenseText">انقر لرفع صورة رخصة السياقة</p>
+              <input type="file" id="drivingLicense" accept="image/*" required onchange="handleFileUpload(this, 'drivingLicense')">
+            </div>
+            <div class="uploaded-files-container" id="drivingLicenseContainer"></div>
+          </div>
+          
+          <div class="form-group">
+            <label id="vehicleRegistrationLabel">بطاقة تسجيل المركبة (صورة)</label>
+            <div class="document-upload" onclick="document.getElementById('vehicleRegistration').click()">
+              <i class="fas fa-car"></i>
+              <p id="uploadRegistrationText">انقر لرفع صورة بطاقة تسجيل المركبة</p>
+              <input type="file" id="vehicleRegistration" accept="image/*" required onchange="handleFileUpload(this, 'vehicleRegistration')">
+            </div>
+            <div class="uploaded-files-container" id="vehicleRegistrationContainer"></div>
+          </div>
+        </div>
+        
+        <button type="button" class="btn btn-primary" id="registerBtn" onclick="registerDriver()">
+          <i class="fas fa-user-check"></i>
+          <span id="registerBtnText">تأكيد التسجيل</span>
+          <span class="spinner" id="spinner" style="display:none;">
+            <i class="fas fa-spinner fa-spin"></i>
+          </span>
+        </button>
+        
+        <div class="links">
+          <a href="login.html" id="loginLink">
+            <i class="fas fa-sign-in-alt"></i>
+            <span id="loginLinkText">لديك حساب بالفعل؟ سجل الدخول</span>
+          </a>
+        </div>
+      </form>
+    </div>
   </div>
   
   <div class="notification" id="notification">
@@ -432,14 +773,15 @@
     <span id="notificationText">مرحباً بك في ALLO BILAL</span>
   </div>
 
-  <!-- Firebase SDK - بدون integrity لتجنب أخطاء CORS -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
   
   <script>
-    // تهيئة Firebase - تأكد من استخدام معلومات مشروعك الصحيح    const firebaseConfig = {
+    // تهيئة Firebase
+    const firebaseConfig = {
       apiKey: "AIzaSyBPnZzN7DPWRSgiYDAS_bgBqGULL3-MdSU",
       authDomain: "alobilal23.firebaseapp.com",
       projectId: "alobilal23",
@@ -456,7 +798,7 @@
     // نظام اللغات
     const translations = {
       ar: {
-        pageTitle: "حساب سائق جديد",
+        pageTitle: "تسجيل سائق",
         fullNameLabel: "الاسم الكامل",
         phoneLabel: "رقم الهاتف",
         emailLabel: "البريد الإلكتروني",
@@ -488,13 +830,31 @@
         uploadError: "خطأ في رفع المستندات. يرجى المحاولة مرة أخرى",
         networkError: "خطأ في الاتصال بالشبكة. يرجى التحقق من اتصالك بالإنترنت"
       }
-    };    
+    };
+    
+    // تخزين الملفات المرفوعة
+    const uploadedFiles = {
+      nationalId: null,
+      drivingLicense: null,
+      vehicleRegistration: null
+    };
+    
     // تهيئة اللغة
     let currentLang = localStorage.getItem('appLanguage') || 'ar';
     
     // تحميل اللغة عند بدء التشغيل
     document.addEventListener('DOMContentLoaded', () => {
       setLanguage(currentLang, true);
+      
+      // إضافة مستمع للأحداث للمجالات للتأكد من التقدم
+      const formFields = document.querySelectorAll('.form-control, select');
+      formFields.forEach(field => {
+        field.addEventListener('input', updateProgress);
+        field.addEventListener('change', updateProgress);
+      });
+      
+      // تحديث شريط التقدم في البداية
+      updateProgress();
       
       // إشعار ترحيبي
       setTimeout(() => {
@@ -530,16 +890,89 @@
       }
     }
     
-    // معاينة الملفات
-    function previewFile(input, previewId) {
+    // معالجة رفع الملفات
+    function handleFileUpload(input, fileType) {
       const file = input.files[0];
       if (file) {
-        const preview = document.getElementById(previewId);
-        preview.innerHTML = `<div class="uploaded-file-name">${file.name}</div>`;
-        preview.classList.add('show');
-      }    }
+        uploadedFiles[fileType] = file;
+        
+        // التحقق من حجم الملف (5MB كحد أقصى)
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSize) {
+          showNotification("حجم الملف كبير جداً. الحد الأقصى 5MB", "error");
+          input.value = "";
+          uploadedFiles[fileType] = null;
+          return;
+        }
+        
+        // عرض الملف المرفوع
+        displayUploadedFile(file, fileType);
+        updateProgress();
+      }
+    }
     
-    // تسجيل السائق - الإصلاح الكامل مع معالجة جميع الأخطاء
+    // عرض الملف المرفوع
+    function displayUploadedFile(file, fileType) {
+      const containerId = `${fileType}Container`;
+      const container = document.getElementById(containerId);
+      
+      // تنسيق حجم الملف
+      const fileSize = (file.size / (1024 * 1024)).toFixed(2);
+      
+      const fileElement = document.createElement('div');
+      fileElement.className = 'uploaded-file';
+      fileElement.innerHTML = `
+        <div class="uploaded-file-name">${file.name}</div>
+        <div class="file-size">${fileSize} MB</div>
+        <button class="remove-file" onclick="removeFile('${fileType}')">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+      
+      // مسح المحتوى السابق وإضافة الجديد
+      container.innerHTML = '';
+      container.appendChild(fileElement);
+    }
+    
+    // إزالة ملف مرفوع
+    function removeFile(fileType) {
+      const inputId = fileType === 'nationalId' ? 'nationalId' : 
+                     fileType === 'drivingLicense' ? 'drivingLicense' : 
+                     'vehicleRegistration';
+      
+      document.getElementById(inputId).value = "";
+      uploadedFiles[fileType] = null;
+      document.getElementById(`${fileType}Container`).innerHTML = '';
+      updateProgress();
+    }
+    
+    // تحديث شريط التقدم
+    function updateProgress() {
+      let completedFields = 0;
+      const totalFields = 8; // عدد الحقول الإجمالي
+      
+      // الحقول النصية
+      const fields = ['fullName', 'phone', 'email', 'password', 'confirmPassword', 'vehicleType'];
+      fields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field && field.value.trim() !== '') {
+          completedFields++;
+        }
+      });
+      
+      // الملفات
+      Object.values(uploadedFiles).forEach(file => {
+        if (file !== null) {
+          completedFields++;
+        }
+      });
+      
+      // حساب النسبة المئوية
+      const progressPercent = (completedFields / totalFields) * 100;
+      document.getElementById('progressFill').style.width = `${progressPercent}%`;
+    }
+    
+    // تسجيل السائق
     async function registerDriver() {
       const registerBtn = document.getElementById('registerBtn');
       const spinner = document.getElementById('spinner');
@@ -557,9 +990,6 @@
       const password = document.getElementById('password').value;
       const confirmPassword = document.getElementById('confirmPassword').value;
       const vehicleType = document.getElementById('vehicleType').value;
-      const nationalIdFile = document.getElementById('nationalId').files[0];
-      const drivingLicenseFile = document.getElementById('drivingLicense').files[0];
-      const vehicleRegistrationFile = document.getElementById('vehicleRegistration').files[0];
       
       // التحقق من البيانات
       if (fullName.length < 2) {
@@ -586,7 +1016,8 @@
         return;
       }
       
-      if (password !== confirmPassword) {        showError(translations[currentLang].passwordMismatch);
+      if (password !== confirmPassword) {
+        showError(translations[currentLang].passwordMismatch);
         resetButton();
         return;
       }
@@ -597,7 +1028,7 @@
         return;
       }
       
-      if (!nationalIdFile || !drivingLicenseFile || !vehicleRegistrationFile) {
+      if (!uploadedFiles.nationalId || !uploadedFiles.drivingLicense || !uploadedFiles.vehicleRegistration) {
         showError(translations[currentLang].documentError);
         resetButton();
         return;
@@ -615,17 +1046,17 @@
         try {
           // رفع البطاقة الوطنية
           const nationalIdRef = storage.ref(`drivers/${user.uid}/nationalId.jpg`);
-          await nationalIdRef.put(nationalIdFile);
+          await nationalIdRef.put(uploadedFiles.nationalId);
           documents.nationalIdUrl = await nationalIdRef.getDownloadURL();
           
           // رفع رخصة السياقة
           const licenseRef = storage.ref(`drivers/${user.uid}/drivingLicense.jpg`);
-          await licenseRef.put(drivingLicenseFile);
+          await licenseRef.put(uploadedFiles.drivingLicense);
           documents.drivingLicenseUrl = await licenseRef.getDownloadURL();
           
           // رفع بطاقة تسجيل المركبة
           const registrationRef = storage.ref(`drivers/${user.uid}/vehicleRegistration.jpg`);
-          await registrationRef.put(vehicleRegistrationFile);
+          await registrationRef.put(uploadedFiles.vehicleRegistration);
           documents.vehicleRegistrationUrl = await registrationRef.getDownloadURL();
         } catch (storageError) {
           console.error('خطأ في رفع المستندات:', storageError);
@@ -635,7 +1066,8 @@
         }
         
         // حفظ معلومات السائق في Firestore
-        const db = firebase.firestore();        await db.collection('users').doc(user.uid).set({
+        const db = firebase.firestore();
+        await db.collection('users').doc(user.uid).set({
           uid: user.uid,
           name: fullName,
           phone: phone,
@@ -684,7 +1116,8 @@
             });
           }
         }
-      } finally {        resetButton();
+      } finally {
+        resetButton();
       }
     }
     

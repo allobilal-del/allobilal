@@ -1,34 +1,165 @@
 {
   "name": "ALLO BILAL - تطبيق التوصيل",
   "short_name": "ALLO BILAL",
-  "description": "تطبيق توصيل يربط بين الزبائن والسائقين في المغرب",
-  "start_url": "/index.html",
+  "description": "تطبيق توصيل يربط بين الزبائن والسائقين في المغرب - توصيل سريع وآمن",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f2027",
-  "theme_color": "#ffd700",
+  "background_color": "#0f172a",
+  "theme_color": "#4facfe",
   "orientation": "portrait-primary",
+  "scope": "/",
+  "id": "/",
+  "categories": ["utilities", "productivity", "transportation", "shopping"],
+  "lang": "ar",
+  "dir": "rtl",
   "icons": [
     {
-      "src": "/assets/images/icon-192.png",
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/assets/images/icon-512.png",
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
   ],
-  "categories": ["utilities", "productivity", "transportation"],
-  "lang": "ar",
-  "dir": "rtl",
+  "shortcuts": [
+    {
+      "name": "طلب توصيل جديد",
+      "short_name": "طلب جديد",
+      "description": "إنشاء طلب توصيل جديد",
+      "url": "/customer-dashboard.html?action=new-order",
+      "icons": [
+        {
+          "src": "/icons/shortcut-order.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "طلباتي النشطة",
+      "short_name": "طلباتي",
+      "description": "عرض الطلبات النشطة",
+      "url": "/customer-dashboard.html?action=active-orders",
+      "icons": [
+        {
+          "src": "/icons/shortcut-active.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "لوحة السائق",
+      "short_name": "السائق",
+      "description": "لوحة تحكم السائقين",
+      "url": "/driver-dashboard.html",
+      "icons": [
+        {
+          "src": "/icons/shortcut-driver.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
   "screenshots": [
     {
-      "src": "/assets/images/screenshot1.png",
+      "src": "/screenshots/screenshot1.png",
       "sizes": "1280x720",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "صفحة طلب التوصيل"
+    },
+    {
+      "src": "/screenshots/screenshot2.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "تتبع الطلب على الهاتف"
+    }
+  ],
+  "display_override": ["window-controls-overlay", "minimal-ui"],
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "handle_links": "preferred",
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "web+allo-bilal",
+      "url": "/?protocol=%s"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.allobilal.app",
+      "id": "com.allobilal.app"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/us/app/allo-bilal/id123456789"
+    }
+  ],
+  "prefer_related_applications": false,
+  "features": [
+    "cross-origin-isolated",
+    "geolocation",
+    "microphone",
+    "camera",
+    "web-share",
+    "payment"
+  ],
+  "share_target": {
+    "action": "/share.html",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "file_handlers": [
+    {
+      "action": "/upload.html",
+      "accept": {
+        "image/*": [".jpg", ".jpeg", ".png", ".gif"]
+      }
     }
   ]
 }

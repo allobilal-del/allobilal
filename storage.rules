@@ -3,8 +3,7 @@ service firebase.storage {
   match /b/{bucket}/o {
     // السماح بالوصول فقط للمستخدمين المسجلين دخولهم
     match /{allPaths=**} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null;
+      allow read, write: if request.auth != null;
     }
     
     // قواعد خاصة لمستندات السائقين
@@ -12,21 +11,16 @@ service firebase.storage {
       allow read: if request.auth != null;
       allow write: if request.auth != null && 
         request.auth.uid == driverId &&
-        request.resource.size < 5 * 1024 * 1024; // 5 ميجابايت كحد أقصى
+        request.resource.size < 5 * 1024 * 1024 && // 5 ميجابايت كحد أقصى
+        request.resource.contentType.matches('image/.*'); // صور فقط
     }
     
-    // قواعد خاصة للرسائل والصور في الدردشة
-    match /orders/{orderId}/messages/{fileName} {
+    // قواعد خاصة للرسائل في الدردشة
+    match /orders/{orderId}/{folder}/{messageId} {
       allow read: if request.auth != null;
       allow write: if request.auth != null &&
-        request.resource.size < 10 * 1024 * 1024; // 10 ميجابايت كحد أقصى
-    }
-    
-    // قواعد خاصة للرسائل الصوتية
-    match /orders/{orderId}/audio/{fileName} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null &&
-        request.resource.size < 15 * 1024 * 1024; // 15 ميجابايت كحد أقصى
+        (request.resource == null || request.resource.size < 10 * 1024 * 1024) && // 10 ميجابايت كحد أقصى
+        (folder != 'audio' || (request.resource != null && request.resource.size < 15 * 1024 * 1024)); // 15 ميجابايت للصوتيات
     }
   }
 }
