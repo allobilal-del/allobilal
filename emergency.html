@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الطوارئ - ALLO BILAL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #dc2626 0%, #b91c1c 50%, #991b1b 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    body::before {
+      content: "";
+      position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 70%);
+      z-index: -1;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(15px);
+      border-radius: 30px;
+      padding: 50px;
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      z-index: 10;
+      animation: fadeIn 0.8s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .alert-icon {
+      font-size: 100px;
+      color: #ef4444;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    .title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      color: #ef4444;
+      margin-bottom: 20px;
+      text-shadow: 0 0 20px rgba(239, 68, 68, 0.7);
+    }
+    .subtitle {
+      font-size: 22px;
+      color: white;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+    .emergency-btns {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+    .emergency-btn {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 25px;
+      border-radius: 20px;
+      font-size: 36px;
+      font-weight: 800;
+      font-family: 'Orbitron', sans-serif;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    .emergency-btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 15px 40px rgba(239, 68, 68, 0.7);
+    }
+    .emergency-btn:active {
+      transform: translateY(0);
+    }
+    .emergency-btn.police {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+    .emergency-btn.ambulance {
+      background: linear-gradient(135deg, #10b981, #059669);
+    }
+    .emergency-btn.fire {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+    }
+    .info-box {
+      background: rgba(255, 255, 255, 0.1);
+      border-left: 4px solid #ef4444;
+      padding: 25px;
+      border-radius: 15px;
+      margin-top: 30px;
+    }
+    .info-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 15px;
+    }
+    .info-text {
+      font-size: 17px;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.7;
+    }
+    .back-btn {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 20;
+    }
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
+    @media (max-width: 480px) {
+      .container { padding: 30px 20px; }
+      .alert-icon { font-size: 70px; }
+      .title { font-size: 32px; }
+      .subtitle { font-size: 18px; }
+      .emergency-btn { padding: 20px; font-size: 32px; }
+      .info-box { padding: 20px; }
+      .info-title { font-size: 18px; }
+      .info-text { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="back-btn" onclick="window.history.back()">
+    <i class="fas fa-arrow-right"></i>
+  </button>
+  
+  <div class="container">
+    <div class="alert-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    
+    <h1 class="title">الطوارئ</h1>
+    <p class="subtitle">في حالة الطوارئ، اتصل فوراً بأقرب جهة مختصة. سلامتك هي أولويتنا.</p>
+    
+    <div class="emergency-btns">
+      <button class="emergency-btn" onclick="callEmergency('119')">
+        <i class="fas fa-phone-alt"></i>
+        119
+      </button>
+      <button class="emergency-btn police" onclick="callEmergency('19')">
+        <i class="fas fa-shield-alt"></i>
+        19 (الشرطة)
+      </button>
+      <button class="emergency-btn ambulance" onclick="callEmergency('15')">
+        <i class="fas fa-ambulance"></i>
+        15 (الإسعاف)
+      </button>
+      <button class="emergency-btn fire" onclick="callEmergency('150')">
+        <i class="fas fa-fire-extinguisher"></i>
+        150 (الإطفاء)
+      </button>
+    </div>
+    
+    <div class="info-box">
+      <div class="info-title">تعليمات هامة:</div>
+      <div class="info-text">
+        <p>• حافظ على هدوئك وتحدث بوضوح</p>
+        <p>• أخبرهم بموقعك الدقيق</p>
+        <p>• صف الحالة بدقة ووضوح</p>
+        <p>• لا تغلق الخط حتى يطلب منك ذلك</p>
+        <p>• إذا كنت في خطر، ابحث عن مكان آمن أولاً</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function callEmergency(number) {
+      if (confirm(`هل تريد الاتصال برقم الطوارئ ${number}؟`)) {
+        // في تطبيق حقيقي، سيتم فتح تطبيق الهاتف
+        alert(`سيتم الاتصال برقم ${number}...`);
+        
+        // إرسال تنبيه للمشرف في حالة الطوارئ
+        sendEmergencyAlert(number);
+        
+        // العودة للصفحة السابقة بعد 3 ثوانٍ
+        setTimeout(() => {
+          window.history.back();
+        }, 3000);
+      }
+    }
+    
+    function sendEmergencyAlert(number) {
+      // هنا يتم إرسال تنبيه للمشرف في لوحة التحكم
+      console.log(`تنبيه طوارئ: تم الاتصال برقم ${number}`);
+      
+      // يمكن إضافة إرسال إشعار للمشرف عبر Firebase
+    }
+  </script>
+</body>
+</html>

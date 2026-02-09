@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة تحكم السائق - ALLO BILAL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    /* الأنماط السابقة مع إضافة دائرة التحميل */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      color: #fff;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    /* ... باقي الأنماط ... */
+    
+    /* دائرة التحميل الأنيقة */
+    .searching-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(30, 41, 59, 0.95);
+      backdrop-filter: blur(15px);
+      border-radius: 25px;
+      padding: 40px;
+      text-align: center;
+      z-index: 10000;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(79, 172, 254, 0.4);
+      display: none;
+    }
+    
+    .searching-container.active {
+      display: block;
+      animation: fadeInScale 0.5s ease-out;
+    }
+    
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+    
+    .searching-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 25px;
+      position: relative;
+    }
+    
+    .searching-icon::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 8px solid rgba(79, 172, 254, 0.3);
+      border-radius: 50%;
+      animation: pulseRing 2s infinite;
+    }
+    
+    .searching-icon::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(79, 172, 254, 0.7);
+      animation: pulseDot 2s infinite;
+    }
+    
+    @keyframes pulseRing {
+      0% {
+        transform: scale(0.8);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1.5);
+        opacity: 0;
+      }
+    }
+    
+    @keyframes pulseDot {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.1); }
+    }
+    
+    .searching-title {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, #4facfe, #00f2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .searching-text {
+      font-size: 19px;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
+    
+    .searching-stats {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 20px;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 32px;
+      font-weight: 800;
+      color: #4facfe;
+    }
+    
+    .stat-label {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .cancel-search-btn {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: none;
+      padding: 12px 35px;
+      border-radius: 20px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .cancel-search-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+    
+    @media (max-width: 480px) {
+      .searching-container { padding: 30px 20px; }
+      .searching-icon { width: 60px; height: 60px; }
+      .searching-icon::after { width: 30px; height: 30px; }
+      .searching-title { font-size: 24px; }
+      .searching-text { font-size: 17px; }
+      .stat-value { font-size: 28px; }
+      .stat-label { font-size: 14px; }
+      .searching-stats { flex-direction: column; gap: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- زر الطوارئ 119 -->
+  <button class="emergency-btn" onclick="window.location.href='emergency.html'" style="position: fixed; bottom: 30px; left: 30px; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5); border: none; cursor: pointer; z-index: 1000; animation: pulse 2s infinite; transition: all 0.3s ease;">
+    119
+  </button>
+  
+  <!-- دائرة التحميل الأنيقة -->
+  <div class="searching-container" id="searchingContainer">
+    <div class="searching-icon"></div>
+    <div class="searching-title">جاري البحث عن الطلبات</div>
+    <div class="searching-text">
+      <p>نبحث عن أفضل الطلبات المناسبة لك</p>
+      <p>يرجى الانتظار، سيتم إعلامك فور توفر طلب</p>
+    </div>
+    
+    <div class="searching-stats">
+      <div class="stat-item">
+        <div class="stat-value" id="activeDrivers">125</div>
+        <div class="stat-label">سائق نشط</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="availableOrders">18</div>
+        <div class="stat-label">طلب متاح</div>
+      </div>
+    </div>
+    
+    <button class="cancel-search-btn" onclick="toggleSearchMode()">
+      <i class="fas fa-times"></i> إيقاف البحث
+    </button>
+  </div>
+  
+  <!-- باقي محتوى الصفحة كما هو -->
+  <header class="header">
+    <div class="logo">ALLO BILAL</div>
+    <div class="user-info">
+      <div class="user-avatar" id="userAvatar">س</div>
+      <span id="userName">السائق</span>
+      <button class="nav-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> خروج
+      </button>
+    </div>
+  </header>
+  
+  <!-- ... باقي محتوى الصفحة ... -->
+  
+  <script>
+    // متغيرات البحث
+    let isSearching = false;
+    let searchInterval = null;
+    
+    // تهيئة التطبيق
+    document.addEventListener('DOMContentLoaded', async () => {
+      // ... الكود السابق ...
+      
+      // بدء وضع البحث تلقائياً عند التحميل
+      toggleSearchMode();
+    });
+    
+    // تبديل وضع البحث
+    function toggleSearchMode() {
+      const container = document.getElementById('searchingContainer');
+      
+      if (isSearching) {
+        // إيقاف البحث
+        clearInterval(searchInterval);
+        container.classList.remove('active');
+        isSearching = false;
+        
+        // تحديث واجهة المستخدم
+        document.querySelector('.nav-btn').innerHTML = '<i class="fas fa-play"></i> بدء البحث';
+      } else {
+        // بدء البحث
+        container.classList.add('active');
+        isSearching = true;
+        
+        // تحديث إحصائيات البحث كل 5 ثوانٍ
+        updateSearchStats();
+        searchInterval = setInterval(updateSearchStats, 5000);
+        
+        // تحديث واجهة المستخدم
+        document.querySelector('.nav-btn').innerHTML = '<i class="fas fa-stop"></i> إيقاف البحث';
+      }
+    }
+    
+    // تحديث إحصائيات البحث
+    function updateSearchStats() {
+      // في تطبيق حقيقي، سيتم جلب البيانات من قاعدة البيانات
+      const driversCount = Math.floor(Math.random() * 50) + 100;
+      const ordersCount = Math.floor(Math.random() * 20) + 10;
+      
+      document.getElementById('activeDrivers').textContent = driversCount;
+      document.getElementById('availableOrders').textContent = ordersCount;
+    }
+    
+    // ... باقي الوظائف ...
+  </script>
+</body>
+</html>

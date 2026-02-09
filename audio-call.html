@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مكالمة صوتية - ALLO BILAL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      color: #fff;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+    body::before {
+      content: "";
+      position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 70%);
+      z-index: -1;
+    }
+    .call-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .call-info {
+      text-align: center;
+      margin-bottom: 40px;
+      max-width: 500px;
+      width: 100%;
+    }
+    .other-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0a1929;
+      font-weight: 800;
+      font-size: 48px;
+      margin: 0 auto 20px;
+      box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4); }
+      50% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(79, 172, 254, 0.6); }
+      100% { transform: scale(1); box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4); }
+    }
+    .other-name {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #4facfe, #00f2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .call-status {
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+    .timer {
+      font-size: 28px;
+      font-weight: 700;
+      color: #ffd700;
+      background: rgba(255, 215, 0, 0.15);
+      padding: 10px 20px;
+      border-radius: 12px;
+      display: inline-block;
+      margin-top: 10px;
+    }
+    .controls {
+      display: flex;
+      gap: 25px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .control-btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      transition: all 0.3s;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    .control-btn:hover {
+      transform: scale(1.1);
+    }
+    .control-btn:active {
+      transform: scale(0.95);
+    }
+    .btn-mute {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+    }
+    .btn-mute.active {
+      background: #ef4444;
+      color: white;
+      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+    }
+    .btn-speaker {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+    }
+    .btn-speaker.active {
+      background: #10b981;
+      color: white;
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+    }
+    .btn-end {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+      width: 90px;
+      height: 90px;
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5);
+    }
+    .btn-end:hover {
+      box-shadow: 0 12px 35px rgba(239, 68, 68, 0.7);
+      transform: scale(1.12);
+    }
+    
+    /* زر الطوارئ */
+    .emergency-btn {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5);
+      border: none;
+      cursor: pointer;
+      z-index: 1000;
+      animation: pulse 2s infinite;
+      transition: all 0.3s ease;
+    }
+    .emergency-btn:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 12px 35px rgba(239, 68, 68, 0.7);
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-150%);
+      background: rgba(40, 40, 60, 0.95);
+      color: white;
+      padding: 14px 28px;
+      border-radius: 45px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+      z-index: 10000;
+      font-size: 17px;
+      font-weight: 600;
+      transition: transform 0.45s ease;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .notification.show {
+      transform: translateX(-50%) translateY(0);
+    }
+    .notification.success { background: rgba(34, 197, 94, 0.95); border-color: rgba(34, 197, 94, 0.4); }
+    .notification.error { background: rgba(239, 68, 68, 0.95); border-color: rgba(239, 68, 68, 0.4); }
+    @media (max-width: 480px) {
+      .call-info { margin-bottom: 30px; }
+      .other-avatar { width: 100px; height: 100px; font-size: 40px; }
+      .other-name { font-size: 28px; }
+      .call-status { font-size: 18px; }
+      .timer { font-size: 24px; padding: 8px 16px; }
+      .controls { gap: 15px; margin-top: 25px; }
+      .control-btn { width: 70px; height: 70px; font-size: 28px; }
+      .btn-end { width: 80px; height: 80px; }
+      .notification { padding: 12px 25px; font-size: 16px; }
+      .emergency-btn { width: 60px; height: 60px; font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- زر الطوارئ 119 -->
+  <button class="emergency-btn" onclick="window.location.href='emergency.html'">
+    119
+  </button>
+  
+  <div class="call-container">
+    <div class="call-info">
+      <div class="other-avatar" id="otherAvatar">س</div>
+      <div class="other-name" id="otherName">جاري الاتصال...</div>
+      <div class="call-status" id="callStatus">جاري الاتصال <span class="connecting">...</span></div>
+      <div class="timer" id="timer">00:00</div>
+    </div>
+    
+    <div class="controls">
+      <button class="control-btn btn-mute" id="muteBtn" onclick="toggleMute()">
+        <i class="fas fa-microphone"></i>
+      </button>
+      <button class="control-btn btn-speaker" id="speakerBtn" onclick="toggleSpeaker()">
+        <i class="fas fa-volume-up"></i>
+      </button>
+      <button class="control-btn btn-end" onclick="endCall()">
+        <i class="fas fa-phone-slash"></i>
+      </button>
+    </div>
+  </div>
+  
+  <div class="notification" id="notification">
+    <i class="fas fa-bell"></i>
+    <span id="notificationText">جاري بدء المكالمة...</span>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  
+  <script>
+    // تهيئة Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBPnZzN7DPWRSgiYDAS_bgBqGULL3-MdSU",
+      authDomain: "alobilal23.firebaseapp.com",
+      projectId: "alobilal23",
+      storageBucket: "alobilal23.firebasestorage.app",
+      messagingSenderId: "989762991926",
+      appId: "1:989762991926:web:822e72a777192f614ae597"
+    };
+    
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    
+    let orderId = null;
+    let callStartTime = null;
+    let timerInterval = null;
+    let isMuted = false;
+    let isSpeakerOn = false;
+    
+    // تهيئة التطبيق
+    document.addEventListener('DOMContentLoaded', async () => {
+      // الحصول على معرف الطلب من URL
+      const urlParams = new URLSearchParams(window.location.search);
+      orderId = urlParams.get('orderId');
+      
+      if (!orderId) {
+        showNotification('لم يتم العثور على معرف الطلب', 'error');
+        setTimeout(() => {
+          window.location.href = 'customer-dashboard.html';
+        }, 2000);
+        return;
+      }
+      
+      // بدء المكالمة
+      startCall();
+      
+      // بدء العد التنازلي
+      startTimer();
+      
+      // إشعار ترحيبي
+      setTimeout(() => {
+        showNotification('تم الاتصال بنجاح!', 'success');
+      }, 1500);
+    });
+    
+    // بدء المكالمة
+    async function startCall() {
+      try {
+        const db = firebase.firestore();
+        const orderDoc = await db.collection('orders').doc(orderId).get();
+        
+        if (orderDoc.exists) {
+          const order = orderDoc.data();
+          
+          // تحميل معلومات الطرف الآخر
+          let otherUserId;
+          if (firebase.auth().currentUser.uid === order.customerId) {
+            otherUserId = order.driverId;
+          } else {
+            otherUserId = order.customerId;
+          }
+          
+          if (otherUserId) {
+            const otherDoc = await db.collection('users').doc(otherUserId).get();
+            if (otherDoc.exists) {
+              const otherData = otherDoc.data();
+              document.getElementById('otherName').textContent = otherData.name || otherData.fullName || 'الطرف الآخر';
+              
+              // تحديث الأفاتار
+              const initials = (otherData.name || otherData.fullName || 'س').charAt(0);
+              document.getElementById('otherAvatar').textContent = initials.toUpperCase();
+            }
+          }
+        }
+        
+        // عرض رسالة نجاح
+        showNotification('تم الاتصال بنجاح!', 'success');
+        document.getElementById('callStatus').textContent = 'متصل الآن';
+        
+        // تسجيل وقت بدء المكالمة
+        callStartTime = new Date();
+        
+      } catch (error) {
+        console.error('خطأ في بدء المكالمة:', error);
+        showNotification('حدث خطأ في بدء المكالمة', 'error');
+      }
+    }
+    
+    // بدء العد التنازلي
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        if (!callStartTime) return;
+        
+        const now = new Date();
+        const diff = Math.floor((now - callStartTime) / 1000);
+        
+        const minutes = Math.floor(diff / 60);
+        const seconds = diff % 60;
+        
+        document.getElementById('timer').textContent = 
+          `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }, 1000);
+    }
+    
+    // إنهاء المكالمة
+    function endCall() {
+      clearInterval(timerInterval);
+      
+      // حفظ سجل المكالمة
+      saveCallLog();
+      
+      showNotification('تم إنهاء المكالمة', 'success');
+      
+      // الرجوع بعد ثانيتين
+      setTimeout(() => {
+        window.location.href = `chat.html?orderId=${orderId}`;
+      }, 2000);
+    }
+    
+    // حفظ سجل المكالمة
+    async function saveCallLog() {
+      try {
+        const db = firebase.firestore();
+        const duration = document.getElementById('timer').textContent;
+        
+        await db.collection('orders').doc(orderId).collection('callLogs').add({
+          type: 'audio',
+          callerId: firebase.auth().currentUser.uid,
+          duration: duration,
+          startedAt: callStartTime,
+          endedAt: new Date(),
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      } catch (error) {
+        console.error('خطأ في حفظ سجل المكالمة:', error);
+      }
+    }
+    
+    // تبديل الكتم
+    function toggleMute() {
+      isMuted = !isMuted;
+      const btn = document.getElementById('muteBtn');
+      const icon = btn.querySelector('i');
+      
+      if (isMuted) {
+        btn.classList.add('active');
+        icon.className = 'fas fa-microphone-slash';
+      } else {
+        btn.classList.remove('active');
+        icon.className = 'fas fa-microphone';
+      }
+    }
+    
+    // تبديل مكبر الصوت
+    function toggleSpeaker() {
+      isSpeakerOn = !isSpeakerOn;
+      const btn = document.getElementById('speakerBtn');
+      const icon = btn.querySelector('i');
+      
+      if (isSpeakerOn) {
+        btn.classList.add('active');
+        icon.className = 'fas fa-volume-mute';
+      } else {
+        btn.classList.remove('active');
+        icon.className = 'fas fa-volume-up';
+      }
+    }
+    
+    // عرض الإشعار
+    function showNotification(message, type = 'info') {
+      const notification = document.getElementById('notification');
+      const notificationText = document.getElementById('notificationText');
+      
+      if (notificationText) {
+        notificationText.textContent = message;
+      }
+      
+      // إزالة الفئات القديمة
+      notification.className = 'notification';
+      
+      // إضافة فئة النوع
+      if (type === 'success') notification.classList.add('success');
+      else if (type === 'error') notification.classList.add('error');
+      
+      // إظهار الإشعار
+      notification.classList.add('show');
+      
+      // إخفاء تلقائي بعد 4 ثوانٍ
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 4000);
+    }
+    
+    // إنهاء المكالمة عند إغلاق الصفحة
+    window.addEventListener('beforeunload', endCall);
+  </script>
+</body>
+</html>

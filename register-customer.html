@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ALLO BILAL - إنشاء حساب زبون جديد">
+  <title>إنشاء حساب زبون - ALLO BILAL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome - الرابط المبسط الذي يعمل دائماً -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    body::before {
+      content: "";
+      position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 70%);
+      z-index: -1;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(12px);
+      border-radius: 28px;
+      padding: 50px 40px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      position: relative;
+      z-index: 10;
+      animation: fadeInUp 0.6s ease-out;
+      margin: 20px;
+      min-height: 550px;
+      display: flex;
+      flex-direction: column;
+    }    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .logo-box {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+    .logo {
+      font-size: 72px;
+      margin-bottom: 15px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .brand {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #ff512f, #dd2476, #24c6dc, #4facfe, #ffd700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 300% 300%;
+      animation: gradientBG 8s ease infinite;
+      letter-spacing: -1px;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .form-group {
+      margin-bottom: 25px;
+      text-align: right;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 19px;
+      font-weight: 600;
+      color: #fff;
+      text-align: right;
+    }
+    .form-control {
+      width: 100%;
+      padding: 18px 20px;
+      border-radius: 16px;      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 18px;
+      font-family: 'Cairo', sans-serif;
+      transition: all 0.3s;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: #4facfe;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.3);
+    }
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+    .btn {
+      width: 100%;
+      padding: 18px;
+      border: none;
+      border-radius: 16px;
+      font-size: 20px;
+      font-weight: 700;
+      font-family: 'Cairo', sans-serif;
+      cursor: pointer;
+      transition: all 0.4s;
+      margin-top: 10px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, rgba(255,255,255,0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+    .btn:hover::after { transform: translateX(100%); }
+    .btn-primary {
+      background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+      color: #0a1929;
+      box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+    }
+    .btn-primary:hover {      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(79, 172, 254, 0.6);
+    }
+    .btn-primary:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    .links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      padding-top: 25px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .links a {
+      color: #4facfe;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 18px;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .links a:hover { 
+      color: #ffd700; 
+      text-decoration: underline;
+      transform: translateX(3px);
+    }
+    .notification {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-150%);
+      background: rgba(40, 40, 60, 0.95);
+      color: white;
+      padding: 16px 35px;
+      border-radius: 50px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+      z-index: 10000;
+      font-size: 19px;
+      font-weight: 600;
+      transition: transform 0.45s ease;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;      gap: 12px;
+    }
+    .notification.show {
+      transform: translateX(-50%) translateY(0);
+    }
+    .notification.success { background: rgba(34, 197, 94, 0.95); border-color: rgba(34, 197, 94, 0.4); }
+    .notification.error { background: rgba(239, 68, 68, 0.95); border-color: rgba(239, 68, 68, 0.4); }
+    .back-btn {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      background: rgba(0, 0, 0, 0.4);
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      z-index: 20;
+    }
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: scale(1.1);
+    }
+    .language-bar {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      display: flex;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px;
+      border-radius: 25px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 20;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-family: 'Cairo', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 6px 12px;      border-radius: 15px;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    .lang-btn.active, .lang-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .spinner {
+      display: inline-block;
+      margin-left: 10px;
+    }
+    .spinner i {
+      font-size: 20px;
+    }
+    
+    /* زر الطوارئ */
+    .emergency-btn {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5);
+      border: none;
+      cursor: pointer;
+      z-index: 1000;
+      animation: pulse 2s infinite;
+      transition: all 0.3s ease;
+    }
+    .emergency-btn:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 12px 35px rgba(239, 68, 68, 0.7);
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    
+    @media (max-height: 700px) {
+      .container {        padding: 35px 30px;
+        min-height: auto;
+        margin: 15px;
+      }
+      .logo {
+        font-size: 60px;
+      }
+      .brand {
+        font-size: 36px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-control {
+        padding: 16px 15px;
+        font-size: 17px;
+      }
+      .btn {
+        padding: 16px;
+        font-size: 19px;
+      }
+      .links {
+        margin-top: 25px;
+        padding-top: 20px;
+        font-size: 17px;
+      }
+      .back-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 22px;
+      }
+      .language-bar {
+        top: 15px;
+        right: 15px;
+        padding: 4px;
+      }
+      .lang-btn {
+        font-size: 13px;
+        padding: 5px 10px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 40px 30px;
+        margin: 10px;
+        border-radius: 24px;
+        min-height: 520px;
+      }
+      .logo {        font-size: 60px;
+      }
+      .brand {
+        font-size: 36px;
+      }
+      .form-control {
+        padding: 16px 15px;
+        font-size: 17px;
+      }
+      .btn {
+        padding: 16px;
+        font-size: 19px;
+      }
+      .links {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+      .links a {
+        font-size: 17px;
+      }
+      .back-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 22px;
+      }
+      .language-bar {
+        top: 15px;
+        right: 15px;
+        padding: 4px;
+      }
+      .lang-btn {
+        font-size: 13px;
+        padding: 5px 10px;
+      }
+      .notification {
+        padding: 14px 28px;
+        font-size: 17px;
+      }
+      .emergency-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- زر الطوارئ 119 -->
+  <button class="emergency-btn" onclick="window.location.href='emergency.html'">    119
+  </button>
+  
+  <!-- شريط اختيار اللغة -->
+  <div class="language-bar" id="languageBar">
+    <button class="lang-btn active" data-lang="ar" onclick="setLanguage('ar')">العربية</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLanguage('fr')">Français</button>
+    <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">English</button>
+    <button class="lang-btn" data-lang="es" onclick="setLanguage('es')">Español</button>
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='index.html'">
+    <i class="fas fa-arrow-right"></i>
+  </button>
+  
+  <div class="container">
+    <div class="logo-box">
+      <div class="logo">👤</div>
+      <div class="brand" id="pageTitle">حساب زبون جديد</div>
+    </div>
+    
+    <form id="registerForm" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+      <div class="form-group">
+        <label for="fullName" id="fullNameLabel">الاسم الكامل</label>
+        <input type="text" id="fullName" class="form-control" placeholder="أدخل اسمك الكامل" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="phone" id="phoneLabel">رقم الهاتف</label>
+        <input type="tel" id="phone" class="form-control" placeholder="06XXXXXXXX أو 07XXXXXXXX" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="email" id="emailLabel">البريد الإلكتروني</label>
+        <input type="email" id="email" class="form-control" placeholder="example@email.com" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="password" id="passwordLabel">كلمة المرور</label>
+        <input type="password" id="password" class="form-control" placeholder="أدخل كلمة المرور" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="confirmPassword" id="confirmPasswordLabel">تأكيد كلمة المرور</label>
+        <input type="password" id="confirmPassword" class="form-control" placeholder="أعد إدخال كلمة المرور" required>
+      </div>
+      
+      <button type="submit" class="btn btn-primary" id="registerBtn" onclick="registerCustomer()">
+        <i class="fas fa-user-plus"></i>
+        <span id="registerBtnText">إنشاء الحساب</span>        <span class="spinner" id="spinner" style="display:none;">
+          <i class="fas fa-spinner fa-spin"></i>
+        </span>
+      </button>
+      
+      <div class="links">
+        <a href="login.html" id="loginLink">
+          <i class="fas fa-sign-in-alt"></i>
+          <span id="loginLinkText">لديك حساب بالفعل؟ سجل الدخول</span>
+        </a>
+      </div>
+    </form>
+  </div>
+  
+  <div class="notification" id="notification">
+    <i class="fas fa-bell"></i>
+    <span id="notificationText">مرحباً بك في ALLO BILAL</span>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  
+  <script>
+    // تهيئة Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBPnZzN7DPWRSgiYDAS_bgBqGULL3-MdSU",
+      authDomain: "alobilal23.firebaseapp.com",
+      projectId: "alobilal23",
+      storageBucket: "alobilal23.firebasestorage.app",
+      messagingSenderId: "989762991926",
+      appId: "1:989762991926:web:822e72a777192f614ae597"
+    };
+    
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    
+    // نظام اللغات الكامل
+    const translations = {
+      ar: {
+        pageTitle: "حساب زبون جديد",
+        fullNameLabel: "الاسم الكامل",
+        phoneLabel: "رقم الهاتف",
+        emailLabel: "البريد الإلكتروني",
+        passwordLabel: "كلمة المرور",
+        confirmPasswordLabel: "تأكيد كلمة المرور",
+        registerBtnText: "إنشاء الحساب",
+        loginLinkText: "لديك حساب بالفعل؟ سجل الدخول",        notificationText: "مرحباً بك في ALLO BILAL",
+        successNotification: "تم تغيير اللغة إلى العربية",
+        fullNameError: "الاسم يجب أن يكون أكثر من حرفين",
+        phoneError: "رقم الهاتف غير صحيح (يجب أن يبدأ بـ 06 أو 07)",
+        emailError: "البريد الإلكتروني غير صحيح",
+        passwordError: "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+        passwordMismatch: "كلمتا المرور غير متطابقتين",
+        registrationSuccess: "تم إنشاء الحساب بنجاح! سيتم توجيهك إلى لوحة التحكم...",
+        registrationError: "حدث خطأ في التسجيل",
+        emailInUse: "هذا البريد الإلكتروني مستخدم مسبقاً",
+        weakPassword: "كلمة المرور ضعيفة جداً (6 أحرف على الأقل)",
+        invalidEmail: "البريد الإلكتروني غير صحيح"
+      },
+      fr: {
+        pageTitle: "Nouveau compte client",
+        fullNameLabel: "Nom complet",
+        phoneLabel: "Numéro de téléphone",
+        emailLabel: "Email",
+        passwordLabel: "Mot de passe",
+        confirmPasswordLabel: "Confirmer le mot de passe",
+        registerBtnText: "Créer le compte",
+        loginLinkText: "Vous avez déjà un compte ? Connectez-vous",
+        notificationText: "Bienvenue sur ALLO BILAL",
+        successNotification: "Langue changée en français",
+        fullNameError: "Le nom doit comporter plus de deux caractères",
+        phoneError: "Numéro de téléphone incorrect (doit commencer par 06 ou 07)",
+        emailError: "Email incorrect",
+        passwordError: "Le mot de passe doit comporter au moins 6 caractères",
+        passwordMismatch: "Les mots de passe ne correspondent pas",
+        registrationSuccess: "Compte créé avec succès ! Vous serez redirigé vers le tableau de bord...",
+        registrationError: "Erreur lors de l'inscription",
+        emailInUse: "Cet email est déjà utilisé",
+        weakPassword: "Mot de passe trop faible (au moins 6 caractères)",
+        invalidEmail: "Email incorrect"
+      },
+      en: {
+        pageTitle: "New Customer Account",
+        fullNameLabel: "Full Name",
+        phoneLabel: "Phone Number",
+        emailLabel: "Email",
+        passwordLabel: "Password",
+        confirmPasswordLabel: "Confirm Password",
+        registerBtnText: "Create Account",
+        loginLinkText: "Already have an account? Login",
+        notificationText: "Welcome to ALLO BILAL",
+        successNotification: "Language changed to English",
+        fullNameError: "Name must be more than two characters",
+        phoneError: "Incorrect phone number (must start with 06 or 07)",
+        emailError: "Incorrect email",
+        passwordError: "Password must be at least 6 characters",        passwordMismatch: "Passwords do not match",
+        registrationSuccess: "Account created successfully! You will be redirected to the dashboard...",
+        registrationError: "Error during registration",
+        emailInUse: "This email is already in use",
+        weakPassword: "Password too weak (at least 6 characters)",
+        invalidEmail: "Incorrect email"
+      },
+      es: {
+        pageTitle: "Nueva cuenta de cliente",
+        fullNameLabel: "Nombre completo",
+        phoneLabel: "Número de teléfono",
+        emailLabel: "Correo electrónico",
+        passwordLabel: "Contraseña",
+        confirmPasswordLabel: "Confirmar contraseña",
+        registerBtnText: "Crear cuenta",
+        loginLinkText: "¿Ya tienes una cuenta? Iniciar sesión",
+        notificationText: "Bienvenido a ALLO BILAL",
+        successNotification: "Idioma cambiado a español",
+        fullNameError: "El nombre debe tener más de dos caracteres",
+        phoneError: "Número de teléfono incorrecto (debe comenzar con 06 o 07)",
+        emailError: "Correo electrónico incorrecto",
+        passwordError: "La contraseña debe tener al menos 6 caracteres",
+        passwordMismatch: "Las contraseñas no coinciden",
+        registrationSuccess: "¡Cuenta creada con éxito! Serás redirigido al panel de control...",
+        registrationError: "Error durante el registro",
+        emailInUse: "Este correo electrónico ya está en uso",
+        weakPassword: "Contraseña demasiado débil (al menos 6 caracteres)",
+        invalidEmail: "Correo electrónico incorrecto"
+      }
+    };
+    
+    // تهيئة اللغة
+    let currentLang = localStorage.getItem('appLanguage') || 'ar';
+    
+    // تحميل اللغة عند بدء التشغيل
+    document.addEventListener('DOMContentLoaded', () => {
+      setLanguage(currentLang, true);
+      
+      // إشعار ترحيبي
+      setTimeout(() => {
+        showNotification(translations[currentLang].notificationText, 'success');
+      }, 800);
+    });
+    
+    // دالة تغيير اللغة
+    function setLanguage(lang, isInitialLoad = false) {
+      currentLang = lang;
+      localStorage.setItem('appLanguage', lang);
+      
+      // تحديث اتجاه الصفحة      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      document.body.style.direction = lang === 'ar' ? 'rtl' : 'ltr';
+      
+      // تحديث جميع العناصر النصية
+      Object.keys(translations[lang]).forEach(key => {
+        const element = document.getElementById(key);
+        if (element) {
+          element.textContent = translations[lang][key];
+        }
+      });
+      
+      // تحديث أزرار اللغة
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+      
+      // عرض إشعار إلا عند التحميل الأولي
+      if (!isInitialLoad) {
+        showNotification(translations[lang].successNotification, 'success');
+      }
+    }
+    
+    // عرض الإشعار
+    function showNotification(message, type = 'info') {
+      const notification = document.getElementById('notification');
+      const notificationText = document.getElementById('notificationText');
+      
+      if (notificationText) {
+        notificationText.textContent = message;
+      }
+      
+      // إزالة الفئات القديمة
+      notification.className = 'notification';
+      
+      // إضافة فئة النوع
+      if (type === 'success') notification.classList.add('success');
+      else if (type === 'error') notification.classList.add('error');
+      
+      // إظهار الإشعار
+      notification.classList.add('show');
+      
+      // إخفاء تلقائي بعد 4 ثوانٍ
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 4000);
+    }
+    
+    // تسجيل الزبون
+    function registerCustomer() {
+      event.preventDefault();      
+      const registerBtn = document.getElementById('registerBtn');
+      const spinner = document.getElementById('spinner');
+      const btnText = document.getElementById('registerBtnText');
+      
+      // تعطيل الزر وعرض التحميل
+      registerBtn.disabled = true;
+      spinner.style.display = 'inline';
+      btnText.textContent = translations[currentLang].registrationSuccess.split('!')[0] + '...';
+      
+      const fullName = document.getElementById('fullName').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      // التحقق من البيانات
+      if (fullName.length < 2) {
+        showError(translations[currentLang].fullNameError);
+        resetButton();
+        return;
+      }
+      
+      if (!phone.match(/^(06|07)\d{8}$/)) {
+        showError(translations[currentLang].phoneError);
+        resetButton();
+        return;
+      }
+      
+      if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        showError(translations[currentLang].emailError);
+        resetButton();
+        return;
+      }
+      
+      if (password.length < 6) {
+        showError(translations[currentLang].passwordError);
+        resetButton();
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        showError(translations[currentLang].passwordMismatch);
+        resetButton();
+        return;
+      }
+      
+      // التسجيل
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {          const user = userCredential.user;
+          
+          // حفظ معلومات المستخدم
+          const db = firebase.firestore();
+          return db.collection('users').doc(user.uid).set({
+            uid: user.uid,
+            name: fullName,
+            phone: phone,
+            email: email,
+            role: 'customer',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            status: 'active',
+            language: currentLang
+          });
+        })
+        .then(() => {
+          // عرض رسالة نجاح
+          showNotification(translations[currentLang].registrationSuccess, 'success');
+          
+          // التوجيه بعد ثانيتين
+          setTimeout(() => {
+            window.location.href = 'customer-dashboard.html';
+          }, 2000);
+        })
+        .catch((error) => {
+          console.error('خطأ في التسجيل:', error);
+          let message = translations[currentLang].registrationError;
+          
+          if (error.code === 'auth/email-already-in-use') {
+            message = translations[currentLang].emailInUse;
+          } else if (error.code === 'auth/invalid-email') {
+            message = translations[currentLang].invalidEmail;
+          } else if (error.code === 'auth/weak-password') {
+            message = translations[currentLang].weakPassword;
+          }
+          
+          showError(message);
+        })
+        .finally(() => {
+          resetButton();
+        });
+    }
+    
+    // عرض خطأ
+    function showError(message) {
+      showNotification(message, 'error');
+    }
+    
+    // إعادة تعيين الزر
+    function resetButton() {      const registerBtn = document.getElementById('registerBtn');
+      const spinner = document.getElementById('spinner');
+      const btnText = document.getElementById('registerBtnText');
+      
+      registerBtn.disabled = false;
+      spinner.style.display = 'none';
+      btnText.textContent = translations[currentLang].registerBtnText;
+    }
+  </script>
+</body>
+</html>

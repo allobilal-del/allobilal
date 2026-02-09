@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="لوحة تحكم المشرف - ALLO BILAL">
+  <title>لوحة تحكم المشرف - ALLO BILAL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">  
+  <!-- Font Awesome - رابط مبسط بدون integrity -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js - رابط مبسط بدون integrity -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Leaflet - رابط مبسط بدون integrity -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #4facfe;
+      --secondary: #00f2fe;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+      --dark: #0f172a;
+      --darker: #0a0f1d;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --sidebar-width: 240px;
+      --header-height: 70px;
+      --transition: all 0.3s ease;
+    }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, var(--darker) 0%, #0f2027 50%, #1a2a3a 100%);
+      color: var(--light);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+    body::before {
+      content: "";
+      position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(79, 172, 254, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+      z-index: -1;
+    }
+    .admin-container {
+      display: flex;      min-height: 100vh;
+    }
+    
+    /* Sidebar Styles */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 1000;
+      transition: var(--transition);
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+    }
+    .sidebar-header {
+      padding: 25px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+    }
+    .sidebar-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), #ffd700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .sidebar-logo i {
+      font-size: 28px;
+    }
+    .sidebar-menu {
+      padding: 20px 0;
+    }
+    .menu-section {
+      margin-bottom: 15px;
+    }
+    .menu-title {
+      padding: 10px 25px;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 1px;    }
+    .menu-item {
+      padding: 15px 25px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: rgba(255, 255, 255, 0.75);
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 500;
+      transition: var(--transition);
+      border-left: 4px solid transparent;
+      cursor: pointer;
+    }
+    .menu-item:hover, .menu-item.active {
+      background: rgba(79, 172, 254, 0.15);
+      color: var(--primary);
+      border-left-color: var(--primary);
+      transform: translateX(5px);
+    }
+    .menu-item i {
+      font-size: 20px;
+      width: 24px;
+      text-align: center;
+    }
+    
+    /* Main Content Styles */
+    .main-content {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      transition: var(--transition);
+    }
+    .header {
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(10px);
+      height: var(--header-height);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 30px;
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;    }
+    .menu-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 24px;
+      cursor: pointer;
+      display: none;
+    }
+    .search-bar {
+      background: rgba(255, 255, 255, 0.1);
+      border:1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50px;
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 300px;
+    }
+    .search-bar input {
+      background: transparent;
+      border: none;
+      color: white;
+      font-family: 'Cairo', sans-serif;
+      font-size: 16px;
+      width: 100%;
+    }
+    .search-bar input:focus {
+      outline: none;
+    }
+    .search-bar input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .notification-bell {
+      position: relative;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 22px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .notification-bell:hover {
+      color: var(--primary);
+    }
+    .notification-badge {
+      position: absolute;      top: -5px;
+      left: 15px;
+      background: var(--danger);
+      color: white;
+      font-size: 11px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .user-avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--darker);
+    }
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .user-name {
+      font-weight: 600;
+      font-size: 17px;
+    }
+    .user-role {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    /* Dashboard Content */
+    .dashboard-content {
+      padding: 30px;
+      padding-top: 20px;
+      min-height: calc(100vh - var(--header-height));
+    }    .page-title {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 30px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), #ffd700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+    .stat-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
+      z-index: -1;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .stat-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;      font-size: 28px;
+    }
+    .stat-icon.primary { background: rgba(79, 172, 254, 0.2); color: var(--primary); }
+    .stat-icon.success { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+    .stat-icon.warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+    .stat-icon.danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+    .stat-icon.info { background: rgba(59, 130, 246, 0.2); color: var(--info); }
+    .stat-label {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .stat-value {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+    .stat-change {
+      display: flex;
+      align-items: center;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .stat-change.positive {
+      color: var(--success);
+    }
+    .stat-change.negative {
+      color: var(--danger);
+    }
+    .stat-change i {
+      margin-right: 5px;
+    }
+    
+    /* Charts and Tables */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+    @media (max-width: 992px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .chart-container, .activity-container, .users-container {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;      padding: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    .chart-title {
+      font-size: 22px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .chart-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .chart-actions button {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      font-size: 15px;
+      transition: var(--transition);
+    }
+    .chart-actions button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+    .chart-wrapper {
+      height: 300px;
+      position: relative;
+    }
+    .activity-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .activity-list {
+      display: flex;
+      flex-direction: column;      gap: 15px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+    .activity-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 15px;
+      border-left: 3px solid var(--primary);
+      transition: var(--transition);
+    }
+    .activity-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(5px);
+    }
+    .activity-time {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 5px;
+    }
+    .activity-desc {
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .activity-desc.highlight {
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    /* Users Table */
+    .table-container {
+      overflow-x: auto;
+      margin-top: 20px;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+    .data-table th {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px 20px;
+      text-align: right;
+      font-weight: 600;
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.85);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+    }
+    .data-table td {      padding: 15px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 16px;
+    }
+    .data-table tr:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-block;
+    }
+    .status-active {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--success);
+    }
+    .status-pending {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--warning);
+    }
+    .status-blocked {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger);
+    }
+    .action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 3px;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-size: 16px;
+    }
+    .action-btn.view {
+      background: rgba(59, 130, 246, 0.2);
+      color: var(--info);
+    }
+    .action-btn.edit {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--warning);
+    }
+    .action-btn.delete {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger);    }
+    .action-btn.approve {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--success);
+    }
+    .action-btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+    
+    /* Real-time Indicator */
+    .realtime-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--success);
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 20px;
+      width: fit-content;
+    }
+    .realtime-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      .main-content {
+        margin-left: 0;
+      }
+      .main-content.sidebar-active {
+        margin-left: var(--sidebar-width);      }
+      .menu-toggle {
+        display: block;
+      }
+      .search-bar {
+        width: 220px;
+      }
+    }
+    @media (max-width: 768px) {
+      .header {
+        padding: 0 20px;
+      }
+      .search-bar {
+        display: none;
+      }
+      .page-title {
+        font-size: 28px;
+      }
+      .stat-value {
+        font-size: 30px;
+      }
+      .dashboard-content {
+        padding: 20px;
+        padding-top: 15px;
+      }
+      .chart-container, .activity-container, .users-container {
+        padding: 20px;
+      }
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 480px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .user-info {
+        display: none;
+      }
+      .notification-bell {
+        font-size: 20px;
+      }
+      .notification-badge {
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        left: 12px;
+      }
+      .sidebar-logo {
+        font-size: 20px;      }
+      .sidebar-logo i {
+        font-size: 24px;
+      }
+    }
+    
+    /* Loading Animation */
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+    }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-top: 5px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Sections */
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+      animation: fadeIn 0.5s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 15px;
+    }
+    .tab-btn {
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.1);      border: none;
+      border-radius: 12px 12px 0 0;
+      color: rgba(255, 255, 255, 0.7);
+      font-family: 'Cairo', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .tab-btn.active {
+      background: rgba(79, 172, 254, 0.2);
+      color: var(--primary);
+      border-bottom: 3px solid var(--primary);
+    }
+    .tab-btn:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    /* Complaints Section */
+    .complaint-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 15px;
+      border-left: 4px solid var(--warning);
+      transition: var(--transition);
+    }
+    .complaint-card:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(5px);
+    }
+    .complaint-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .complaint-user {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .complaint-date {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .complaint-content {
+      margin-bottom: 15px;      line-height: 1.6;
+    }
+    .complaint-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .complaint-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .resolve-btn {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--success);
+      border: none;
+      padding: 8px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+    .resolve-btn:hover {
+      background: rgba(16, 185, 129, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    /* Settings Section */
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+    .setting-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .setting-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }    .setting-item {
+      margin-bottom: 20px;
+    }
+    .setting-label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.85);
+    }
+    .setting-input {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-family: 'Cairo', sans-serif;
+      font-size: 16px;
+    }
+    .setting-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .save-settings-btn {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: var(--darker);
+      border: none;
+      padding: 14px 30px;
+      border-radius: 16px;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .save-settings-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+    }
+    
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      background: rgba(30, 41, 59, 0.95);      backdrop-filter: blur(10px);
+      color: white;
+      padding: 18px 25px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      transform: translateX(-100%);
+      transition: transform 0.4s ease;
+      border-left: 4px solid var(--primary);
+    }
+    .toast.show {
+      transform: translateX(0);
+    }
+    .toast.success { border-left-color: var(--success); }
+    .toast.error { border-left-color: var(--danger); }
+    .toast.warning { border-left-color: var(--warning); }
+    .toast i {
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <i class="fas fa-shield-alt"></i>
+          <span>ALLO BILAL ADMIN</span>
+        </div>
+      </div>
+      
+      <div class="sidebar-menu">
+        <div class="menu-section">
+          <div class="menu-title">لوحة التحكم</div>
+          <div class="menu-item active" data-section="dashboard">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>الرئيسية</span>
+          </div>
+          <div class="menu-item" data-section="users">
+            <i class="fas fa-users"></i>
+            <span>إدارة المستخدمين</span>
+          </div>
+          <div class="menu-item" data-section="orders">
+            <i class="fas fa-shopping-cart"></i>
+            <span>إدارة الطلبات</span>
+          </div>          <div class="menu-item" data-section="complaints">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>الشكاوي والإبلاغات</span>
+          </div>
+        </div>
+        
+        <div class="menu-section">
+          <div class="menu-title">التحليلات</div>
+          <div class="menu-item" data-section="analytics">
+            <i class="fas fa-chart-bar"></i>
+            <span>الإحصائيات والتحليلات</span>
+          </div>
+          <div class="menu-item" data-section="reports">
+            <i class="fas fa-file-alt"></i>
+            <span>التقارير</span>
+          </div>
+        </div>
+        
+        <div class="menu-section">
+          <div class="menu-title">الإعدادات</div>
+          <div class="menu-item" data-section="settings">
+            <i class="fas fa-cog"></i>
+            <span>الإعدادات العامة</span>
+          </div>
+          <div class="menu-item" data-section="notifications">
+            <i class="fas fa-bell"></i>
+            <span>إدارة الإشعارات</span>
+          </div>
+          <div class="menu-item" data-section="support">
+            <i class="fas fa-headset"></i>
+            <span>طلبات الدعم</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+      <header class="header">
+        <div class="header-left">
+          <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="ابحث عن مستخدم أو طلب..." id="searchInput">
+          </div>
+        </div>
+        
+        <div class="header-right">          <div class="notification-bell">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge" id="notificationCount">3</span>
+          </div>
+          
+          <div class="user-profile">
+            <div class="user-avatar">م</div>
+            <div class="user-info">
+              <div class="user-name" id="adminName">المشرف</div>
+              <div class="user-role">مسؤول النظام</div>
+            </div>
+          </div>
+        </div>
+      </header>
+      
+      <main class="dashboard-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="section active">
+          <h1 class="page-title">
+            <i class="fas fa-tachometer-alt"></i>
+            لوحة التحكم الرئيسية
+          </h1>
+          
+          <div class="realtime-indicator">
+            <div class="realtime-dot"></div>
+            <span>البيانات محدثة في الوقت الفعلي</span>
+          </div>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon primary">
+                <i class="fas fa-users"></i>
+              </div>
+              <div class="stat-label">إجمالي الزبائن</div>
+              <div class="stat-value" id="totalCustomers">0</div>
+              <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+12% عن الشهر الماضي</span>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon success">
+                <i class="fas fa-motorcycle"></i>
+              </div>
+              <div class="stat-label">إجمالي السائقين</div>
+              <div class="stat-value" id="totalDrivers">0</div>
+              <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+8% عن الشهر الماضي</span>              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon warning">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+              <div class="stat-label">الطلبات النشطة</div>
+              <div class="stat-value" id="activeOrders">0</div>
+              <div class="stat-change negative">
+                <i class="fas fa-arrow-down"></i>
+                <span>-3% عن الأمس</span>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon info">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <div class="stat-label">الأرباح اليوم</div>
+              <div class="stat-value" id="dailyEarnings">0</div>
+              <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+15% عن الأمس</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="dashboard-grid">
+            <div class="chart-container">
+              <div class="chart-header">
+                <div class="chart-title">
+                  <i class="fas fa-chart-area"></i>
+                  <span>إحصائيات الطلبات الأسبوعية</span>
+                </div>
+                <div class="chart-actions">
+                  <button onclick="exportChart()"><i class="fas fa-download"></i> تصدير</button>
+                  <button onclick="refreshChart()"><i class="fas fa-sync-alt"></i> تحديث</button>
+                </div>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="ordersChart"></canvas>
+              </div>
+            </div>
+            
+            <div class="activity-container">
+              <div class="activity-title">
+                <i class="fas fa-bell"></i>
+                <span>النشاط الأخير</span>
+              </div>              <div class="activity-list" id="activityList">
+                <div class="loading">
+                  <div class="spinner"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="users-container">
+            <div class="chart-header">
+              <div class="chart-title">
+                <i class="fas fa-users"></i>
+                <span>أحدث المستخدمين</span>
+              </div>
+              <div class="chart-actions">
+                <button onclick="showSection('users')">
+                  <i class="fas fa-eye"></i> عرض الكل
+                </button>
+              </div>
+            </div>
+            
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>الاسم</th>
+                    <th>البريد الإلكتروني</th>
+                    <th>الهاتف</th>
+                    <th>الدور</th>
+                    <th>الحالة</th>
+                    <th>تاريخ التسجيل</th>
+                    <th>الإجراءات</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                  <tr>
+                    <td colspan="7" style="text-align: center; padding: 40px;">
+                      <div class="loading">
+                        <div class="spinner"></div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Users Section -->
+        <section id="users-section" class="section">          <h1 class="page-title">
+            <i class="fas fa-users-cog"></i>
+            إدارة المستخدمين
+          </h1>
+          
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="customers">الزبائن</button>
+            <button class="tab-btn" data-tab="drivers">السائقون</button>
+            <button class="tab-btn" data-tab="admins">المشرفون</button>
+          </div>
+          
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>الاسم</th>
+                  <th>البريد الإلكتروني</th>
+                  <th>الهاتف</th>
+                  <th>الدور</th>
+                  <th>الحالة</th>
+                  <th>تاريخ التسجيل</th>
+                  <th>الإجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="allUsersTableBody">
+                <tr>
+                  <td colspan="7" style="text-align: center; padding: 40px;">
+                    <div class="loading">
+                      <div class="spinner"></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        
+        <!-- Orders Section -->
+        <section id="orders-section" class="section">
+          <h1 class="page-title">
+            <i class="fas fa-truck-loading"></i>
+            إدارة الطلبات
+          </h1>
+          
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>رقم الطلب</th>
+                  <th>الزبون</th>                  <th>السائق</th>
+                  <th>من</th>
+                  <th>إلى</th>
+                  <th>المركبة</th>
+                  <th>الحالة</th>
+                  <th>السعر</th>
+                  <th>التاريخ</th>
+                  <th>الإجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="ordersContainer">
+                <tr>
+                  <td colspan="10" style="text-align: center; padding: 40px;">
+                    <div class="loading">
+                      <div class="spinner"></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        
+        <!-- Complaints Section -->
+        <section id="complaints-section" class="section">
+          <h1 class="page-title">
+            <i class="fas fa-exclamation-triangle"></i>
+            الشكاوي والإبلاغات
+          </h1>
+          
+          <div id="complaintsContainer">
+            <div class="loading">
+              <div class="spinner"></div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Analytics Section -->
+        <section id="analytics-section" class="section">
+          <h1 class="page-title">
+            <i class="fas fa-chart-bar"></i>
+            الإحصائيات والتحليلات
+          </h1>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon primary">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <div class="stat-label">معدل إتمام الطلبات</div>              <div class="stat-value">94%</div>
+              <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+5% عن الشهر الماضي</span>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon success">
+                <i class="fas fa-star"></i>
+              </div>
+              <div class="stat-label">متوسط التقييم</div>
+              <div class="stat-value">4.8/5</div>
+              <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+0.2 عن الشهر الماضي</span>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon warning">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="stat-label">متوسط وقت التوصيل</div>
+              <div class="stat-value">24 دقيقة</div>
+              <div class="stat-change positive">
+                <i class="fas fa-arrow-down"></i>
+                <span>-3 دقائق عن الشهر الماضي</span>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon info">
+                <i class="fas fa-users"></i>
+              </div>
+              <div class="stat-label">مستخدمين جدد هذا الشهر</div>
+              <div class="stat-value">342</div>
+              <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+28% عن الشهر الماضي</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="chart-container">
+            <div class="chart-header">
+              <div class="chart-title">
+                <i class="fas fa-chart-pie"></i>
+                <span>توزيع الطلبات حسب نوع المركبة</span>
+              </div>            </div>
+            <div class="chart-wrapper">
+              <canvas id="vehicleChart"></canvas>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Settings Section -->
+        <section id="settings-section" class="section">
+          <h1 class="page-title">
+            <i class="fas fa-cog"></i>
+            الإعدادات العامة
+          </h1>
+          
+          <div class="settings-grid">
+            <div class="setting-card">
+              <div class="setting-title">
+                <i class="fas fa-shield-alt"></i>
+                <span>إعدادات الأمان</span>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label">الحد الأدنى لكلمة المرور</label>
+                <input type="number" class="setting-input" value="6" min="6" max="20">
+              </div>
+              <div class="setting-item">
+                <label class="setting-label">عدد محاولات تسجيل الدخول</label>
+                <input type="number" class="setting-input" value="5" min="1" max="10">
+              </div>
+              <button class="save-settings-btn">
+                <i class="fas fa-save"></i>
+                حفظ إعدادات الأمان
+              </button>
+            </div>
+            
+            <div class="setting-card">
+              <div class="setting-title">
+                <i class="fas fa-bell"></i>
+                <span>إعدادات الإشعارات</span>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label">تفعيل الإشعارات</label>
+                <select class="setting-input">
+                  <option>مفعل</option>
+                  <option>معطل</option>
+                </select>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label">نوع الإشعارات</label>
+                <select class="setting-input">
+                  <option>كل الإشعارات</option>                  <option>الطلبات فقط</option>
+                  <option>الشكاوي فقط</option>
+                </select>
+              </div>
+              <button class="save-settings-btn">
+                <i class="fas fa-save"></i>
+                حفظ إعدادات الإشعارات
+              </button>
+            </div>
+            
+            <div class="setting-card">
+              <div class="setting-title">
+                <i class="fas fa-dollar-sign"></i>
+                <span>إعدادات الدفع</span>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label">العملة الافتراضية</label>
+                <select class="setting-input">
+                  <option>درهم مغربي (MAD)</option>
+                  <option>يورو (EUR)</option>
+                  <option>دولار أمريكي (USD)</option>
+                </select>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label">الحد الأدنى للطلب</label>
+                <input type="number" class="setting-input" value="10" min="5">
+              </div>
+              <button class="save-settings-btn">
+                <i class="fas fa-save"></i>
+                حفظ إعدادات الدفع
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">تمت العملية بنجاح</span>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script>
+    // تهيئة Firebase    const firebaseConfig = {
+      apiKey: "AIzaSyBPnZzN7DPWRSgiYDAS_bgBqGULL3-MdSU",
+      authDomain: "alobilal23.firebaseapp.com",
+      projectId: "alobilal23",
+      storageBucket: "alobilal23.firebasestorage.app",
+      messagingSenderId: "989762991926",
+      appId: "1:989762991926:web:822e72a777192f614ae597"
+    };
+    
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    
+    // بيانات وهمية للمستخدمين
+    const usersData = [
+      { id: 1, name: "محمد أحمد", email: "mohamed@example.com", phone: "+212612345678", role: "زبون", status: "active", date: "2023-10-15" },
+      { id: 2, name: "فاطمة الزهراء", email: "fatima@example.com", phone: "+212612345679", role: "زبون", status: "active", date: "2023-10-10" },
+      { id: 3, name: "علي كريم", email: "ali.com", phone: "+212612345680", role: "سائق", status: "pending", date: "2023-10-05" },
+      { id: 4, name: "سارة محمود", email: "sara@example.com", phone: "+212612345681", role: "زبون", status: "active", date: "2023-10-01" },
+      { id: 5, name: "يوسف حسن", email: "youssef@example.com", phone: "+212612345682", role: "سائق", status: "blocked", date: "2023-09-28" },
+      { id: 6, name: "نورة العلي", email: "noura@example.com", phone: "+212612345683", role: "مشرف", status: "active", date: "2023-09-25" },
+      { id: 7, name: "خالد أمين", email: "khaled@example.com", phone: "+212612345684", role: "زبون", status: "active", date: "2023-09-20" },
+      { id: 8, name: "هدى راشد", email: "huda@example.com", phone: "+212612345685", role: "زبون", status: "pending", date: "2023-09-15" }
+    ];
+
+    // بيانات وهمية للشكاوى
+    const complaintsData = [
+      { id: 1, user: "محمد أحمد", date: "2023-10-20 14:30", content: "تأخر السائق في التسليم أكثر من 30 دقيقة", status: "pending" },
+      { id: 2, user: "فاطمة الزهراء", date: "2023-10-19 10:15", content: "المنتج وصل تالفاً جزئياً", status: "resolved" },
+      { id: 3, user: "علي كريم", date: "2023-10-18 16:45", content: "مشكلة في الدفع عبر البطاقة البنكية", status: "pending" },
+      { id: 4, user: "سارة محمود", date: "2023-10-17 09:20", content: "السائق لم يحضر في الموعد المحدد", status: "in-progress" },
+      { id: 5, user: "يوسف حسن", date: "2023-10-16 13:10", content: "الفاتورة غير مطابقة للطلب", status: "pending" }
+    ];
+
+    // بيانات وهمية للنشاطات
+    const activitiesData = [
+      { time: "منذ 5 دقائق", desc: "قام المستخدم محمد أحمد بتسجيل طلب جديد", highlight: "طلب #245" },
+      { time: "منذ 15 دقيقة", desc: "قام السائق علي كريم بتسليم الطلب #243", highlight: "تم التسليم" },
+      { time: "منذ ساعة", desc: "قام المشرف نورة العلي بتعطيل حساب سائق", highlight: "يوسف حسن" },
+      { time: "منذ 3 ساعات", desc: "تمت إضافة مستخدم جديد إلى النظام", highlight: "خالد أمين" },
+      { time: "منذ 5 ساعات", desc: "تم رفع شكوى جديدة من قبل فاطمة الزهراء", highlight: "شكوى #102" },
+      { time: "منذ يوم", desc: "تم تحديث إعدادات النظام بنجاح", highlight: "الإعدادات العامة" }
+    ];
+
+    // بيانات وهمية للطلبات
+    const ordersData = [
+      { id: 245, customer: "محمد أحمد", driver: "علي كريم", status: "جاري التوصيل", amount: "120.50 درهم", date: "2023-10-20 14:00" },
+      { id: 244, customer: "سارة محمود", driver: "يوسف حسن", status: "مكتمل", amount: "85.00 درهم", date: "2023-10-20 12:30" },
+      { id: 243, customer: "فاطمة الزهراء", driver: "علي كريم", status: "مكتمل", amount: "200.00 درهم", date: "2023-10-20 10:15" },
+      { id: 242, customer: "خالد أمين", driver: "---", status: "بانتظار السائق", amount: "65.75 درهم", date: "2023-10-20 09:45" },      { id: 241, customer: "نورة العلي", driver: "يوسف حسن", status: "ملغي", amount: "150.00 درهم", date: "2023-10-19 16:20" }
+    ];
+
+    // تهيئة البيانات عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+      // تعيين اسم المشرف
+      document.getElementById('adminName').textContent = 'بلال المدير';
+      
+      // تحديث الإحصائيات
+      updateStats();
+      
+      // تهيئة الرسم البياني
+      initChart();
+      
+      // تحميل النشاطات
+      loadActivities();
+      
+      // تحميل جدول المستخدمين
+      loadUsersTable();
+      
+      // تحميل الشكاوى
+      loadComplaints();
+      
+      // تحميل الطلبات
+      loadOrders();
+      
+      // إعداد مستمعي الأحداث
+      setupEventListeners();
+      
+      // محاكاة تحديث البيانات في الوقت الفعلي
+      startRealtimeUpdates();
+    });
+
+    // تحديث الإحصائيات
+    function updateStats() {
+      // تحديث إجمالي الزبائن
+      const totalCustomers = usersData.filter(user => user.role === 'زبون').length;
+      document.getElementById('totalCustomers').textContent = totalCustomers;
+      
+      // تحديث إجمالي السائقين
+      const totalDrivers = usersData.filter(user => user.role === 'سائق').length;
+      document.getElementById('totalDrivers').textContent = totalDrivers;
+      
+      // تحديث الطلبات النشطة (افتراضياً 5 طلبات نشطة)
+      document.getElementById('activeOrders').textContent = '5';
+      
+      // تحديث الأرباح اليومية (رقم عشوائي بين 2000 و 5000)
+      const dailyEarnings = Math.floor(Math.random() * (5000 - 2000 + 1)) + 2000;
+      document.getElementById('dailyEarnings').textContent = `${dailyEarnings} درهم`;
+    }
+    // تهيئة الرسم البياني
+    function initChart() {
+      const ctx = document.getElementById('ordersChart').getContext('2d');
+      
+      // بيانات الرسم البياني
+      const days = ['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+      const orders = [45, 52, 60, 58, 70, 65, 75];
+      const earnings = [1200, 1500, 1800, 1650, 2100, 1900, 2300];
+      
+      window.ordersChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: days,
+          datasets: [
+            {
+              label: 'عدد الطلبات',
+              data: orders,
+              borderColor: 'rgba(79, 172, 254, 1)',
+              backgroundColor: 'rgba(79, 172, 254, 0.1)',
+              borderWidth: 3,
+              fill: true,
+              tension: 0.4
+            },
+            {
+              label: 'الأرباح (مئات الدراهم)',
+              data: earnings,
+              borderColor: 'rgba(16, 185, 129, 1)',
+              backgroundColor: 'rgba(16, 185, 129, 0.1)',
+              borderWidth: 3,
+              fill: true,
+              tension: 0.4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              rtl: true,
+              labels: {
+                font: {
+                  family: 'Cairo',
+                  size: 14
+                },
+                color: 'rgba(255, 255, 255, 0.8)'
+              }
+            }          },
+          scales: {
+            x: {
+              ticks: {
+                color: 'rgba(255, 255, 255, 0.7)',
+                font: {
+                  family: 'Cairo',
+                  size: 12
+                }
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              }
+            },
+            y: {
+              ticks: {
+                color: 'rgba(255, 255, 255, 0.7)',
+                font: {
+                  family: 'Cairo',
+                  size: 12
+                }
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // تحميل النشاطات
+    function loadActivities() {
+      const activityList = document.getElementById('activityList');
+      activityList.innerHTML = '';
+      
+      activitiesData.forEach(activity => {
+        const activityItem = document.createElement('div');
+        activityItem.className = 'activity-item';
+        activityItem.innerHTML = `
+          <div class="activity-time">${activity.time}</div>
+          <div class="activity-desc">${activity.desc} <span class="highlight">${activity.highlight}</span></div>
+        `;
+        activityList.appendChild(activityItem);
+      });
+    }
+
+    // تحميل جدول المستخدمين
+    function loadUsersTable() {
+      const usersTableBody = document.getElementById('usersTableBody');      usersTableBody.innerHTML = '';
+      
+      // عرض أول 5 مستخدمين فقط في لوحة التحكم
+      const usersToShow = usersData.slice(0, 5);
+      
+      usersToShow.forEach(user => {
+        const statusClass = user.status === 'active' ? 'status-active' : 
+                           user.status === 'pending' ? 'status-pending' : 'status-blocked';
+        
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${user.name}</td>
+          <td>${user.email}</td>
+          <td>${user.phone}</td>
+          <td>${user.role}</td>
+          <td><span class="status-badge ${statusClass}">${user.status === 'active' ? 'نشط' : user.status === 'pending' ? 'قيد الانتظار' : 'معطل'}</span></td>
+          <td>${user.date}</td>
+          <td>
+            <button class="action-btn view" onclick="viewUser(${user.id})" title="عرض">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="action-btn edit" onclick="editUser(${user.id})" title="تعديل">
+              <i class="fas fa-edit"></i>
+            </button>
+            ${user.role !== 'مشرف' ? `<button class="action-btn ${user.status === 'active' ? 'delete' : 'approve'}" onclick="toggleUserStatus(${user.id})" title="${user.status === 'active' ? 'تعطيل' : 'تفعيل'}">
+              <i class="fas fa-${user.status === 'active' ? 'ban' : 'check'}"></i>
+            </button>` : ''}
+          </td>
+        `;
+        usersTableBody.appendChild(row);
+      });
+    }
+
+    // تحميل الشكاوى
+    function loadComplaints() {
+      const complaintsContainer = document.getElementById('complaintsContainer');
+      if (!complaintsContainer) return;
+      
+      complaintsContainer.innerHTML = '';
+      
+      complaintsData.forEach(complaint => {
+        const statusText = complaint.status === 'pending' ? 'قيد الانتظار' : 
+                          complaint.status === 'resolved' ? 'تم الحل' : 'قيد المعالجة';
+        
+        const complaintCard = document.createElement('div');
+        complaintCard.className = 'complaint-card';
+        complaintCard.innerHTML = `
+          <div class="complaint-header">
+            <div class="complaint-user">
+              <i class="fas fa-user"></i>              ${complaint.user}
+            </div>
+            <div class="complaint-date">${complaint.date}</div>
+          </div>
+          <div class="complaint-content">${complaint.content}</div>
+          <div class="complaint-footer">
+            <span class="status-badge ${complaint.status === 'pending' ? 'status-pending' : complaint.status === 'resolved' ? 'status-active' : 'status-warning'}">${statusText}</span>
+            <div class="complaint-actions">
+              ${complaint.status !== 'resolved' ? `<button class="resolve-btn" onclick="resolveComplaint(${complaint.id})">
+                <i class="fas fa-check"></i> تم الحل
+              </button>` : ''}
+              <button class="action-btn view" onclick="viewComplaint(${complaint.id})" title="عرض">
+                <i class="fas fa-eye"></i>
+              </button>
+              <button class="action-btn delete" onclick="deleteComplaint(${complaint.id})" title="حذف">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        complaintsContainer.appendChild(complaintCard);
+      });
+    }
+
+    // تحميل الطلبات
+    function loadOrders() {
+      const ordersContainer = document.getElementById('ordersContainer');
+      if (!ordersContainer) return;
+      
+      ordersContainer.innerHTML = '';
+      
+      ordersData.forEach(order => {
+        const statusClass = order.status === 'مكتمل' ? 'status-active' : 
+                           order.status === 'جاري التوصيل' ? 'status-warning' : 
+                           order.status === 'ملغي' ? 'status-blocked' : 'status-pending';
+        
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>#${order.id}</td>
+          <td>${order.customer}</td>
+          <td>${order.driver}</td>
+          <td>${order.amount}</td>
+          <td><span class="status-badge ${statusClass}">${order.status}</span></td>
+          <td>${order.date}</td>
+          <td>
+            <button class="action-btn view" onclick="viewOrder(${order.id})" title="عرض">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="action-btn edit" onclick="editOrder(${order.id})" title="تعديل">
+              <i class="fas fa-edit"></i>            </button>
+            ${order.status !== 'مكتمل' && order.status !== 'ملغي' ? `<button class="action-btn approve" onclick="updateOrderStatus(${order.id})" title="تحديث الحالة">
+              <i class="fas fa-check"></i>
+            </button>` : ''}
+          </td>
+        `;
+        ordersContainer.appendChild(row);
+      });
+    }
+
+    // إعداد مستمعي الأحداث
+    function setupEventListeners() {
+      // تبديل القائمة الجانبية على الأجهزة المحمولة
+      const menuToggle = document.getElementById('menuToggle');
+      const sidebar = document.querySelector('.sidebar');
+      const mainContent = document.querySelector('.main-content');
+      
+      menuToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('active');
+        mainContent.classList.toggle('sidebar-active');
+      });
+      
+      // إخفاء القائمة الجانبية عند النقر خارجها على الأجهزة المحمولة
+      document.addEventListener('click', function(event) {
+        const isMobile = window.innerWidth <= 992;
+        if (isMobile && 
+            !sidebar.contains(event.target) && 
+            !menuToggle.contains(event.target) && 
+            sidebar.classList.contains('active')) {
+          sidebar.classList.remove('active');
+          mainContent.classList.remove('sidebar-active');
+        }
+      });
+      
+      // التبديل بين أقسام القائمة الجانبية
+      const menuItems = document.querySelectorAll('.menu-item');
+      menuItems.forEach(item => {
+        item.addEventListener('click', function() {
+          // إزالة النشاط من جميع العناصر
+          menuItems.forEach(i => i.classList.remove('active'));
+          // إضافة النشاط للعنصر الحالي
+          this.classList.add('active');
+          
+          // الحصول على القسم المراد عرضه
+          const sectionId = this.getAttribute('data-section');
+          showSection(sectionId);
+          
+          // إغلاق القائمة الجانبية على الأجهزة المحمولة
+          if (window.innerWidth <= 992) {
+            sidebar.classList.remove('active');            mainContent.classList.remove('sidebar-active');
+          }
+        });
+      });
+      
+      // التبديل بين علامات التبويب
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          // إزالة النشاط من جميع الأزرار
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          // إضافة النشاط للزر الحالي
+          this.classList.add('active');
+          
+          // الحصول على علامة التبويب المراد عرضها
+          const tabId = this.getAttribute('data-tab');
+          showTab(tabId);
+        });
+      });
+      
+      // البحث في الوقت الفعلي
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('input', function() {
+          const searchTerm = this.value.toLowerCase();
+          if (searchTerm.length > 0) {
+            searchContent(searchTerm);
+          }
+        });
+      }
+      
+      // حفظ الإعدادات
+      const saveSettingsBtn = document.querySelector('.save-settings-btn');
+      if (saveSettingsBtn) {
+        saveSettingsBtn.addEventListener('click', function() {
+          saveSettings();
+        });
+      }
+      
+      // عرض الإشعارات
+      const notificationBell = document.querySelector('.notification-bell');
+      if (notificationBell) {
+        notificationBell.addEventListener('click', function() {
+          showNotifications();
+        });
+      }
+    }
+
+    // عرض قسم محدد
+    function showSection(sectionId) {      // إخفاء جميع الأقسام
+      const sections = document.querySelectorAll('.section');
+      sections.forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // عرض القسم المحدد
+      const activeSection = document.getElementById(`${sectionId}-section`);
+      if (activeSection) {
+        activeSection.classList.add('active');
+        
+        // تحميل محتوى القسم إذا لزم الأمر
+        if (sectionId === 'complaints') {
+          loadComplaints();
+        } else if (sectionId === 'orders') {
+          loadOrders();
+        }
+      }
+    }
+
+    // عرض علامة تبويب محددة
+    function showTab(tabId) {
+      // يمكنك إضافة منطق لعرض المحتوى المناسب للعلامة التبويبية
+      // هذا مثال بسيط
+      console.log(`عرض علامة التبويب: ${tabId}`);
+      
+      // في التطبيق الحقيقي، يمكنك تحميل بيانات مختلفة بناءً على علامة التبويب
+      if (tabId === 'customers') {
+        // تحميل بيانات الزبائن
+      } else if (tabId === 'drivers') {
+        // تحميل بيانات السائقين
+      } else if (tabId === 'admins') {
+        // تحميل بيانات المشرفين
+      }
+    }
+
+    // البحث في المحتوى
+    function searchContent(searchTerm) {
+      // هذا مثال بسيط للبحث
+      // في التطبيق الحقيقي، يمكنك البحث في قاعدة البيانات أو مجموعة البيانات
+      console.log(`البحث عن: ${searchTerm}`);
+      
+      // عرض نتائج البحث
+      showToast(`تم البحث عن: "${searchTerm}"`, 'info');
+    }
+
+    // حفظ الإعدادات
+    function saveSettings() {
+      // في التطبيق الحقيقي، يمكنك إرسال البيانات إلى الخادم
+      showToast('تم حفظ الإعدادات بنجاح', 'success');    }
+
+    // عرض الإشعارات
+    function showNotifications() {
+      // في التطبيق الحقيقي، يمكنك عرض قائمة بالإشعارات
+      showToast('عرض الإشعارات', 'info');
+    }
+
+    // وظائف المستخدمين
+    function viewUser(userId) {
+      const user = usersData.find(u => u.id === userId);
+      if (user) {
+        showToast(`عرض تفاصيل المستخدم: ${user.name}`, 'info');
+      }
+    }
+
+    function editUser(userId) {
+      const user = usersData.find(u => u.id === userId);
+      if (user) {
+        showToast(`تعديل المستخدم: ${user.name}`, 'warning');
+      }
+    }
+
+    function toggleUserStatus(userId) {
+      const user = usersData.find(u => u.id === userId);
+      if (user) {
+        const newStatus = user.status === 'active' ? 'blocked' : 'active';
+        user.status = newStatus;
+        
+        showToast(`تم ${newStatus === 'active' ? 'تفعيل' : 'تعطيل'} حساب ${user.name}`, 'success');
+        
+        // تحديث الجدول
+        loadUsersTable();
+      }
+    }
+
+    // وظائف الشكاوى
+    function viewComplaint(complaintId) {
+      const complaint = complaintsData.find(c => c.id === complaintId);
+      if (complaint) {
+        showToast(`عرض الشكوى #${complaintId} من ${complaint.user}`, 'info');
+      }
+    }
+
+    function resolveComplaint(complaintId) {
+      const complaint = complaintsData.find(c => c.id === complaintId);
+      if (complaint) {
+        complaint.status = 'resolved';
+        showToast(`تم حل الشكوى #${complaintId}`, 'success');
+        loadComplaints();      }
+    }
+
+    function deleteComplaint(complaintId) {
+      if (confirm('هل أنت متأكد من حذف هذه الشكوى؟')) {
+        const index = complaintsData.findIndex(c => c.id === complaintId);
+        if (index !== -1) {
+          complaintsData.splice(index, 1);
+          showToast('تم حذف الشكوى', 'success');
+          loadComplaints();
+        }
+      }
+    }
+
+    // وظائف الطلبات
+    function viewOrder(orderId) {
+      const order = ordersData.find(o => o.id === orderId);
+      if (order) {
+        showToast(`عرض تفاصيل الطلب #${orderId}`, 'info');
+      }
+    }
+
+    function editOrder(orderId) {
+      const order = ordersData.find(o => o.id === orderId);
+      if (order) {
+        showToast(`تعديل الطلب #${orderId}`, 'warning');
+      }
+    }
+
+    function updateOrderStatus(orderId) {
+      const order = ordersData.find(o => o.id === orderId);
+      if (order) {
+        // تغيير حالة الطلب
+        if (order.status === 'بانتظار السائق') {
+          order.status = 'جاري التوصيل';
+        } else if (order.status === 'جاري التوصيل') {
+          order.status = 'مكتمل';
+        }
+        
+        showToast(`تم تحديث حالة الطلب #${orderId} إلى "${order.status}"`, 'success');
+        loadOrders();
+      }
+    }
+
+    // وظائف الرسم البياني
+    function exportChart() {
+      showToast('تم تصدير الرسم البياني', 'success');
+    }
+
+    function refreshChart() {      // تحديث البيانات عشوائيًا
+      if (window.ordersChart) {
+        const newData = window.ordersChart.data.datasets[0].data.map(() => 
+          Math.floor(Math.random() * (80 - 40 + 1)) + 40
+        );
+        
+        window.ordersChart.data.datasets[0].data = newData;
+        window.ordersChart.update();
+        
+        showToast('تم تحديث الرسم البياني', 'success');
+      }
+    }
+
+    // إشعارات Toast
+    function showToast(message, type = 'info') {
+      // إنصراف العنصر إذا كان موجودًا
+      const existingToast = document.querySelector('.toast');
+      if (existingToast) {
+        existingToast.remove();
+      }
+      
+      // إنشاء عنصر Toast جديد
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      const icon = type === 'success' ? 'fa-check-circle' : 
+                   type === 'error' ? 'fa-exclamation-circle' : 
+                   type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+      
+      toast.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${message}</span>
+      `;
+      
+      document.body.appendChild(toast);
+      
+      // إظهار Toast
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 10);
+      
+      // إخفاء Toast تلقائيًا بعد 3 ثوانٍ
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+          }
+        }, 400);
+      }, 3000);    }
+
+    // محاكاة تحديث البيانات في الوقت الفعلي
+    function startRealtimeUpdates() {
+      // تحديث الإحصائيات كل 30 ثانية
+      setInterval(() => {
+        // تحديث عدد الطلبات النشطة عشوائيًا
+        const newActiveOrders = Math.floor(Math.random() * (8 - 3 + 1)) + 3;
+        document.getElementById('activeOrders').textContent = newActiveOrders;
+        
+        // تحديث الأرباح اليومية عشوائيًا
+        const newDailyEarnings = Math.floor(Math.random() * (6000 - 1500 + 1)) + 1500;
+        document.getElementById('dailyEarnings').textContent = `${newDailyEarnings} درهم`;
+        
+        // تحديث مؤشر النشاط في الوقت الفعلي
+        const realtimeIndicator = document.querySelector('.realtime-indicator span');
+        if (realtimeIndicator) {
+          const now = new Date();
+          const timeString = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+          realtimeIndicator.textContent = `آخر تحديث: ${timeString}`;
+        }
+      }, 30000); // كل 30 ثانية
+      
+      // تحديث الإشعارات كل دقيقة
+      setInterval(() => {
+        const notificationCount = document.getElementById('notificationCount');
+        if (notificationCount) {
+          const currentCount = parseInt(notificationCount.textContent);
+          const newCount = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+          if (newCount !== currentCount) {
+            notificationCount.textContent = newCount;
+            
+            // إضافة تأثير عند تغيير عدد الإشعارات
+            notificationCount.style.transform = 'scale(1.3)';
+            setTimeout(() => {
+              notificationCount.style.transform = 'scale(1)';
+            }, 300);
+          }
+        }
+      }, 60000); // كل دقيقة
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // السماح بالوصول فقط للمستخدمين المسجلين دخولهم
+    match /{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+    
+    // قواعد خاصة لمستندات السائقين
+    match /drivers/{driverId}/{documentType} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        request.auth.uid == driverId &&
+        request.resource.size < 5 * 1024 * 1024; // 5 ميجابايت كحد أقصى
+    }
+    
+    // قواعد خاصة للرسائل والصور في الدردشة
+    match /orders/{orderId}/messages/{fileName} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null &&
+        request.resource.size < 10 * 1024 * 1024; // 10 ميجابايت كحد أقصى
+    }
+    
+    // قواعد خاصة للرسائل الصوتية
+    match /orders/{orderId}/audio/{fileName} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null &&
+        request.resource.size < 15 * 1024 * 1024; // 15 ميجابايت كحد أقصى
+    }
+  }
+}
