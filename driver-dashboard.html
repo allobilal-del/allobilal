@@ -3,266 +3,731 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>لوحة تحكم السائق - ALLO BILAL</title>
+  <title>تسجيل سائق - ALLO BILAL</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* الأنماط السابقة مع إضافة دائرة التحميل */
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #4facfe;
+      --secondary: #00f2fe;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --dark: #0f172a;
+      --light: #f8fafc;
+    }
     body {
       font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-      color: #fff;
+      background: linear-gradient(135deg, var(--dark) 0%, #203a43 50%, #2c5364 100%);
       min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
       position: relative;
       overflow-x: hidden;
     }
-    /* ... باقي الأنماط ... */
-    
-    /* دائرة التحميل الأنيقة */
-    .searching-container {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(30, 41, 59, 0.95);
-      backdrop-filter: blur(15px);
-      border-radius: 25px;
-      padding: 40px;
-      text-align: center;
-      z-index: 10000;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-      border: 2px solid rgba(79, 172, 254, 0.4);
-      display: none;
-    }
-    
-    .searching-container.active {
-      display: block;
-      animation: fadeInScale 0.5s ease-out;
-    }
-    
-    @keyframes fadeInScale {
-      from {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.8);
-      }
-      to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-      }
-    }
-    
-    .searching-icon {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 25px;
-      position: relative;
-    }
-    
-    .searching-icon::before {
-      content: '';
+    body::before {
+      content: "";
       position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 70%);
+      z-index: -1;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(12px);
+      border-radius: 28px;
+      padding: 40px 30px;
+      max-width: 550px;
       width: 100%;
-      height: 100%;
-      border: 8px solid rgba(79, 172, 254, 0.3);
-      border-radius: 50%;
-      animation: pulseRing 2s infinite;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      position: relative;
+      z-index: 10;
+      animation: fadeInUp 0.6s ease-out;
+      margin: 20px;    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    
-    .searching-icon::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(135deg, #4facfe, #00f2fe);
-      border-radius: 50%;
-      box-shadow: 0 0 20px rgba(79, 172, 254, 0.7);
-      animation: pulseDot 2s infinite;
+    .logo-box {
+      text-align: center;
+      margin-bottom: 30px;
     }
-    
-    @keyframes pulseRing {
-      0% {
-        transform: scale(0.8);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(1.5);
-        opacity: 0;
-      }
-    }
-    
-    @keyframes pulseDot {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -50%) scale(1.1); }
-    }
-    
-    .searching-title {
-      font-size: 28px;
-      font-weight: 800;
+    .logo {
+      font-size: 60px;
       margin-bottom: 15px;
-      background: linear-gradient(90deg, #4facfe, #00f2fe);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .brand {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #ff512f, #dd2476, #24c6dc, #4facfe, #ffd700);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-size: 300% 300%;
+      animation: gradientBG 8s ease infinite;
     }
-    
-    .searching-text {
-      font-size: 19px;
-      color: rgba(255, 255, 255, 0.85);
-      margin-bottom: 25px;
-      line-height: 1.6;
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
-    
-    .searching-stats {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin-top: 20px;
+    .form-group {
+      margin-bottom: 20px;
+      text-align: right;
     }
-    
-    .stat-item {
-      text-align: center;
+    .form-group label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 17px;
+      font-weight: 600;
+      color: #fff;
+      text-align: right;
     }
-    
-    .stat-value {
-      font-size: 32px;
-      font-weight: 800;
-      color: #4facfe;
+    .form-control {
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 16px;      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 17px;
+      font-family: 'Cairo', sans-serif;
+      transition: all 0.3s;
     }
-    
-    .stat-label {
-      font-size: 15px;
-      color: rgba(255, 255, 255, 0.7);
-    }
-    
-    .cancel-search-btn {
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
       background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.3);
+    }
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+    .document-upload {
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+      border-radius: 16px;
+      padding: 25px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+    .document-upload:hover {
+      border-color: var(--primary);
+      background: rgba(79, 172, 254, 0.1);
+    }
+    .document-upload i {
+      font-size: 40px;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .document-upload p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 16px;
+      margin-top: 8px;
+    }
+    .document-upload input {
+      display: none;
+    }
+    .uploaded-file {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px 15px;
+      margin-top: 10px;
+      display: none;
+    }    .uploaded-file.show {
+      display: block;
+      animation: fadeIn 0.3s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .uploaded-file-name {
+      color: var(--primary);
+      font-weight: 600;
+      word-break: break-all;
+      font-size: 15px;
+    }
+    .btn {
+      width: 100%;
+      padding: 18px;
+      border: none;
+      border-radius: 16px;
+      font-size: 20px;
+      font-weight: 700;
+      font-family: 'Cairo', sans-serif;
+      cursor: pointer;
+      transition: all 0.4s;
+      margin-top: 10px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, rgba(255,255,255,0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+    .btn:hover::after { transform: translateX(100%); }
+    .btn-primary {
+      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+      color: var(--dark);
+      box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(79, 172, 254, 0.6);    }
+    .btn-primary:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    .links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 17px;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .links a:hover { 
+      color: #ffd700; 
+      text-decoration: underline;
+    }
+    .notification {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-150%);
+      background: rgba(40, 40, 60, 0.95);
+      color: white;
+      padding: 14px 28px;
+      border-radius: 45px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+      z-index: 10000;
+      font-size: 17px;
+      font-weight: 600;
+      transition: transform 0.45s ease;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .notification.show {      transform: translateX(-50%) translateY(0);
+    }
+    .notification.success { background: rgba(34, 197, 94, 0.95); border-color: rgba(34, 197, 94, 0.4); }
+    .notification.error { background: rgba(239, 68, 68, 0.95); border-color: rgba(239, 68, 68, 0.4); }
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.4);
       color: white;
       border: none;
-      padding: 12px 35px;
-      border-radius: 20px;
-      font-size: 18px;
-      font-weight: 600;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      font-size: 20px;
       cursor: pointer;
-      margin-top: 20px;
-      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      z-index: 20;
     }
-    
-    .cancel-search-btn:hover {
-      background: rgba(255, 255, 255, 0.25);
-      transform: translateY(-2px);
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: scale(1.1);
     }
-    
+    .language-bar {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 20;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-family: 'Cairo', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      padding: 4px 10px;
+      border-radius: 12px;
+      transition: all 0.3s;
+      font-weight: 500;    }
+    .lang-btn.active, .lang-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .spinner {
+      display: inline-block;
+      margin-left: 10px;
+    }
+    .spinner i {
+      font-size: 20px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
     @media (max-width: 480px) {
-      .searching-container { padding: 30px 20px; }
-      .searching-icon { width: 60px; height: 60px; }
-      .searching-icon::after { width: 30px; height: 30px; }
-      .searching-title { font-size: 24px; }
-      .searching-text { font-size: 17px; }
-      .stat-value { font-size: 28px; }
-      .stat-label { font-size: 14px; }
-      .searching-stats { flex-direction: column; gap: 15px; }
+      .container {
+        padding: 30px 20px;
+        margin: 10px;
+        border-radius: 24px;
+      }
+      .logo { font-size: 50px; }
+      .brand { font-size: 30px; }
+      .form-control { padding: 14px 15px; font-size: 16px; }
+      .btn { padding: 16px; font-size: 19px; }
+      .links { flex-direction: column; align-items: center; gap: 10px; }
+      .links a { font-size: 16px; }
+      .back-btn { width: 40px; height: 40px; font-size: 18px; }
+      .language-bar { top: 15px; right: 15px; padding: 3px; }
+      .lang-btn { font-size: 12px; padding: 3px 8px; }
+      .notification { padding: 12px 25px; font-size: 16px; }
+      .uploaded-file-name { font-size: 14px; }
     }
   </style>
 </head>
 <body>
-  <!-- زر الطوارئ 119 -->
-  <button class="emergency-btn" onclick="window.location.href='emergency.html'" style="position: fixed; bottom: 30px; left: 30px; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5); border: none; cursor: pointer; z-index: 1000; animation: pulse 2s infinite; transition: all 0.3s ease;">
-    119
+  <div class="language-bar">
+    <button class="lang-btn active" data-lang="ar" onclick="setLanguage('ar')">العربية</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLanguage('fr')">Français</button>
+    <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">English</button>
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='index.html'">
+    <i class="fas fa-arrow-right"></i>
   </button>
   
-  <!-- دائرة التحميل الأنيقة -->
-  <div class="searching-container" id="searchingContainer">
-    <div class="searching-icon"></div>
-    <div class="searching-title">جاري البحث عن الطلبات</div>
-    <div class="searching-text">
-      <p>نبحث عن أفضل الطلبات المناسبة لك</p>
-      <p>يرجى الانتظار، سيتم إعلامك فور توفر طلب</p>
+  <div class="container">
+    <div class="logo-box">      <div class="logo">🏍️</div>
+      <div class="brand" id="pageTitle">حساب سائق جديد</div>
     </div>
     
-    <div class="searching-stats">
-      <div class="stat-item">
-        <div class="stat-value" id="activeDrivers">125</div>
-        <div class="stat-label">سائق نشط</div>
+    <form id="registerForm">
+      <div class="form-group">
+        <label for="fullName" id="fullNameLabel">الاسم الكامل</label>
+        <input type="text" id="fullName" class="form-control" placeholder="أدخل اسمك الكامل" required>
       </div>
-      <div class="stat-item">
-        <div class="stat-value" id="availableOrders">18</div>
-        <div class="stat-label">طلب متاح</div>
+      
+      <div class="form-group">
+        <label for="phone" id="phoneLabel">رقم الهاتف</label>
+        <input type="tel" id="phone" class="form-control" placeholder="06XXXXXXXX أو 07XXXXXXXX" required pattern="^(06|07)\d{8}$">
       </div>
-    </div>
-    
-    <button class="cancel-search-btn" onclick="toggleSearchMode()">
-      <i class="fas fa-times"></i> إيقاف البحث
-    </button>
+      
+      <div class="form-group">
+        <label for="email" id="emailLabel">البريد الإلكتروني</label>
+        <input type="email" id="email" class="form-control" placeholder="example@email.com" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="password" id="passwordLabel">كلمة المرور</label>
+        <input type="password" id="password" class="form-control" placeholder="أدخل كلمة المرور" required minlength="6">
+      </div>
+      
+      <div class="form-group">
+        <label for="confirmPassword" id="confirmPasswordLabel">تأكيد كلمة المرور</label>
+        <input type="password" id="confirmPassword" class="form-control" placeholder="أعد إدخال كلمة المرور" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="vehicleType" id="vehicleTypeLabel">نوع المركبة</label>
+        <select id="vehicleType" class="form-control" required>
+          <option value="">اختر نوع المركبة</option>
+          <option value="motorcycle">دراجة نارية</option>
+          <option value="car">سيارة</option>
+          <option value="truck">شاحنة</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label id="nationalIdLabel">البطاقة الوطنية (صورة)</label>
+        <div class="document-upload" onclick="document.getElementById('nationalId').click()">
+          <i class="fas fa-id-card"></i>
+          <p id="uploadNationalIdText">انقر لرفع صورة البطاقة الوطنية</p>
+          <input type="file" id="nationalId" accept="image/*" required onchange="previewFile(this, 'nationalIdPreview')">
+        </div>
+        <div class="uploaded-file" id="nationalIdPreview"></div>
+      </div>
+            <div class="form-group">
+        <label id="drivingLicenseLabel">رخصة السياقة (صورة)</label>
+        <div class="document-upload" onclick="document.getElementById('drivingLicense').click()">
+          <i class="fas fa-file-contract"></i>
+          <p id="uploadLicenseText">انقر لرفع صورة رخصة السياقة</p>
+          <input type="file" id="drivingLicense" accept="image/*" required onchange="previewFile(this, 'licensePreview')">
+        </div>
+        <div class="uploaded-file" id="licensePreview"></div>
+      </div>
+      
+      <div class="form-group">
+        <label id="vehicleRegistrationLabel">بطاقة تسجيل المركبة (صورة)</label>
+        <div class="document-upload" onclick="document.getElementById('vehicleRegistration').click()">
+          <i class="fas fa-car"></i>
+          <p id="uploadRegistrationText">انقر لرفع صورة بطاقة تسجيل المركبة</p>
+          <input type="file" id="vehicleRegistration" accept="image/*" required onchange="previewFile(this, 'registrationPreview')">
+        </div>
+        <div class="uploaded-file" id="registrationPreview"></div>
+      </div>
+      
+      <button type="button" class="btn btn-primary" id="registerBtn" onclick="registerDriver()">
+        <i class="fas fa-user-check"></i>
+        <span id="registerBtnText">تأكيد التسجيل</span>
+        <span class="spinner" id="spinner" style="display:none;">
+          <i class="fas fa-spinner fa-spin"></i>
+        </span>
+      </button>
+      
+      <div class="links">
+        <a href="login.html" id="loginLink">
+          <i class="fas fa-sign-in-alt"></i>
+          <span id="loginLinkText">لديك حساب بالفعل؟ سجل الدخول</span>
+        </a>
+      </div>
+    </form>
   </div>
   
-  <!-- باقي محتوى الصفحة كما هو -->
-  <header class="header">
-    <div class="logo">ALLO BILAL</div>
-    <div class="user-info">
-      <div class="user-avatar" id="userAvatar">س</div>
-      <span id="userName">السائق</span>
-      <button class="nav-btn" onclick="logout()">
-        <i class="fas fa-sign-out-alt"></i> خروج
-      </button>
-    </div>
-  </header>
-  
-  <!-- ... باقي محتوى الصفحة ... -->
+  <div class="notification" id="notification">
+    <i class="fas fa-bell"></i>
+    <span id="notificationText">مرحباً بك في ALLO BILAL</span>
+  </div>
+
+  <!-- Firebase SDK - بدون integrity لتجنب أخطاء CORS -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
   
   <script>
-    // متغيرات البحث
-    let isSearching = false;
-    let searchInterval = null;
+    // تهيئة Firebase - تأكد من استخدام معلومات مشروعك الصحيح    const firebaseConfig = {
+      apiKey: "AIzaSyBPnZzN7DPWRSgiYDAS_bgBqGULL3-MdSU",
+      authDomain: "alobilal23.firebaseapp.com",
+      projectId: "alobilal23",
+      storageBucket: "alobilal23.firebasestorage.app",
+      messagingSenderId: "989762991926",
+      appId: "1:989762991926:web:822e72a777192f614ae597"
+    };
     
     // تهيئة التطبيق
-    document.addEventListener('DOMContentLoaded', async () => {
-      // ... الكود السابق ...
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    
+    // نظام اللغات
+    const translations = {
+      ar: {
+        pageTitle: "حساب سائق جديد",
+        fullNameLabel: "الاسم الكامل",
+        phoneLabel: "رقم الهاتف",
+        emailLabel: "البريد الإلكتروني",
+        passwordLabel: "كلمة المرور",
+        confirmPasswordLabel: "تأكيد كلمة المرور",
+        vehicleTypeLabel: "نوع المركبة",
+        nationalIdLabel: "البطاقة الوطنية (صورة)",
+        drivingLicenseLabel: "رخصة السياقة (صورة)",
+        vehicleRegistrationLabel: "بطاقة تسجيل المركبة (صورة)",
+        uploadNationalIdText: "انقر لرفع صورة البطاقة الوطنية",
+        uploadLicenseText: "انقر لرفع صورة رخصة السياقة",
+        uploadRegistrationText: "انقر لرفع صورة بطاقة تسجيل المركبة",
+        registerBtnText: "تأكيد التسجيل",
+        loginLinkText: "لديك حساب بالفعل؟ سجل الدخول",
+        notificationText: "مرحباً بك في ALLO BILAL",
+        successNotification: "تم تغيير اللغة إلى العربية",
+        fullNameError: "الاسم يجب أن يكون أكثر من حرفين",
+        phoneError: "رقم الهاتف غير صحيح (يجب أن يبدأ بـ 06 أو 07)",
+        emailError: "البريد الإلكتروني غير صحيح",
+        passwordError: "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+        passwordMismatch: "كلمتا المرور غير متطابقتين",
+        vehicleTypeError: "يرجى اختيار نوع المركبة",
+        documentError: "يرجى رفع جميع الوثائق المطلوبة",
+        registrationSuccess: "تم تسجيل حسابك بنجاح! سيتم مراجعة مستنداتك خلال 24 ساعة.",
+        registrationError: "حدث خطأ في التسجيل. يرجى المحاولة مرة أخرى.",
+        emailInUse: "هذا البريد الإلكتروني مستخدم مسبقاً",
+        weakPassword: "كلمة المرور ضعيفة جداً (6 أحرف على الأقل)",
+        invalidEmail: "البريد الإلكتروني غير صحيح",
+        uploadError: "خطأ في رفع المستندات. يرجى المحاولة مرة أخرى",
+        networkError: "خطأ في الاتصال بالشبكة. يرجى التحقق من اتصالك بالإنترنت"
+      }
+    };    
+    // تهيئة اللغة
+    let currentLang = localStorage.getItem('appLanguage') || 'ar';
+    
+    // تحميل اللغة عند بدء التشغيل
+    document.addEventListener('DOMContentLoaded', () => {
+      setLanguage(currentLang, true);
       
-      // بدء وضع البحث تلقائياً عند التحميل
-      toggleSearchMode();
+      // إشعار ترحيبي
+      setTimeout(() => {
+        showNotification(translations[currentLang].notificationText, 'success');
+      }, 800);
     });
     
-    // تبديل وضع البحث
-    function toggleSearchMode() {
-      const container = document.getElementById('searchingContainer');
+    // دالة تغيير اللغة
+    function setLanguage(lang, isInitialLoad = false) {
+      currentLang = lang;
+      localStorage.setItem('appLanguage', lang);
       
-      if (isSearching) {
-        // إيقاف البحث
-        clearInterval(searchInterval);
-        container.classList.remove('active');
-        isSearching = false;
-        
-        // تحديث واجهة المستخدم
-        document.querySelector('.nav-btn').innerHTML = '<i class="fas fa-play"></i> بدء البحث';
-      } else {
-        // بدء البحث
-        container.classList.add('active');
-        isSearching = true;
-        
-        // تحديث إحصائيات البحث كل 5 ثوانٍ
-        updateSearchStats();
-        searchInterval = setInterval(updateSearchStats, 5000);
-        
-        // تحديث واجهة المستخدم
-        document.querySelector('.nav-btn').innerHTML = '<i class="fas fa-stop"></i> إيقاف البحث';
+      // تحديث اتجاه الصفحة
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      document.body.style.direction = lang === 'ar' ? 'rtl' : 'ltr';
+      
+      // تحديث جميع العناصر النصية
+      Object.keys(translations[lang]).forEach(key => {
+        const element = document.getElementById(key);
+        if (element) {
+          element.textContent = translations[lang][key];
+        }
+      });
+      
+      // تحديث أزرار اللغة
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+      
+      // عرض إشعار إلا عند التحميل الأولي
+      if (!isInitialLoad) {
+        showNotification(translations[lang].successNotification, 'success');
       }
     }
     
-    // تحديث إحصائيات البحث
-    function updateSearchStats() {
-      // في تطبيق حقيقي، سيتم جلب البيانات من قاعدة البيانات
-      const driversCount = Math.floor(Math.random() * 50) + 100;
-      const ordersCount = Math.floor(Math.random() * 20) + 10;
+    // معاينة الملفات
+    function previewFile(input, previewId) {
+      const file = input.files[0];
+      if (file) {
+        const preview = document.getElementById(previewId);
+        preview.innerHTML = `<div class="uploaded-file-name">${file.name}</div>`;
+        preview.classList.add('show');
+      }    }
+    
+    // تسجيل السائق - الإصلاح الكامل مع معالجة جميع الأخطاء
+    async function registerDriver() {
+      const registerBtn = document.getElementById('registerBtn');
+      const spinner = document.getElementById('spinner');
+      const btnText = document.getElementById('registerBtnText');
       
-      document.getElementById('activeDrivers').textContent = driversCount;
-      document.getElementById('availableOrders').textContent = ordersCount;
+      // تعطيل الزر وعرض التحميل
+      registerBtn.disabled = true;
+      spinner.style.display = 'inline';
+      btnText.textContent = 'جاري التسجيل...';
+      
+      // جمع البيانات
+      const fullName = document.getElementById('fullName').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const vehicleType = document.getElementById('vehicleType').value;
+      const nationalIdFile = document.getElementById('nationalId').files[0];
+      const drivingLicenseFile = document.getElementById('drivingLicense').files[0];
+      const vehicleRegistrationFile = document.getElementById('vehicleRegistration').files[0];
+      
+      // التحقق من البيانات
+      if (fullName.length < 2) {
+        showError(translations[currentLang].fullNameError);
+        resetButton();
+        return;
+      }
+      
+      if (!phone.match(/^(06|07)\d{8}$/)) {
+        showError(translations[currentLang].phoneError);
+        resetButton();
+        return;
+      }
+      
+      if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        showError(translations[currentLang].emailError);
+        resetButton();
+        return;
+      }
+      
+      if (password.length < 6) {
+        showError(translations[currentLang].passwordError);
+        resetButton();
+        return;
+      }
+      
+      if (password !== confirmPassword) {        showError(translations[currentLang].passwordMismatch);
+        resetButton();
+        return;
+      }
+      
+      if (!vehicleType) {
+        showError(translations[currentLang].vehicleTypeError);
+        resetButton();
+        return;
+      }
+      
+      if (!nationalIdFile || !drivingLicenseFile || !vehicleRegistrationFile) {
+        showError(translations[currentLang].documentError);
+        resetButton();
+        return;
+      }
+      
+      try {
+        // التسجيل في Firebase Authentication
+        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+        
+        // رفع المستندات إلى Firebase Storage
+        const storage = firebase.storage();
+        const documents = {};
+        
+        try {
+          // رفع البطاقة الوطنية
+          const nationalIdRef = storage.ref(`drivers/${user.uid}/nationalId.jpg`);
+          await nationalIdRef.put(nationalIdFile);
+          documents.nationalIdUrl = await nationalIdRef.getDownloadURL();
+          
+          // رفع رخصة السياقة
+          const licenseRef = storage.ref(`drivers/${user.uid}/drivingLicense.jpg`);
+          await licenseRef.put(drivingLicenseFile);
+          documents.drivingLicenseUrl = await licenseRef.getDownloadURL();
+          
+          // رفع بطاقة تسجيل المركبة
+          const registrationRef = storage.ref(`drivers/${user.uid}/vehicleRegistration.jpg`);
+          await registrationRef.put(vehicleRegistrationFile);
+          documents.vehicleRegistrationUrl = await registrationRef.getDownloadURL();
+        } catch (storageError) {
+          console.error('خطأ في رفع المستندات:', storageError);
+          // حذف المستخدم إذا فشل رفع المستندات
+          await user.delete();
+          throw new Error(translations[currentLang].uploadError);
+        }
+        
+        // حفظ معلومات السائق في Firestore
+        const db = firebase.firestore();        await db.collection('users').doc(user.uid).set({
+          uid: user.uid,
+          name: fullName,
+          phone: phone,
+          email: email,
+          role: 'driver',
+          vehicleType: vehicleType,
+          documents: documents,
+          status: 'pending', // في انتظار الموافقة
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          language: currentLang
+        });
+        
+        // عرض رسالة نجاح
+        showNotification(translations[currentLang].registrationSuccess, 'success');
+        
+        // التوجيه إلى لوحة تحكم السائق بعد 3 ثوانٍ
+        setTimeout(() => {
+          window.location.href = 'driver-dashboard.html';
+        }, 3000);
+        
+      } catch (error) {
+        console.error('خطأ في التسجيل:', error);
+        let message = translations[currentLang].registrationError;
+        
+        // معالجة أنواع مختلفة من الأخطاء
+        if (error.code === 'auth/email-already-in-use') {
+          message = translations[currentLang].emailInUse;
+        } else if (error.code === 'auth/invalid-email') {
+          message = translations[currentLang].invalidEmail;
+        } else if (error.code === 'auth/weak-password') {
+          message = translations[currentLang].weakPassword;
+        } else if (error.code === 'auth/network-request-failed') {
+          message = translations[currentLang].networkError;
+        } else if (error.message.includes('storage')) {
+          message = translations[currentLang].uploadError;
+        }
+        
+        showError(message);
+        
+        // إذا كان المستخدم قد أُنشئ ولكن فشل رفع المستندات، احذفه
+        if (error.message === translations[currentLang].uploadError) {
+          const currentUser = firebase.auth().currentUser;
+          if (currentUser) {
+            currentUser.delete().catch(deleteError => {
+              console.error('خطأ في حذف المستخدم:', deleteError);
+            });
+          }
+        }
+      } finally {        resetButton();
+      }
     }
     
-    // ... باقي الوظائف ...
+    // عرض خطأ
+    function showError(message) {
+      showNotification(message, 'error');
+    }
+    
+    // إعادة تعيين الزر
+    function resetButton() {
+      const registerBtn = document.getElementById('registerBtn');
+      const spinner = document.getElementById('spinner');
+      const btnText = document.getElementById('registerBtnText');
+      
+      registerBtn.disabled = false;
+      spinner.style.display = 'none';
+      btnText.textContent = translations[currentLang].registerBtnText;
+    }
+    
+    // عرض الإشعار
+    function showNotification(message, type = 'info') {
+      const notification = document.getElementById('notification');
+      const notificationText = document.getElementById('notificationText');
+      
+      if (notificationText) {
+        notificationText.textContent = message;
+      }
+      
+      // إزالة الفئات القديمة
+      notification.className = 'notification';
+      
+      // إضافة فئة النوع
+      if (type === 'success') notification.classList.add('success');
+      else if (type === 'error') notification.classList.add('error');
+      
+      // إظهار الإشعار
+      notification.classList.add('show');
+      
+      // إخفاء تلقائي بعد 4 ثوانٍ
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 4000);
+    }
   </script>
 </body>
 </html>
