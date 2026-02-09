@@ -5,23 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>لوحة تحكم الزبون - ALLO BILAL</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome - رابط مبسط بدون integrity -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Leaflet - رابط مبسط بدون integrity -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --primary: #4facfe;
-      --secondary: #00f2fe;
-      --success: #10b981;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-      --dark: #0f172a;
-      --light: #f8fafc;
-    }
     body {
       font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, var(--dark) 0%, #203a43 50%, #2c5364 100%);
-      color: var(--light);
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      color: #fff;
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
@@ -47,7 +40,8 @@
     }
     .logo {
       font-family: 'Orbitron', sans-serif;
-      font-size: 26px;      font-weight: 800;
+      font-size: 26px;
+      font-weight: 800;
       background: linear-gradient(90deg, #ff512f, #dd2476, #24c6dc, #4facfe, #ffd700);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -96,7 +90,8 @@
     .main-container {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 20px;      padding: 20px;
+      gap: 20px;
+      padding: 20px;
       max-width: 1400px;
       margin: 0 auto;
       width: 100%;
@@ -125,6 +120,11 @@
       align-items: center;
       gap: 12px;
     }
+    @media (min-width: 900px) {
+      .section-title {
+        font-size: 32px;
+      }
+    }
     .form-group {
       margin-bottom: 25px;
       text-align: right;
@@ -145,10 +145,11 @@
       color: #fff;
       font-size: 18px;
       font-family: 'Cairo', sans-serif;
-      transition: all 0.3s;    }
+      transition: all 0.3s;
+    }
     .form-control:focus {
       outline: none;
-      border-color: var(--primary);
+      border-color: #4facfe;
       background: rgba(255, 255, 255, 0.15);
       box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.3);
     }
@@ -181,12 +182,12 @@
     }
     .vehicle-option:hover {
       background: rgba(255, 255, 255, 0.18);
-      border-color: var(--primary);
+      border-color: #4facfe;
       transform: translateY(-3px);
     }
     .vehicle-option.selected {
       background: rgba(79, 172, 254, 0.25);
-      border-color: var(--primary);
+      border-color: #4facfe;
       box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
     }
     .vehicle-option i {
@@ -194,7 +195,8 @@
     }
     .vehicle-option span {
       font-size: 16px;
-      font-weight: 600;    }
+      font-weight: 600;
+    }
     .btn {
       width: 100%;
       padding: 18px;
@@ -224,8 +226,8 @@
     }
     .btn:hover::after { transform: translateX(100%); }
     .btn-primary {
-      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-      color: var(--dark);
+      background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+      color: #0a1929;
       box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
     }
     .btn-primary:hover {
@@ -237,13 +239,201 @@
       cursor: not-allowed;
       transform: none !important;
     }
+    .links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      padding-top: 25px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .links a {
+      color: #4facfe;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 18px;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .links a:hover { 
+      color: #ffd700; 
+      text-decoration: underline;
+      transform: translateX(3px);
+    }
+    .notification {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-150%);
+      background: rgba(40, 40, 60, 0.95);
+      color: white;
+      padding: 16px 35px;
+      border-radius: 50px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+      z-index: 10000;
+      font-size: 19px;
+      font-weight: 600;
+      transition: transform 0.45s ease;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .notification.show {
+      transform: translateX(-50%) translateY(0);
+    }
+    .notification.success { background: rgba(34, 197, 94, 0.95); border-color: rgba(34, 197, 94, 0.4); }
+    .notification.error { background: rgba(239, 68, 68, 0.95); border-color: rgba(239, 68, 68, 0.4); }
+    .back-btn {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      background: rgba(0, 0, 0, 0.4);
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      z-index: 20;
+    }
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: scale(1.1);
+    }
+    .language-bar {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      display: flex;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px;
+      border-radius: 25px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 20;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-family: 'Cairo', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 15px;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    .lang-btn.active, .lang-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .spinner {
+      display: inline-block;
+      margin-left: 10px;
+    }
+    .spinner i {
+      font-size: 20px;
+    }
+    
+    /* زر الطوارئ */
+    .emergency-btn {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5);
+      border: none;
+      cursor: pointer;
+      z-index: 1000;
+      animation: pulse 2s infinite;
+      transition: all 0.3s ease;
+    }
+    .emergency-btn:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 12px 35px rgba(239, 68, 68, 0.7);
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    
+    /* المساعد الصوتي */
+    .voice-assistant {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: #0a1929;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 10px 30px rgba(79, 172, 254, 0.5);
+      border: none;
+      cursor: pointer;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+    .voice-assistant:hover {
+      transform: scale(1.1) rotate(-5deg);
+      box-shadow: 0 12px 35px rgba(79, 172, 254, 0.7);
+    }
+    .voice-assistant.recording {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      animation: pulse 1s infinite;
+    }
+    
+    /* العضويات */
+    .membership-badge {
+      display: inline-block;
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-left: 10px;
+    }
+    .membership-silver {
+      background: linear-gradient(135deg, #c0c0c0, #a9a9a9);
+      color: #0a1929;
+    }
+    .membership-gold {
+      background: linear-gradient(135deg, #ffd700, #ff9900);
+      color: #0a1929;
+    }
+    
     #map {
       height: 450px;
       border-radius: 20px;
       margin-top: 30px;
       border: 2px solid rgba(255, 255, 255, 0.15);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      position: relative;      background-color: #f0f0f0;
+      position: relative;
+      background-color: #f0f0f0;
     }
     @media (min-width: 900px) {
       #map {
@@ -284,7 +474,51 @@
     }
     .map-btn.active {
       background: rgba(79, 172, 254, 0.3);
-      border: 1px solid var(--primary);
+      border: 1px solid #4facfe;
+    }
+    .voice-preview {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 15px;
+      margin-top: 15px;
+      display: none;
+    }
+    .voice-preview.active {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .voice-player {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+    .voice-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .voice-btn {
+      padding: 8px 15px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      flex: 1;
+    }
+    .voice-btn.play {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+    .voice-btn.delete {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+    .voice-btn:hover {
+      transform: translateY(-2px);
     }
     .status-section {
       background: rgba(0, 0, 0, 0.35);
@@ -292,7 +526,8 @@
       border-radius: 20px;
       padding: 35px;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.15);      position: sticky;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      position: sticky;
       top: 100px;
       height: fit-content;
     }
@@ -312,7 +547,7 @@
       font-size: 20px;
       font-weight: 700;
       margin-bottom: 10px;
-      color: var(--primary);
+      color: #4facfe;
     }
     .status-text {
       font-size: 24px;
@@ -340,8 +575,14 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+    @media (min-width: 900px) {
+      .stat-value {
+        font-size: 36px;
+      }
+    }
     .stat-label {
-      font-size: 16px;      color: rgba(255, 255, 255, 0.85);
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.85);
       font-weight: 500;
     }
     .history-section {
@@ -358,7 +599,7 @@
       border-radius: 16px;
       padding: 18px;
       margin-bottom: 15px;
-      border-left: 4px solid var(--primary);
+      border-left: 4px solid #4facfe;
       transition: all 0.3s;
     }
     .history-item:hover {
@@ -374,30 +615,7 @@
       font-size: 15px;
       margin-top: 8px;
     }
-    .notification {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-150%);
-      background: rgba(40, 40, 60, 0.95);
-      color: white;
-      padding: 16px 35px;
-      border-radius: 50px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
-      z-index: 10000;
-      font-size: 19px;
-      font-weight: 600;
-      transition: transform 0.45s ease;
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      display: flex;      align-items: center;
-      gap: 12px;
-    }
-    .notification.show {
-      transform: translateX(-50%) translateY(0);
-    }
-    .notification.success { background: rgba(34, 197, 94, 0.95); border-color: rgba(34, 197, 94, 0.4); }
-    .notification.error { background: rgba(239, 68, 68, 0.95); border-color: rgba(239, 68, 68, 0.4); }
+    
     @media (max-width: 480px) {
       .header { padding: 12px 15px; }
       .logo { font-size: 22px; }
@@ -419,15 +637,27 @@
       .history-title { font-size: 20px; }
       .history-item p { font-size: 16px; }
       .history-item .date { font-size: 14px; }
+      .emergency-btn, .voice-assistant { width: 60px; height: 60px; font-size: 24px; }
     }
   </style>
 </head>
 <body>
+  <!-- زر الطوارئ 119 -->
+  <button class="emergency-btn" onclick="window.location.href='emergency.html'">
+    119
+  </button>
+  
+  <!-- المساعد الصوتي -->
+  <button class="voice-assistant" id="voiceAssistantBtn" onclick="toggleVoiceAssistant()">
+    <i class="fas fa-microphone"></i>
+  </button>
+  
   <header class="header">
     <div class="logo">ALLO BILAL</div>
     <div class="user-info">
       <div class="user-avatar" id="userAvatar">ز</div>
       <span id="userName">الزبون</span>
+      <span class="membership-badge membership-gold" id="membershipBadge">ذهبي</span>
       <button class="nav-btn" onclick="logout()">
         <i class="fas fa-sign-out-alt"></i> خروج
       </button>
@@ -439,15 +669,22 @@
       <h2 class="section-title">
         <i class="fas fa-shipping-fast"></i> طلب توصيل جديد
       </h2>
-            <form id="orderForm">
+      
+      <form id="orderForm">
         <div class="form-group">
           <label for="pickupLocation">مكان الاستلام</label>
           <input type="text" id="pickupLocation" class="form-control" placeholder="انقر على الخريطة لتحديد الموقع" required>
+          <small style="color: rgba(255,255,255,0.7); display: block; margin-top: 8px; font-size: 15px;">
+            <i class="fas fa-map-marker-alt"></i> أو <button type="button" class="map-btn" onclick="setLocationMode('pickup')">حدد من الخريطة</button>
+          </small>
         </div>
         
         <div class="form-group">
           <label for="deliveryLocation">مكان التسليم</label>
           <input type="text" id="deliveryLocation" class="form-control" placeholder="انقر على الخريطة لتحديد الموقع" required>
+          <small style="color: rgba(255,255,255,0.7); display: block; margin-top: 8px; font-size: 15px;">
+            <i class="fas fa-map-marker-alt"></i> أو <button type="button" class="map-btn" onclick="setLocationMode('delivery')">حدد من الخريطة</button>
+          </small>
         </div>
         
         <div class="form-group">
@@ -477,6 +714,37 @@
         <div class="form-group">
           <label for="suggestedPrice">السعر المقترح (درهم)</label>
           <input type="number" id="suggestedPrice" class="form-control" placeholder="أدخل السعر الذي تريده" min="0">
+          <small style="color: rgba(255,255,255,0.7); display: block; margin-top: 8px; font-size: 15px;">
+            <strong>ملاحظة:</strong> السعر قابل للتفاوض مع السائق. يمكنك تركه فارغاً والسائق سيقترح سعرًا.
+          </small>
+        </div>
+        
+        <div class="form-group">
+          <label for="voiceMessage">رسالة صوتية (اختياري)</label>
+          <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+            <button type="button" class="btn" style="padding: 12px; font-size: 16px; flex: 1;" onclick="startVoiceRecording()">
+              <i class="fas fa-microphone"></i> سجل رسالة صوتية
+            </button>
+            <button type="button" class="btn" style="padding: 12px; font-size: 16px; background: rgba(255,255,255,0.15); color: white;" onclick="document.getElementById('voiceFileInput').click()">
+              <i class="fas fa-upload"></i> رفع ملف صوتي
+            </button>
+            <input type="file" id="voiceFileInput" accept="audio/*" style="display: none;" onchange="handleVoiceFileUpload(event)">
+          </div>
+          
+          <!-- معاينة الرسالة الصوتية -->
+          <div class="voice-preview" id="voicePreview">
+            <audio controls class="voice-player" id="voicePlayer">
+              متصفحك لا يدعم تشغيل الصوت
+            </audio>
+            <div class="voice-actions">
+              <button type="button" class="voice-btn play" onclick="document.getElementById('voicePlayer').play()">
+                <i class="fas fa-play"></i> تشغيل
+              </button>
+              <button type="button" class="voice-btn delete" onclick="deleteVoiceMessage()">
+                <i class="fas fa-trash"></i> حذف
+              </button>
+            </div>
+          </div>
         </div>
         
         <button type="button" class="btn btn-primary" onclick="placeOrder()">
@@ -486,9 +754,11 @@
       
       <div id="map"></div>
       
+      <!-- عناصر التحكم في الخريطة -->
       <div class="map-controls">
         <button class="map-btn" id="pickupBtn" onclick="setLocationMode('pickup')">
-          <i class="fas fa-map-marker-alt"></i> تحديد مكان الاستلام        </button>
+          <i class="fas fa-map-marker-alt"></i> تحديد مكان الاستلام
+        </button>
         <button class="map-btn" id="deliveryBtn" onclick="setLocationMode('delivery')">
           <i class="fas fa-truck"></i> تحديد مكان التسليم
         </button>
@@ -538,6 +808,7 @@
     <i class="fas fa-bell"></i>
     <span id="notificationText">مرحباً بك في لوحة تحكم الزبون</span>
   </div>
+
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -564,7 +835,11 @@
     
     let selectedVehicle = 'motorcycle';
     let map, pickupMarker, deliveryMarker;
-    let locationMode = null;
+    let locationMode = null; // 'pickup' or 'delivery'
+    let recordedAudioBlob = null;
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecording = false;
     
     // تهيئة التطبيق
     document.addEventListener('DOMContentLoaded', async () => {
@@ -586,11 +861,15 @@
           if (userData.role !== 'customer') {
             window.location.href = userData.role === 'driver' ? 'driver-dashboard.html' : 'index.html';
             return;
-          }          
+          }
+          
           // تحميل معلومات المستخدم في الواجهة
           document.getElementById('userName').textContent = userData.name || userData.fullName || 'الزبون';
           const initials = (userData.name || userData.fullName || 'ز').charAt(0);
           document.getElementById('userAvatar').textContent = initials.toUpperCase();
+          
+          // تحميل مستوى العضوية
+          loadMembership(userData.membership || 'silver');
           
           // تهيئة الخريطة
           initMap();
@@ -612,10 +891,20 @@
     
     // تهيئة الخريطة
     function initMap() {
+      // إحداثيات الدار البيضاء، المغرب
       const casablancaCoords = [33.5731, -7.5898];
       
+      // تأكد من وجود عنصر الخريطة
+      const mapContainer = document.getElementById('map');
+      if (!mapContainer) {
+        console.error('لم يتم العثور على عنصر الخريطة');
+        return;
+      }
+      
+      // إنشاء الخريطة
       map = L.map('map').setView(casablancaCoords, 13);
       
+      // إضافة طبقة الخرائط
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
@@ -633,9 +922,11 @@
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            const userCoords = [position.coords.latitude, position.coords.longitude];
+ const userCoords = [position.coords.latitude, position.coords.longitude];
             map.setView(userCoords, 14);
-                        L.marker(userCoords, {
+            
+            // إضافة علامة لموقع المستخدم
+            L.marker(userCoords, {
               icon: L.divIcon({
                 className: 'custom-marker',
                 html: '<div style="background: linear-gradient(135deg, #ffd700 0%, #ff512f 100%); width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);"></div>',
@@ -649,6 +940,18 @@
           },
           { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
         );
+      }
+    }
+    
+    // تحميل مستوى العضوية
+    function loadMembership(level) {
+      const badge = document.getElementById('membershipBadge');
+      badge.className = `membership-badge membership-${level}`;
+      
+      if (level === 'silver') {
+        badge.textContent = 'فضي';
+      } else if (level === 'gold') {
+        badge.textContent = 'ذهبي';
       }
     }
     
@@ -684,7 +987,8 @@
     function setPickupLocation(latlng) {
       // إزالة العلامة القديمة إذا وجدت
       if (pickupMarker) {
-        map.removeLayer(pickupMarker);      }
+        map.removeLayer(pickupMarker);
+      }
       
       // إضافة علامة جديدة
       pickupMarker = L.marker(latlng, {
@@ -733,7 +1037,8 @@
       // إلغاء وضع التحديد
       locationMode = null;
       document.getElementById('deliveryBtn').classList.remove('active');
-    }    
+    }
+    
     // عكس الترميز الجغرافي (من إحداثيات إلى عنوان)
     function reverseGeocode(latlng, callback) {
       const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&accept-language=ar`;
@@ -777,17 +1082,112 @@
       }
     }
     
+    // بدء التسجيل الصوتي
+    async function startVoiceRecording() {
+      if (isRecording) {
+        stopVoiceRecording();
+        return;
+      }
+      
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+        recordedAudioBlob = null;
+        
+        mediaRecorder.ondataavailable = event => {
+          audioChunks.push(event.data);
+        };
+        
+        mediaRecorder.onstop = () => {
+          recordedAudioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+          
+          // عرض المعاينة
+          const audioURL = URL.createObjectURL(recordedAudioBlob);
+          document.getElementById('voicePlayer').src = audioURL;
+          document.getElementById('voicePreview').classList.add('active');
+          
+          // إيقاف جميع المسارات
+          stream.getTracks().forEach(track => track.stop());
+          
+          // تحديث واجهة المستخدم
+          document.querySelector('.voice-assistant').classList.remove('recording');
+          document.querySelector('.voice-assistant i').className = 'fas fa-microphone';
+          isRecording = false;
+          
+          showNotification('تم تسجيل الرسالة الصوتية بنجاح! يمكنك الاستماع إليها أو حذفها', 'success');
+        };
+        
+        mediaRecorder.start();
+        isRecording = true;
+        
+        // تحديث واجهة المستخدم
+        document.querySelector('.voice-assistant').classList.add('recording');
+        document.querySelector('.voice-assistant i').className = 'fas fa-stop';
+        showNotification('جارٍ التسجيل... اضغط على زر الميكروفون مرة أخرى لإيقاف التسجيل', 'warning');
+        
+      } catch (error) {
+        console.error('خطأ في الوصول إلى الميكروفون:', error);
+        showNotification('لم يتمكن من الوصول إلى الميكروفون. تأكد من منح الإذن.', 'error');
+        isRecording = false;
+      }
+    }
+    
+    // إيقاف التسجيل الصوتي
+    function stopVoiceRecording() {
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+      }
+    }
+    
+    // معالجة رفع ملف صوتي
+    function handleVoiceFileUpload(event) {
+      const file = event.target.files[0];
+      if (file && file.type.startsWith('audio/')) {
+        recordedAudioBlob = file;
+        
+        // عرض المعاينة
+        const audioURL = URL.createObjectURL(file);
+        document.getElementById('voicePlayer').src = audioURL;
+        document.getElementById('voicePreview').classList.add('active');
+        
+        showNotification('تم رفع الملف الصوتي بنجاح! يمكنك الاستماع إليه أو حذفه', 'success');
+      } else {
+        showNotification('يرجى اختيار ملف صوتي صالح', 'error');
+      }
+    }
+    
+    // حذف الرسالة الصوتية
+    function deleteVoiceMessage() {
+      recordedAudioBlob = null;
+      document.getElementById('voicePlayer').src = '';
+      document.getElementById('voicePreview').classList.remove('active');
+      document.getElementById('voiceFileInput').value = '';
+      showNotification('تم حذف الرسالة الصوتية', 'success');
+    }
+    
+    // تبديل المساعد الصوتي
+    function toggleVoiceAssistant() {
+      if (isRecording) {
+        stopVoiceRecording();
+      } else {
+        startVoiceRecording();
+      }
+    }
+    
     // عرض الإشعار
     function showNotification(message, type = 'info') {
       const notification = document.getElementById('notification');
       const notificationText = document.getElementById('notificationText');
       notificationText.textContent = message;
-            // إزالة الفئات القديمة
+      
+      // إزالة الفئات القديمة
       notification.className = 'notification';
       
       // إضافة فئة النوع
       if (type === 'success') notification.classList.add('success');
       else if (type === 'error') notification.classList.add('error');
+      else if (type === 'warning') notification.classList.add('warning');
       
       // إظهار الإشعار
       notification.classList.add('show');
@@ -826,17 +1226,28 @@
         const user = firebase.auth().currentUser;
         const db = firebase.firestore();
         
+        // رفع الرسالة الصوتية إذا وجدت
+        let voiceMessageUrl = null;
+        if (recordedAudioBlob) {
+          const storageRef = firebase.storage().ref(`orders/${Date.now()}_${user.uid}_voice`);
+          await storageRef.put(recordedAudioBlob);
+          voiceMessageUrl = await storageRef.getDownloadURL();
+        }
+        
         // إنشاء الطلب
         const orderData = {
           customerId: user.uid,
           customerName: document.getElementById('userName').textContent,
           pickupLocation: pickupLocation,
-          deliveryLocation: deliveryLocation,          packageDescription: packageDescription || 'طلب توصيل',
+          deliveryLocation: deliveryLocation,
+          packageDescription: packageDescription || 'طلب توصيل',
           vehicleType: selectedVehicle,
           suggestedPrice: suggestedPrice || null,
+          voiceMessageUrl: voiceMessageUrl,
           status: 'pending',
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          membershipLevel: document.getElementById('membershipBadge').className.includes('gold') ? 'gold' : 'silver'
         };
         
         await db.collection('orders').add(orderData);
@@ -850,6 +1261,7 @@
         // إعادة تعيين النموذج
         document.getElementById('orderForm').reset();
         document.querySelector('.vehicle-option').classList.add('selected');
+        deleteVoiceMessage();
         
         // إعادة تعيين العلامات على الخريطة
         if (pickupMarker) map.removeLayer(pickupMarker);
@@ -880,7 +1292,8 @@
         
         const historyContainer = document.getElementById('orderHistory');
         historyContainer.innerHTML = '';
-                if (ordersSnapshot.empty) {
+        
+        if (ordersSnapshot.empty) {
           historyContainer.innerHTML = '<div class="history-item"><p>لا يوجد طلبات سابقة</p></div>';
           return;
         }
@@ -929,7 +1342,8 @@
         });
         
         document.getElementById('totalOrders').textContent = total;
-        document.getElementById('completedOrders').textContent = completed;        document.getElementById('pendingOrders').textContent = pending;
+        document.getElementById('completedOrders').textContent = completed;
+        document.getElementById('pendingOrders').textContent = pending;
         document.getElementById('rating').textContent = total > 0 ? '4.8' : '0.0';
         
       } catch (error) {
