@@ -1,42 +1,65 @@
 {
-  "name": "ALLO BILAL - تطبيق التوصيل",
+  "name": "ALLO BILAL - توصيل سريع",
   "short_name": "ALLO BILAL",
-  "description": "تطبيق توصيل يربط بين الزبائن والسائقين في المغرب - توصيل سريع وآمن",
-  "start_url": "/",
+  "description": "تطبيق توصيل سريع بالدراجات النارية والسيارات والشاحنات في جميع أنحاء المغرب. اطلب توصيلك الآن!",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#4facfe",
   "orientation": "portrait-primary",
   "scope": "/",
-  "id": "/",
-  "categories": ["utilities", "productivity", "transportation", "shopping"],
-  "lang": "ar",
+  "lang": "ar-MA",
   "dir": "rtl",
+  "categories": ["utilities", "shopping", "transportation"],
+  "screenshots": [
+    {
+      "src": "/screenshots/home.png",
+      "sizes": "1170x2532",
+      "type": "image/png",
+      "platform": "narrow"
+    },
+    {
+      "src": "/screenshots/driver-dashboard.png",
+      "sizes": "1170x2532",
+      "type": "image/png",
+      "platform": "narrow"
+    },
+    {
+      "src": "/screenshots/order-tracking.png",
+      "sizes": "1170x2532",
+      "type": "image/png",
+      "platform": "narrow"
+    }
+  ],
   "icons": [
     {
       "src": "/icons/icon-72x72.png",
       "sizes": "72x72",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "/icons/icon-96x96.png",
       "sizes": "96x96",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "/icons/icon-128x128.png",
       "sizes": "128x128",
-      "type": "image/png"
+      "type": "image/png",      "purpose": "any maskable"
     },
     {
       "src": "/icons/icon-144x144.png",
       "sizes": "144x144",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "/icons/icon-152x152.png",
       "sizes": "152x152",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "/icons/icon-192x192.png",
@@ -47,7 +70,8 @@
     {
       "src": "/icons/icon-384x384.png",
       "sizes": "384x384",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "/icons/icon-512x512.png",
@@ -58,70 +82,42 @@
   ],
   "shortcuts": [
     {
-      "name": "طلب توصيل جديد",
-      "short_name": "طلب جديد",
-      "description": "إنشاء طلب توصيل جديد",
-      "url": "/customer-dashboard.html?action=new-order",
+      "name": "طلب جديد",
+      "short_name": "طلب",
+      "description": "أنشئ طلب توصيل جديد",
+      "url": "/customer-dashboard.html",
       "icons": [
         {
           "src": "/icons/shortcut-order.png",
-          "sizes": "96x96"
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ]
     },
     {
-      "name": "طلباتي النشطة",
-      "short_name": "طلباتي",
-      "description": "عرض الطلبات النشطة",
-      "url": "/customer-dashboard.html?action=active-orders",
-      "icons": [
-        {
-          "src": "/icons/shortcut-active.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "لوحة السائق",
-      "short_name": "السائق",
-      "description": "لوحة تحكم السائقين",
+      "name": "لوحة التحكم",
+      "short_name": "لوحة",      "description": "عرض لوحة تحكم السائق",
       "url": "/driver-dashboard.html",
       "icons": [
         {
-          "src": "/icons/shortcut-driver.png",
-          "sizes": "96x96"
+          "src": "/icons/shortcut-dashboard.png",
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ]
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/screenshots/screenshot1.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "صفحة طلب التوصيل"
     },
     {
-      "src": "/screenshots/screenshot2.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "تتبع الطلب على الهاتف"
-    }
-  ],
-  "display_override": ["window-controls-overlay", "minimal-ui"],
-  "launch_handler": {
-    "client_mode": "focus-existing"
-  },
-  "handle_links": "preferred",
-  "edge_side_panel": {
-    "preferred_width": 400
-  },
-  "protocol_handlers": [
-    {
-      "protocol": "web+allo-bilal",
-      "url": "/?protocol=%s"
+      "name": "الطلبات",
+      "short_name": "طلبات",
+      "description": "عرض سجل الطلبات",
+      "url": "/customer-dashboard.html#history",
+      "icons": [
+        {
+          "src": "/icons/shortcut-history.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ],
   "related_applications": [
@@ -129,37 +125,42 @@
       "platform": "play",
       "url": "https://play.google.com/store/apps/details?id=com.allobilal.app",
       "id": "com.allobilal.app"
-    },
-    {
-      "platform": "itunes",
-      "url": "https://apps.apple.com/us/app/allo-bilal/id123456789"
     }
   ],
   "prefer_related_applications": false,
-  "features": [
-    "cross-origin-isolated",
-    "geolocation",
-    "microphone",
-    "camera",
-    "web-share",
-    "payment"
+  "iarc_rating_id": "C000000000",
+  "display_override": ["fullscreen", "minimal-ui"],
+  "protocol_handlers": [
+    {
+      "protocol": "web+allobilal",
+      "url": "/share?share=%s"
+    }
   ],
   "share_target": {
-    "action": "/share.html",
+    "action": "/share",
     "method": "GET",
-    "enctype": "application/x-www-form-urlencoded",
     "params": {
       "title": "title",
       "text": "text",
       "url": "url"
     }
   },
-  "file_handlers": [
-    {
-      "action": "/upload.html",
+  "file_handlers": [    {
+      "action": "/open-file",
       "accept": {
-        "image/*": [".jpg", ".jpeg", ".png", ".gif"]
+        "image/*": [".jpg", ".jpeg", ".png", ".gif"],
+        "application/pdf": [".pdf"]
       }
     }
-  ]
+  ],
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "permissions_policy": {
+    "geolocation": ["self"],
+    "camera": ["self"],
+    "microphone": ["self"],
+    "notifications": ["self"]
+  },
+  "content_security_policy": "default-src 'self'; img-src 'self' https://*.firebaseio.com https://*.firebasestorage.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.google-analytics.com; connect-src 'self' https://alobilal23.firebaseio.com https://alobilal23.firebasestorage.app https://www.google-analytics.com"
 }
