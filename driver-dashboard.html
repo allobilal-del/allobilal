@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* نفس الأنماط السابقة - مختصرة للتركيز على الإصلاح */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
       --primary: #4facfe;
@@ -47,8 +46,8 @@
       background: linear-gradient(90deg, #ff512f, #dd2476, #24c6dc, #4facfe, #ffd700);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-size: 300% 300%;      animation: gradientBG 8s ease infinite;
-    }
+      background-size: 300% 300%;
+      animation: gradientBG 8s ease infinite;    }
     @keyframes gradientBG {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
@@ -96,8 +95,8 @@
       padding-bottom: calc(env(safe-area-inset-bottom) + 20px);
       max-width: 100%;
       width: 100%;
-    }    .dashboard-section {
-      background: rgba(30, 41, 59, 0.85);
+    }
+    .dashboard-section {      background: rgba(30, 41, 59, 0.85);
       backdrop-filter: blur(12px);
       border-radius: 20px;
       padding: 24px;
@@ -145,29 +144,57 @@
     @keyframes pulse {
       0% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.6; transform: scale(0.9); }
-      100% { opacity: 1; transform: scale(1); }    }
-    .vehicle-filter {
-      background: rgba(79, 172, 254, 0.15);
-      border-left: 4px solid var(--primary);
+      100% { opacity: 1; transform: scale(1); }
+    }    .debug-info {
+      background: rgba(255, 215, 0, 0.15);
+      border-left: 4px solid #ffd700;
       padding: 12px;
       border-radius: 0 12px 12px 0;
       margin: 15px 0;
-      font-size: 14px;
-      color: var(--primary);
+      font-size: 13px;
+      color: #ffd700;
       display: flex;
       align-items: center;
       gap: 8px;
+      line-height: 1.5;
     }
-    .vehicle-filter i {
+    .debug-info i {
       font-size: 18px;
+    }
+    .refresh-btn {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: var(--dark);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 15px 0;
+      width: 100%;
+      box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+      transition: all 0.2s;
+    }
+    .refresh-btn:active {
+      transform: scale(0.98);
+      box-shadow: 0 2px 10px rgba(79, 172, 254, 0.5);
+    }
+    .refresh-btn i {
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
     .empty-state {
       text-align: center;
       padding: 40px 20px;
       color: rgba(255, 255, 255, 0.65);
     }
-    .empty-state i {
-      font-size: 56px;
+    .empty-state i {      font-size: 56px;
       margin-bottom: 15px;
       opacity: 0.35;
     }
@@ -175,6 +202,15 @@
       font-size: 17px;
       margin-top: 12px;
       line-height: 1.5;
+    }
+    .empty-state .help-text {
+      background: rgba(79, 172, 254, 0.15);
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 20px;
+      font-size: 14px;
+      line-height: 1.6;
+      text-align: left;
     }
     .notification {
       position: fixed;
@@ -194,7 +230,8 @@
       border: 1px solid rgba(255, 255, 255, 0.15);
       display: flex;
       align-items: center;
-      gap: 10px;      max-width: 90%;
+      gap: 10px;
+      max-width: 90%;
       text-align: center;
       line-height: 1.4;
     }
@@ -204,9 +241,9 @@
     .notification.success { background: rgba(34, 197, 94, 0.98); border-color: rgba(34, 197, 94, 0.45); }
     .notification.error { background: rgba(239, 68, 68, 0.98); border-color: rgba(239, 68, 68, 0.45); }
     .notification.info { background: rgba(59, 130, 246, 0.98); border-color: rgba(59, 130, 246, 0.45); }
+    .notification.warning { background: rgba(245, 158, 11, 0.98); border-color: rgba(245, 158, 11, 0.45); }
     .order-card {
-      background: rgba(255, 255, 255, 0.07);
-      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.07);      border-radius: 16px;
       padding: 20px;
       margin-bottom: 16px;
       border-left: 4px solid var(--primary);
@@ -243,7 +280,8 @@
       gap: 4px;
     }
     .order-locations {
-      margin-bottom: 16px;      padding: 16px;
+      margin-bottom: 16px;
+      padding: 16px;
       background: rgba(0, 0, 0, 0.2);
       border-radius: 12px;
     }
@@ -254,8 +292,7 @@
       margin-bottom: 10px;
       line-height: 1.4;
     }
-    .location-item:last-child {
-      margin-bottom: 0;
+    .location-item:last-child {      margin-bottom: 0;
     }
     .location-icon {
       width: 22px;
@@ -292,7 +329,8 @@
     }
     .detail-item {
       text-align: center;
-    }    .detail-label {
+    }
+    .detail-label {
       font-size: 13px;
       color: rgba(255, 255, 255, 0.75);
       margin-bottom: 4px;
@@ -303,8 +341,7 @@
       font-size: 16px;
       color: white;
       line-height: 1.3;
-    }
-    .order-actions {
+    }    .order-actions {
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -341,7 +378,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 40px;    }
+      padding: 40px;
+    }
     .spinner {
       width: 32px;
       height: 32px;
@@ -350,14 +388,9 @@
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
     @media (max-width: 480px) {
       .header { padding: 12px; }
-      .logo { font-size: 22px; }
-      .user-avatar { width: 36px; height: 36px; font-size: 15px; }
+      .logo { font-size: 22px; }      .user-avatar { width: 36px; height: 36px; font-size: 15px; }
       .nav-btn { padding: 6px 12px; font-size: 14px; min-width: 70px; height: 34px; }
       .main-container { padding: 12px; }
       .dashboard-section { padding: 20px; border-radius: 16px; }
@@ -389,19 +422,24 @@
       
       <div class="realtime-indicator">
         <span class="realtime-dot"></span>
-        <span id="realtimeStatus">التحديث التلقائي مفعل - <span id="vehicleTypeText">جميع أنواع المركبات</span></span>
-      </div>      
-      <div class="vehicle-filter" id="vehicleFilter">
-        <i class="fas fa-filter"></i>
-        <span>عرض الطلبات المخصصة لـ: <strong id="filterVehicleType">...</strong></span>
+        <span id="realtimeStatus">التحديث التلقائي مفعل</span>
       </div>
+      
+      <div class="debug-info" id="debugInfo">
+        <i class="fas fa-info-circle"></i>
+        <span>جارٍ تحميل معلومات السائق...</span>
+      </div>
+      
+      <button class="refresh-btn" id="refreshBtn">
+        <i class="fas fa-sync-alt"></i>
+        <span>تحديث الطلبات</span>
+      </button>
       
       <div id="availableOrdersContainer">
         <div class="loading">
           <div class="spinner"></div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
   </div>
   
   <div class="notification" id="notification">
@@ -434,12 +472,15 @@
     let driverVehicleType = null;
     let driverName = '';
     let availableOrdersUnsubscribe = null;
+    let lastOrderCheck = 0;
+    let orderCount = 0;
     
     // تهيئة التطبيق عند التحميل
     document.addEventListener('DOMContentLoaded', () => {
       // التحقق من تسجيل الدخول
       firebase.auth().onAuthStateChanged(async (user) => {
-        if (!user) {          window.location.href = 'login.html';
+        if (!user) {
+          window.location.href = 'login.html';
           return;
         }
         
@@ -447,12 +488,23 @@
         
         // تحميل معلومات السائق
         await loadDriverData();
-        
-        // إعداد التحديث التلقائي للطلبات
+                // إعداد التحديث التلقائي للطلبات
         setupRealtimeListeners();
         
         // عرض رسالة ترحيب
         showNotification('مرحباً! التحديث التلقائي مفعل', 'success');
+      });
+      
+      // إعداد زر التحديث اليدوي
+      document.getElementById('refreshBtn').addEventListener('click', () => {
+        showNotification('جارٍ التحديث...', 'info');
+        if (availableOrdersUnsubscribe) {
+          availableOrdersUnsubscribe();
+        }
+        setTimeout(() => {
+          setupRealtimeListeners();
+          showNotification('تم التحديث بنجاح!', 'success');
+        }, 500);
       });
       
       // إعداد زر تسجيل الخروج
@@ -485,13 +537,11 @@
           document.getElementById('userName').textContent = driverName;
           document.getElementById('userAvatar').textContent = driverName.charAt(0);
           document.getElementById('vehicleTypeInfo').textContent = `مركبتك: ${getVehicleTypeLabel(driverVehicleType)}`;
-          document.getElementById('filterVehicleType').textContent = getVehicleTypeLabel(driverVehicleType);
-          document.getElementById('vehicleTypeText').textContent = getVehicleTypeLabel(driverVehicleType);
-          
-          // تحديث مؤشر الوقت الحقيقي          document.getElementById('realtimeStatus').innerHTML = `
-            <span class="realtime-dot"></span>
-            التحديث التلقائي مفعل - <strong>${getVehicleTypeLabel(driverVehicleType)}</strong> فقط
-          `;
+                    // تحديث معلومات التصحيح
+          updateDebugInfo('تم تحميل معلومات السائق بنجاح', 'success', {
+            vehicleType: driverVehicleType,
+            userId: currentUserId.substring(0, 8) + '...'
+          });
           
         } else {
           showNotification('لم يتم العثور على بيانات السائق', 'error');
@@ -501,14 +551,15 @@
         }
       } catch (error) {
         console.error('خطأ في تحميل بيانات السائق:', error);
+        updateDebugInfo(`خطأ: ${error.message}`, 'error');
         showNotification('حدث خطأ في تحميل البيانات', 'error');
       }
     }
     
-    // إعداد الاستماع للتحديثات التلقائية - الإصلاح الرئيسي هنا
+    // إعداد الاستماع للتحديثات التلقائية - الحل الشامل
     function setupRealtimeListeners() {
       if (!driverVehicleType) {
-        console.error('نوع مركبة السائق غير معروف');
+        updateDebugInfo('خطأ: نوع المركبة غير معروف', 'error');
         showNotification('خطأ: لم يتم تحديد نوع المركبة', 'error');
         return;
       }
@@ -520,50 +571,134 @@
         availableOrdersUnsubscribe();
       }
       
-      // 1. الاستماع للطلبات المتاحة (الطلبات بحالة "pending" ونوع المركبة يطابق نوع سائق)
-      // الإصلاح: إضافة فلترة حسب نوع المركبة
+      // محاولة 1: البحث بالفلترة الكاملة
+      updateDebugInfo(`جارٍ البحث عن طلبات لـ ${getVehicleTypeLabel(driverVehicleType)}...`, 'info');
+      
       availableOrdersUnsubscribe = db.collection('orders')
         .where('status', '==', 'pending')
-        .where('vehicleType', '==', driverVehicleType) // الفلترة حسب نوع المركبة
-        .onSnapshot((snapshot) => {
+        .where('vehicleType', '==', driverVehicleType)
+        .onSnapshot({ includeMetadataChanges: true }, (snapshot) => {
+          // تحديث وقت آخر فحص
+          lastOrderCheck = Date.now();
+          
           const orders = [];
           snapshot.forEach(doc => {
             orders.push({ id: doc.id, ...doc.data() });
           });
           
-          // فرز الطلبات حسب الوقت (الأحدث أولاً)
-          orders.sort((a, b) => {
+          // فرز الطلبات حسب الوقت (الأحدث أولاً)          orders.sort((a, b) => {
             const aTime = a.createdAt?.toDate?.() || a.createdAt || new Date(0);
             const bTime = b.createdAt?.toDate?.() || b.createdAt || new Date(0);
             return new Date(bTime) - new Date(aTime);
           });
-                    renderAvailableOrders(orders);
-        }, (error) => {
-          console.error('خطأ في تحميل الطلبات المتاحة:', error);
           
-          // محاولة إعادة الاتصال بعد 5 ثوانٍ
-          showNotification('خطأ في الاتصال. إعادة المحاولة...', 'error');
-          setTimeout(() => {
-            setupRealtimeListeners();
-          }, 5000);
+          // تحديث العداد
+          orderCount = orders.length;
+          
+          // تحديث معلومات التصحيح
+          updateDebugInfo(
+            `تم العثور على ${orderCount} طلب لـ ${getVehicleTypeLabel(driverVehicleType)}`,
+            orderCount > 0 ? 'success' : 'warning',
+            { orderCount, timestamp: new Date().toLocaleTimeString() }
+          );
+          
+          renderAvailableOrders(orders);
+          
+        }, (error) => {
+          console.error('خطأ في تحميل الطلبات (المحاولة 1):', error);
+          
+          // محاولة 2: البحث بدون فلترة نوع المركبة (للتصحيح)
+          updateDebugInfo(`المحاولة 1 فشلت. جارٍ المحاولة بدون فلترة نوع المركبة...`, 'warning');
+          
+          availableOrdersUnsubscribe = db.collection('orders')
+            .where('status', '==', 'pending')
+            .onSnapshot((snapshot) => {
+              const orders = [];
+              snapshot.forEach(doc => {
+                const orderData = { id: doc.id, ...doc.data() };
+                // فلترة يدوية على العميل
+                if (!orderData.vehicleType || orderData.vehicleType === driverVehicleType) {
+                  orders.push(orderData);
+                }
+              });
+              
+              orders.sort((a, b) => {
+                const aTime = a.createdAt?.toDate?.() || a.createdAt || new Date(0);
+                const bTime = b.createdAt?.toDate?.() || b.createdAt || new Date(0);
+                return new Date(bTime) - new Date(aTime);
+              });
+              
+              orderCount = orders.length;
+              
+              updateDebugInfo(
+                `الوضع التصحيحي: ${orderCount} طلب (بدون فلترة خادم)`,
+                'warning',
+                { fallbackMode: true, orderCount }
+              );
+                            renderAvailableOrders(orders, true);
+              
+            }, (fallbackError) => {
+              console.error('خطأ في تحميل الطلبات (الوضع التصحيحي):', fallbackError);
+              updateDebugInfo(`فشل تحميل الطلبات: ${fallbackError.message}`, 'error');
+              showNotification('فشل تحميل الطلبات. حاول التحديث اليدوي.', 'error');
+            });
         });
     }
     
+    // تحديث معلومات التصحيح
+    function updateDebugInfo(message, type = 'info', details = null) {
+      const debugInfo = document.getElementById('debugInfo');
+      const iconMap = {
+        'success': 'fa-check-circle',
+        'error': 'fa-exclamation-triangle',
+        'warning': 'fa-exclamation-circle',
+        'info': 'fa-info-circle'
+      };
+      
+      debugInfo.className = `debug-info ${type}`;
+      debugInfo.innerHTML = `
+        <i class="fas ${iconMap[type] || iconMap.info}"></i>
+        <span>${message}</span>
+      `;
+      
+      // إضافة تفاصيل إضافية إذا وجدت
+      if (details) {
+        const detailsText = Object.entries(details)
+          .map(([key, value]) => `${key}: ${value}`)
+          .join(' | ');
+        
+        debugInfo.innerHTML += `<div style="margin-top: 8px; font-size: 12px; opacity: 0.9;">${detailsText}</div>`;
+      }
+    }
+    
     // عرض الطلبات المتاحة
-    function renderAvailableOrders(orders) {
+    function renderAvailableOrders(orders, isFallbackMode = false) {
       const container = document.getElementById('availableOrdersContainer');
       
-      if (orders.length === 0) {
-        container.innerHTML = `
+      // تحديث مؤشر الوقت الحقيقي
+      const statusEl = document.getElementById('realtimeStatus');
+      statusEl.innerHTML = `
+        <span class="realtime-dot"></span>
+        ${isFallbackMode ? 
+          '<span style="color: #ffd700;">الوضع التصحيحي - </span>' : ''}
+        التحديث التلقائي مفعل (${orderCount} طلب)
+      `;
+      
+      if (orders.length === 0) {        container.innerHTML = `
           <div class="empty-state">
             <i class="fas fa-box-open"></i>
-            <p>لا توجد طلبات متاحة لـ ${getVehicleTypeLabel(driverVehicleType)}</p>
+            <p>${isFallbackMode ? 'لا توجد طلبات مطابقة' : `لا توجد طلبات لـ ${getVehicleTypeLabel(driverVehicleType)}`}</p>
             <p style="font-size: 15px; margin-top: 8px; opacity: 0.8;">
-              سيتم عرض الطلبات الجديدة تلقائياً عند توفرها
+              ${isFallbackMode ? 
+                'تأكد من أن نوع المركبة في طلبات الزبائن مطابق' : 
+                'سيتم عرض الطلبات الجديدة تلقائياً عند توفرها'}
             </p>
-            <div style="background: rgba(79, 172, 254, 0.15); border-radius: 12px; padding: 12px; margin-top: 15px; font-size: 14px;">
-              <i class="fas fa-info-circle" style="margin-left: 5px;"></i>
-              هذه الشاشة تعرض فقط الطلبات المناسبة لمركبتك: <strong>${getVehicleTypeLabel(driverVehicleType)}</strong>
+            <div class="help-text">
+              <strong>نصائح لحل المشكلة:</strong><br>
+              1. تأكد من تحديث لوحة الزبون بالإصدار الجديد<br>
+              2. اطلب من الزبون اختيار نوع مركبتك عند إنشاء الطلب<br>
+              3. استخدم زر "تحديث الطلبات" أعلاه<br>
+              4. إذا استمرت المشكلة، اتصل بالدعم الفني
             </div>
           </div>
         `;
@@ -572,28 +707,33 @@
       
       let html = `<div style="margin-bottom: 15px; padding: 12px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; border-left: 3px solid var(--success);">
         <i class="fas fa-check-circle" style="margin-left: 5px;"></i>
-        <strong>${orders.length}</strong> طلب جديد متاح لـ ${getVehicleTypeLabel(driverVehicleType)}
+        <strong>${orders.length}</strong> طلب جديد ${isFallbackMode ? '(وضع تصحيحي)' : `لـ ${getVehicleTypeLabel(driverVehicleType)}`}
       </div>`;
       
       orders.forEach(order => {
+        // التحقق من وجود نوع المركبة في الطلب
+        const orderVehicleType = order.vehicleType || 'غير معروف';
+        const vehicleMatch = orderVehicleType === driverVehicleType;
+        
         html += `
-          <div class="order-card pending" data-id="${order.id}">
+          <div class="order-card pending" data-id="${order.id}" style="${!vehicleMatch ? 'border-left-color: #ffd700; background: rgba(255, 215, 0, 0.1);' : ''}">
             <div class="order-header">
               <div class="order-id">
                 <i class="fas fa-shopping-bag"></i> طلب #${order.id.substring(0, 5)}
+                ${!vehicleMatch ? `<span style="background: rgba(255, 215, 0, 0.2); color: #ffd700; padding: 2px 6px; border-radius: 6px; font-size: 12px; margin-right: 6px;">${getVehicleTypeLabel(orderVehicleType)}</span>` : ''}
               </div>
               <div class="order-time">
                 <i class="fas fa-clock"></i> ${order.createdAt ? formatTimeAgo(order.createdAt) : 'الآن'}
               </div>
             </div>
-                        <div class="order-locations">
+            
+            <div class="order-locations">
               <div class="location-item">
                 <div class="location-icon">
                   <i class="fas fa-map-marker-alt"></i>
                 </div>
                 <div>
-                  <div class="location-label">الاستلام</div>
-                  <div class="location-address">${order.pickupLocation?.substring(0, 25) || '---'}</div>
+                  <div class="location-label">الاستلام</div>                  <div class="location-address">${order.pickupLocation?.substring(0, 25) || '---'}</div>
                 </div>
               </div>
               <div class="location-item">
@@ -631,11 +771,19 @@
                 <i class="fas fa-check-circle"></i> قبول الطلب
               </button>
             </div>
+            
+            ${!vehicleMatch ? `
+              <div style="background: rgba(255, 215, 0, 0.15); border-radius: 8px; padding: 8px; margin-top: 10px; font-size: 13px; color: #ffd700;">
+                <i class="fas fa-exclamation-triangle" style="margin-left: 4px;"></i>
+                ملاحظة: هذا الطلب لـ <strong>${getVehicleTypeLabel(orderVehicleType)}</strong> وليس لمركبتك (${getVehicleTypeLabel(driverVehicleType)}). 
+                قد يكون هناك خطأ في إنشاء الطلب.
+              </div>
+            ` : ''}
           </div>
         `;
       });
+            container.innerHTML = html;
       
-      container.innerHTML = html;      
       // إضافة مستمعات للأزرار
       document.querySelectorAll('.action-btn.accept').forEach(button => {
         button.addEventListener('click', (e) => {
@@ -645,18 +793,13 @@
       });
       
       // إظهار إشعار عند وجود طلب جديد
-      if (orders.length > 0) {
-        const latestOrderTime = orders[0].createdAt?.toDate?.() || new Date();
-        const lastNotificationTime = localStorage.getItem('lastOrderNotificationTime');
-        const lastOrderId = localStorage.getItem('lastOrderId');
-        
-        // إظهار إشعار فقط إذا كان الطلب جديدًا
-        if (!lastNotificationTime || new Date(lastNotificationTime) < latestOrderTime || lastOrderId !== orders[0].id) {
-          showNotification(`طلب جديد! #${orders[0].id.substring(0, 5)} - ${getVehicleTypeLabel(driverVehicleType)}`, 'info');
-          localStorage.setItem('lastOrderNotificationTime', new Date().toISOString());
-          localStorage.setItem('lastOrderId', orders[0].id);
-        }
+      if (orders.length > 0 && orders.length > orderCount) {
+        const latestOrder = orders[0];
+        showNotification(`طلب جديد! #${latestOrder.id.substring(0, 5)} - ${getVehicleTypeLabel(latestOrder.vehicleType || driverVehicleType)}`, 'info');
       }
+      
+      // تحديث العداد
+      orderCount = orders.length;
     }
     
     // قبول الطلب
@@ -674,28 +817,27 @@
         
         showNotification('تم قبول الطلب بنجاح! اذهب لاستلام الطلب', 'success');
         
-        // تحديث مؤقت لمنع إشعار مكرر
-        localStorage.setItem('lastOrderId', '');
-        
       } catch (error) {
         console.error('خطأ في قبول الطلب:', error);
         
         // معالجة أخطاء محددة
-        if (error.code === 'permission-denied') {
+        if (error.code === 'permission-denied' || error.message.includes('No document to update')) {
           showNotification('هذا الطلب تم قبوله من قبل سائق آخر', 'error');
         } else if (error.code === 'not-found') {
-          showNotification('الطلب غير موجود', 'error');        } else {
+          showNotification('الطلب غير موجود', 'error');
+        } else {
           showNotification('حدث خطأ في قبول الطلب. حاول مرة أخرى', 'error');
+          updateDebugInfo(`خطأ في قبول الطلب: ${error.message}`, 'error');
         }
       }
     }
-    
-    // دوال مساعدة
+        // دوال مساعدة
     function getVehicleTypeLabel(type) {
       const labels = {
         'motorcycle': 'دراجة نارية',
         'car': 'سيارة',
-        'truck': 'شاحنة'
+        'truck': 'شاحنة',
+        'غير معروف': 'غير معروف'
       };
       return labels[type] || type;
     }
@@ -714,15 +856,11 @@
     }
     
     function calculateDistance(order) {
-      // هذه دالة محاكاة - في التطبيق الحقيقي سيتم حساب المسافة الفعلية
-      // نحسب مسافة عشوائية بين 2 و 15 كم
       return Math.floor(Math.random() * 14) + 2;
     }
     
     function calculateDeliveryTime(order) {
-      // حساب الوقت التقريبي للتوصيل بناءً على المسافة
       const distance = calculateDistance(order);
-      // 3-5 دقائق لكل كيلومتر
       return Math.floor(distance * Math.random() * 2 + 3);
     }
     
@@ -733,15 +871,16 @@
       
       notificationText.textContent = message;
       notification.className = 'notification';
-            if (type === 'success') notification.classList.add('success');
+      
+      if (type === 'success') notification.classList.add('success');
       else if (type === 'error') notification.classList.add('error');
       else if (type === 'info') notification.classList.add('info');
+      else if (type === 'warning') notification.classList.add('warning');
       
       notification.classList.add('show');
       
       setTimeout(() => {
-        notification.classList.remove('show');
-      }, 4000);
+        notification.classList.remove('show');      }, 4500);
     }
     
     // تسجيل الخروج
@@ -760,12 +899,19 @@
     // إشعار ترحيبي عند التحميل
     window.addEventListener('load', () => {
       setTimeout(() => {
-        // إخفاء مؤشر التحميل بعد 1.5 ثانية
         const loadingEl = document.querySelector('.loading');
         if (loadingEl) {
           loadingEl.style.display = 'none';
         }
       }, 1500);
+      
+      // فحص دوري للطلبات (كل 30 ثانية)
+      setInterval(() => {
+        if (Date.now() - lastOrderCheck > 30000) {
+          updateDebugInfo('إعادة تحميل الطلبات تلقائياً...', 'info');
+          setupRealtimeListeners();
+        }
+      }, 30000);
     });
     
     // تنظيف الاستماع عند مغادرة الصفحة
