@@ -2,11 +2,13 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f172a">
   <title>لوحة تحكم السائق - ALLO BILAL</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    /* نفس الأنماط السابقة - مختصرة للتركيز على الإصلاح */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
       --primary: #4facfe;
@@ -22,36 +24,30 @@
       background: linear-gradient(135deg, var(--dark) 0%, #203a43 50%, #2c5364 100%);
       color: var(--light);
       min-height: 100vh;
-      position: relative;
       overflow-x: hidden;
-    }
-    body::before {
-      content: "";
-      position: absolute;
-      top: -50%; left: -50%; width: 200%; height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 70%);
-      z-index: -1;
+      line-height: 1.5;
     }
     .header {
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(10px);
-      padding: 15px 20px;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+      padding: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
       border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
     .logo {
       font-family: 'Orbitron', sans-serif;
-      font-size: 26px;
-      font-weight: 800;      background: linear-gradient(90deg, #ff512f, #dd2476, #24c6dc, #4facfe, #ffd700);
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #ff512f, #dd2476, #24c6dc, #4facfe, #ffd700);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-size: 300% 300%;
-      animation: gradientBG 8s ease infinite;
+      background-size: 300% 300%;      animation: gradientBG 8s ease infinite;
     }
     @keyframes gradientBG {
       0% { background-position: 0% 50%; }
@@ -64,222 +60,213 @@
       gap: 12px;
     }
     .user-avatar {
-      width: 45px;
-      height: 45px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background: linear-gradient(135deg, #ffd700, #ff512f);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: 18px;
+      font-size: 16px;
+      flex-shrink: 0;
     }
     .nav-btn {
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.12);
       border: none;
       color: white;
-      padding: 10px 20px;
+      padding: 8px 14px;
       border-radius: 12px;
       font-weight: 600;
-      font-size: 16px;
+      font-size: 15px;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 80px;
+      height: 36px;
+    }
+    .nav-btn:active {
+      transform: scale(0.98);
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .main-container {
+      padding: 16px;
+      padding-bottom: calc(env(safe-area-inset-bottom) + 20px);
+      max-width: 100%;
+      width: 100%;
+    }    .dashboard-section {
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #ffd700, #ff512f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid rgba(255, 215, 0, 0.2);
+    }
+    .realtime-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.18);
+      color: var(--success);
+      padding: 8px 14px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 14px;
+      width: fit-content;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .realtime-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1); }    }
+    .vehicle-filter {
+      background: rgba(79, 172, 254, 0.15);
+      border-left: 4px solid var(--primary);
+      padding: 12px;
+      border-radius: 0 12px 12px 0;
+      margin: 15px 0;
+      font-size: 14px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .vehicle-filter i {
+      font-size: 18px;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: rgba(255, 255, 255, 0.65);
+    }
+    .empty-state i {
+      font-size: 56px;
+      margin-bottom: 15px;
+      opacity: 0.35;
+    }
+    .empty-state p {
+      font-size: 17px;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+    .notification {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-150%);
+      background: rgba(40, 40, 60, 0.98);
+      color: white;
+      padding: 14px 24px;
+      border-radius: 50px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+      z-index: 10000;
+      font-size: 16px;
+      font-weight: 600;
+      transition: transform 0.35s ease;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;      max-width: 90%;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .notification.show {
+      transform: translateX(-50%) translateY(0);
+    }
+    .notification.success { background: rgba(34, 197, 94, 0.98); border-color: rgba(34, 197, 94, 0.45); }
+    .notification.error { background: rgba(239, 68, 68, 0.98); border-color: rgba(239, 68, 68, 0.45); }
+    .notification.info { background: rgba(59, 130, 246, 0.98); border-color: rgba(59, 130, 246, 0.45); }
+    .order-card {
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      border-left: 4px solid var(--primary);
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    }
+    .order-card:active {
+      transform: translateX(3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+    .order-card.pending { border-left-color: var(--warning); }
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .order-id {
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--primary);
       display: flex;
       align-items: center;
       gap: 6px;
     }
-    .nav-btn:hover {
-      background: rgba(255, 255, 255, 0.25);
-      transform: translateY(-2px);
-    }
-    .main-container {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-      padding: 20px;      max-width: 1400px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    @media (min-width: 900px) {
-      .main-container {
-        grid-template-columns: 1fr 380px;
-      }
-    }
-    .dashboard-section {
-      background: rgba(0, 0, 0, 0.35);
-      backdrop-filter: blur(12px);
-      border-radius: 20px;
-      padding: 35px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-    .section-title {
-      font-size: 28px;
-      font-weight: 800;
-      margin-bottom: 30px;
-      background: linear-gradient(90deg, #ffd700, #ff512f);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-    @media (min-width: 900px) {
-      .stats-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-    .stat-card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 20px;
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      transition: all 0.3s;
-    }
-    .stat-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(255, 255, 255, 0.3);      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-    .stat-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 15px;
-      font-size: 24px;
-    }
-    .stat-icon.primary { background: rgba(79, 172, 254, 0.2); color: var(--primary); }
-    .stat-icon.success { background: rgba(16, 185, 129, 0.2); color: var(--success); }
-    .stat-icon.warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
-    .stat-icon.info { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
-    .stat-label {
-      font-size: 16px;
-      color: rgba(255, 255, 255, 0.85);
-      margin-bottom: 8px;
-      font-weight: 500;
-    }
-    .stat-value {
-      font-size: 32px;
-      font-weight: 800;
-      background: linear-gradient(90deg, #ffd700, #ff512f);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 25px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-      padding-bottom: 15px;
-    }
-    .tab-btn {
-      padding: 10px 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      border-radius: 12px 12px 0 0;
-      color: rgba(255, 255, 255, 0.7);
-      font-family: 'Cairo', sans-serif;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .tab-btn.active {
-      background: rgba(79, 172, 254, 0.2);
-      color: var(--primary);      border-bottom: 3px solid var(--primary);
-    }
-    .tab-btn:hover:not(.active) {
-      background: rgba(255, 255, 255, 0.15);
-      color: rgba(255, 255, 255, 0.9);
-    }
-    .orders-container {
-      display: none;
-    }
-    .orders-container.active {
-      display: block;
-      animation: fadeIn 0.5s ease-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .order-card {
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 15px;
-      border-left: 4px solid var(--primary);
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-    .order-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(90deg, rgba(79, 172, 254, 0.1), transparent);
-      z-index: -1;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .order-card:hover::before {
-      opacity: 1;
-    }
-    .order-card:hover {
-      transform: translateX(5px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      border-left-color: var(--secondary);
-    }
-    .order-card.pending { border-left-color: var(--warning); }
-    .order-card.accepted { border-left-color: var(--primary); }
-    .order-card.picked-up { border-left-color: #9c27b0; }
-    .order-card.completed { border-left-color: var(--success); }
-    .order-header {
-      display: flex;      justify-content: space-between;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .order-id {
-      font-weight: 700;
-      font-size: 18px;
-      color: var(--primary);
-    }
     .order-time {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.7);
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.75);
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
     .order-locations {
-      margin-bottom: 15px;
-      padding: 12px;
+      margin-bottom: 16px;      padding: 16px;
       background: rgba(0, 0, 0, 0.2);
       border-radius: 12px;
     }
     .location-item {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      line-height: 1.4;
     }
     .location-item:last-child {
       margin-bottom: 0;
     }
     .location-icon {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       background: var(--primary);
+      flex-shrink: 0;
+      margin-top: 2px;
     }
     .location-icon.delivery {
       background: var(--success);
@@ -287,188 +274,95 @@
     .location-label {
       font-weight: 600;
       color: rgba(255, 255, 255, 0.9);
+      font-size: 14px;
+      margin-bottom: 2px;
     }
     .location-address {
-      color: rgba(255, 255, 255, 0.75);
-      font-size: 15px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      line-height: 1.4;
     }
-    .order-details {      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 15px;
-      margin-bottom: 20px;
-      padding-top: 15px;
+    .order-details {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-top: 12px;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     .detail-item {
       text-align: center;
-    }
-    .detail-label {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 5px;
+    }    .detail-label {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 4px;
+      line-height: 1.3;
     }
     .detail-value {
       font-weight: 700;
-      font-size: 18px;
+      font-size: 16px;
       color: white;
+      line-height: 1.3;
     }
     .order-actions {
       display: flex;
+      flex-direction: column;
       gap: 10px;
-      margin-top: 15px;
-      flex-wrap: wrap;
+      margin-top: 16px;
+      width: 100%;
     }
     .action-btn {
-      padding: 10px 18px;
+      width: 100%;
+      padding: 14px;
       border-radius: 12px;
       border: none;
       font-weight: 600;
+      font-size: 16px;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.2s;
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      gap: 8px;
       font-family: 'Cairo', sans-serif;
+      height: 48px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    .action-btn:active {
+      transform: scale(0.985);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
     }
     .action-btn.accept {
-      background: rgba(16, 185, 129, 0.2);
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.25), rgba(16, 185, 129, 0.15));
       color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
     }
-    .action-btn.accept:hover {
-      background: rgba(16, 185, 129, 0.3);
-      transform: translateY(-2px);
-    }
-    .action-btn.picked-up {
-      background: rgba(156, 39, 176, 0.2);
-      color: #9c27b0;
-    }    .action-btn.picked-up:hover {
-      background: rgba(156, 39, 176, 0.3);
-      transform: translateY(-2px);
-    }
-    .action-btn.complete {
-      background: rgba(16, 185, 129, 0.2);
-      color: var(--success);
-    }
-    .action-btn.complete:hover {
-      background: rgba(16, 185, 129, 0.3);
-      transform: translateY(-2px);
-    }
-    .action-btn.cancel {
-      background: rgba(239, 68, 68, 0.2);
-      color: var(--danger);
-    }
-    .action-btn.cancel:hover {
-      background: rgba(239, 68, 68, 0.3);
-      transform: translateY(-2px);
-    }
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: rgba(255, 255, 255, 0.6);
-    }
-    .empty-state i {
-      font-size: 60px;
-      margin-bottom: 15px;
-      opacity: 0.3;
-    }
-    .empty-state p {
-      font-size: 18px;
-      margin-top: 10px;
-    }
-    .realtime-indicator {
+    .loading {
       display: flex;
+      justify-content: center;
       align-items: center;
-      gap: 8px;
-      background: rgba(16, 185, 129, 0.2);
-      color: var(--success);
-      padding: 8px 15px;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 15px;
-      width: fit-content;
-      margin-bottom: 20px;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0% { opacity: 1; }      50% { opacity: 0.7; }
-      100% { opacity: 1; }
-    }
-    .realtime-dot {
-      width: 10px;
-      height: 10px;
-      background: var(--success);
+      padding: 40px;    }
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid var(--primary);
       border-radius: 50%;
-      display: inline-block;
+      animation: spin 1s linear infinite;
     }
-    .notification {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-150%);
-      background: rgba(40, 40, 60, 0.95);
-      color: white;
-      padding: 16px 35px;
-      border-radius: 50px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
-      z-index: 10000;
-      font-size: 19px;
-      font-weight: 600;
-      transition: transform 0.45s ease;
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .notification.show {
-      transform: translateX(-50%) translateY(0);
-    }
-    .notification.success { background: rgba(34, 197, 94, 0.95); border-color: rgba(34, 197, 94, 0.4); }
-    .notification.error { background: rgba(239, 68, 68, 0.95); border-color: rgba(239, 68, 68, 0.4); }
-    .notification.info { background: rgba(59, 130, 246, 0.95); border-color: rgba(59, 130, 246, 0.4); }
-    .status-badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 600;
-      margin-left: 8px;
-    }
-    .status-badge.pending { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
-    .status-badge.accepted { background: rgba(79, 172, 254, 0.2); color: var(--primary); }
-    .status-badge.picked-up { background: rgba(156, 39, 176, 0.2); color: #9c27b0; }
-    .status-badge.completed { background: rgba(16, 185, 129, 0.2); color: var(--success); }
-    .status-badge.cancelled { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
-    .vehicle-badge {      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.1);
-      font-size: 14px;
-      font-weight: 600;
-    }
-    .vehicle-badge.motorcycle { color: #4facfe; }
-    .vehicle-badge.car { color: #ffd700; }
-    .vehicle-badge.truck { color: #ff6b6b; }
-    @media (max-width: 768px) {
-      .header { padding: 12px 15px; }
-      .logo { font-size: 22px; }
-      .user-avatar { width: 40px; height: 40px; font-size: 16px; }
-      .nav-btn { padding: 8px 15px; font-size: 15px; }
-      .main-container { padding: 15px; }
-      .dashboard-section { padding: 25px; }
-      .section-title { font-size: 24px; margin-bottom: 20px; }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .stat-value { font-size: 28px; }
-      .stat-label { font-size: 15px; }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
     @media (max-width: 480px) {
-      .stats-grid { grid-template-columns: 1fr; }
-      .tabs { flex-wrap: wrap; }
-      .tab-btn { width: 100%; margin-bottom: 8px; }
-      .order-actions { flex-direction: column; }
-      .action-btn { width: 100%; justify-content: center; }
+      .header { padding: 12px; }
+      .logo { font-size: 22px; }
+      .user-avatar { width: 36px; height: 36px; font-size: 15px; }
+      .nav-btn { padding: 6px 12px; font-size: 14px; min-width: 70px; height: 34px; }
+      .main-container { padding: 12px; }
+      .dashboard-section { padding: 20px; border-radius: 16px; }
+      .section-title { font-size: 22px; margin-bottom: 16px; }
+      .order-card { padding: 16px; border-radius: 12px; }
     }
   </style>
 </head>
@@ -477,9 +371,11 @@
     <div class="logo">ALLO BILAL</div>
     <div class="user-info">
       <div class="user-avatar" id="userAvatar">س</div>
-      <span id="userName">السائق</span>
-      <span class="status-badge accepted" id="driverStatus">نشط</span>
-      <button class="nav-btn" onclick="logout()">
+      <div>
+        <div id="userName">السائق</div>
+        <div style="font-size: 13px; opacity: 0.8; margin-top: 2px;" id="vehicleTypeInfo">جارٍ التحميل...</div>
+      </div>
+      <button class="nav-btn" id="logoutBtn">
         <i class="fas fa-sign-out-alt"></i> خروج
       </button>
     </div>
@@ -488,154 +384,25 @@
   <div class="main-container">
     <div class="dashboard-section">
       <h2 class="section-title">
-        <i class="fas fa-tachometer-alt"></i> لوحة التحكم      </h2>
+        <i class="fas fa-tachometer-alt"></i> لوحة التحكم
+      </h2>
       
       <div class="realtime-indicator">
         <span class="realtime-dot"></span>
-        <span>التحديث التلقائي مفعل - جميع البيانات حية</span>
+        <span id="realtimeStatus">التحديث التلقائي مفعل - <span id="vehicleTypeText">جميع أنواع المركبات</span></span>
+      </div>      
+      <div class="vehicle-filter" id="vehicleFilter">
+        <i class="fas fa-filter"></i>
+        <span>عرض الطلبات المخصصة لـ: <strong id="filterVehicleType">...</strong></span>
       </div>
       
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-icon primary">
-            <i class="fas fa-shopping-cart"></i>
-          </div>
-          <div class="stat-label">الطلبات النشطة</div>
-          <div class="stat-value" id="activeOrdersCount">0</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon success">
-            <i class="fas fa-check-circle"></i>
-          </div>
-          <div class="stat-label">المكتملة اليوم</div>
-          <div class="stat-value" id="completedTodayCount">0</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon warning">
-            <i class="fas fa-clock"></i>
-          </div>
-          <div class="stat-label">في الانتظار</div>
-          <div class="stat-value" id="pendingOrdersCount">0</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon info">
-            <i class="fas fa-star"></i>
-          </div>
-          <div class="stat-label">التقييم</div>
-          <div class="stat-value" id="driverRating">0.0</div>
-        </div>
-      </div>
-      
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="available">الطلبات المتاحة</button>
-        <button class="tab-btn" data-tab="my-orders">طلباتي</button>
-        <button class="tab-btn" data-tab="history">السجل</button>
-      </div>
-      
-      <div class="orders-container active" id="available-orders">
-        <div id="availableOrdersList">
-          <div class="empty-state">
-            <i class="fas fa-box-open"></i>
-            <p>لا توجد طلبات متاحة حالياً</p>
-            <p style="font-size: 15px; margin-top: 8px; opacity: 0.8;">سيتم عرض الطلبات الجديدة تلقائياً عند توفرها</p>          </div>
-        </div>
-      </div>
-      
-      <div class="orders-container" id="my-orders">
-        <div id="myOrdersList">
-          <div class="empty-state">
-            <i class="fas fa-truck"></i>
-            <p>ليس لديك طلبات نشطة</p>
-            <p style="font-size: 15px; margin-top: 8px; opacity: 0.8;">اقبل طلباً جديداً لإضافته إلى قائمتك</p>
-          </div>
-        </div>
-      </div>
-      
-      <div class="orders-container" id="history">
-        <div id="historyOrdersList">
-          <div class="empty-state">
-            <i class="fas fa-history"></i>
-            <p>لا يوجد سجل طلبات</p>
-            <p style="font-size: 15px; margin-top: 8px; opacity: 0.8;">سيتم عرض سجل طلباتك هنا بعد إكمال أول طلب</p>
-          </div>
+      <div id="availableOrdersContainer">
+        <div class="loading">
+          <div class="spinner"></div>
         </div>
       </div>
     </div>
-    
-    <div class="dashboard-section">
-      <h2 class="section-title">
-        <i class="fas fa-user"></i> معلومات السائق
-      </h2>
-      
-      <div class="order-card" style="background: linear-gradient(135deg, rgba(79, 172, 254, 0.15), rgba(0, 242, 254, 0.1));">
-        <div class="order-header">
-          <div>
-            <div class="order-id" id="driverName">--- ---</div>
-            <div class="order-time" id="driverPhone">--- --- ---</div>
-          </div>
-          <div class="vehicle-badge motorcycle" id="vehicleType">
-            <i class="fas fa-motorcycle"></i>
-            <span>دراجة نارية</span>
-          </div>
-        </div>
-        
-        <div class="order-locations">
-          <div class="location-item">
-            <div class="location-icon">
-              <i class="fas fa-id-card"></i>
-            </div>
-            <div>
-              <div class="location-label">رقم الهوية</div>
-              <div class="location-address" id="driverIdNumber">---------</div>            </div>
-          </div>
-          <div class="location-item">
-            <div class="location-icon">
-              <i class="fas fa-map-marker-alt"></i>
-            </div>
-            <div>
-              <div class="location-label">المدينة</div>
-              <div class="location-address" id="driverCity">الدار البيضاء</div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="order-details">
-          <div class="detail-item">
-            <div class="detail-label">إجمالي الطلبات</div>
-            <div class="detail-value" id="totalOrders">0</div>
-          </div>
-          <div class="detail-item">
-            <div class="detail-label">الأرباح اليوم</div>
-            <div class="detail-value" id="dailyEarnings">0 درهم</div>
-          </div>
-          <div class="detail-item">
-            <div class="detail-label">معدل القبول</div>
-            <div class="detail-value" id="acceptanceRate">0%</div>
-          </div>
-          <div class="detail-item">
-            <div class="detail-label">متوسط الوقت</div>
-            <div class="detail-value" id="avgDeliveryTime">0 دقيقة</div>
-          </div>
-        </div>
-      </div>
-      
-      <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-        <h3 style="font-size: 20px; margin-bottom: 15px; color: var(--primary);">
-          <i class="fas fa-bell"></i> إشعارات مهمة
-        </h3>
-        <div class="order-card" style="border-left-color: var(--warning);">
-          <div style="display: flex; align-items: start; gap: 12px;">
-            <i class="fas fa-info-circle" style="font-size: 24px; color: var(--warning); margin-top: 4px;"></i>
-            <div>
-              <div style="font-weight: 600; margin-bottom: 8px; font-size: 17px;">ملاحظة هامة</div>
-              <p style="line-height: 1.6; color: rgba(255, 255, 255, 0.85);">
-                تأكد من تحديث حالة الطلب فوراً عند الاستلام والتوصيل لضمان تجربة مستخدم ممتازة وتحسين تقييمك.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>  </div>
+  </div>
   
   <div class="notification" id="notification">
     <i class="fas fa-bell"></i>
@@ -664,17 +431,15 @@
     
     // المتغيرات العامة
     let currentUserId = null;
-    let driverData = null;
+    let driverVehicleType = null;
+    let driverName = '';
     let availableOrdersUnsubscribe = null;
-    let myOrdersUnsubscribe = null;
-    let completedOrdersUnsubscribe = null;
     
     // تهيئة التطبيق عند التحميل
     document.addEventListener('DOMContentLoaded', () => {
       // التحقق من تسجيل الدخول
       firebase.auth().onAuthStateChanged(async (user) => {
-        if (!user) {
-          window.location.href = 'login.html';
+        if (!user) {          window.location.href = 'login.html';
           return;
         }
         
@@ -684,36 +449,14 @@
         await loadDriverData();
         
         // إعداد التحديث التلقائي للطلبات
-        setupRealtimeListeners();        
+        setupRealtimeListeners();
+        
         // عرض رسالة ترحيب
-        showNotification('مرحباً! تم تفعيل التحديث التلقائي للطلبات', 'info');
+        showNotification('مرحباً! التحديث التلقائي مفعل', 'success');
       });
       
-      // إعداد أزرار التبويب
-      document.querySelectorAll('.tab-btn').forEach(button => {
-        button.addEventListener('click', () => {
-          // إزالة التحديد من جميع الأزرار
-          document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-          
-          // إضافة التحديد للزر المضغوط
-          button.classList.add('active');
-          
-          // إخفاء جميع الحاويات
-          document.querySelectorAll('.orders-container').forEach(container => {
-            container.classList.remove('active');
-          });
-          
-          // إظهار الحاوية المختارة
-          const tabId = button.getAttribute('data-tab');
-          document.getElementById(`${tabId}-orders`).classList.add('active');
-          
-          // تحديث العنوان
-          document.querySelector('.section-title').innerHTML = `
-            <i class="fas fa-${tabId === 'available' ? 'shopping-cart' : tabId === 'my-orders' ? 'truck' : 'history'}"></i> 
-            ${tabId === 'available' ? 'الطلبات المتاحة' : tabId === 'my-orders' ? 'طلباتي' : 'السجل'}
-          `;
-        });
-      });
+      // إعداد زر تسجيل الخروج
+      document.getElementById('logoutBtn').addEventListener('click', logout);
     });
     
     // تحميل معلومات السائق
@@ -723,7 +466,7 @@
         const driverDoc = await db.collection('users').doc(currentUserId).get();
         
         if (driverDoc.exists) {
-          driverData = driverDoc.data();
+          const driverData = driverDoc.data();
           
           // التحقق من أن المستخدم سائق
           if (driverData.role !== 'driver') {
@@ -733,25 +476,22 @@
             }, 2000);
             return;
           }
-                    // تحديث واجهة المستخدم
-          document.getElementById('userName').textContent = driverData.name || 'السائق';
-          document.getElementById('userAvatar').textContent = (driverData.name || 'س').charAt(0);
-          document.getElementById('driverName').textContent = driverData.name || '--- ---';
-          document.getElementById('driverPhone').textContent = driverData.phone || '--- --- ---';
-          document.getElementById('driverIdNumber').textContent = driverData.idNumber || '---------';
           
-          // تحديث نوع المركبة
-          const vehicleTypeEl = document.getElementById('vehicleType');
-          if (driverData.vehicleType) {
-            vehicleTypeEl.innerHTML = `
-              <i class="fas fa-${driverData.vehicleType === 'motorcycle' ? 'motorcycle' : driverData.vehicleType === 'car' ? 'car' : 'truck'}"></i>
-              <span>${getVehicleTypeLabel(driverData.vehicleType)}</span>
-            `;
-            vehicleTypeEl.className = `vehicle-badge ${driverData.vehicleType}`;
-          }
+          // حفظ نوع مركبة السائق
+          driverVehicleType = driverData.vehicleType || 'motorcycle';
+          driverName = driverData.name || 'السائق';
           
-          // تحديث الإحصائيات (ستُحدَّث لاحقاً من الطلبات)
-          updateStats();
+          // تحديث واجهة المستخدم
+          document.getElementById('userName').textContent = driverName;
+          document.getElementById('userAvatar').textContent = driverName.charAt(0);
+          document.getElementById('vehicleTypeInfo').textContent = `مركبتك: ${getVehicleTypeLabel(driverVehicleType)}`;
+          document.getElementById('filterVehicleType').textContent = getVehicleTypeLabel(driverVehicleType);
+          document.getElementById('vehicleTypeText').textContent = getVehicleTypeLabel(driverVehicleType);
+          
+          // تحديث مؤشر الوقت الحقيقي          document.getElementById('realtimeStatus').innerHTML = `
+            <span class="realtime-dot"></span>
+            التحديث التلقائي مفعل - <strong>${getVehicleTypeLabel(driverVehicleType)}</strong> فقط
+          `;
           
         } else {
           showNotification('لم يتم العثور على بيانات السائق', 'error');
@@ -765,93 +505,95 @@
       }
     }
     
-    // إعداد الاستماع للتحديثات التلقائية
+    // إعداد الاستماع للتحديثات التلقائية - الإصلاح الرئيسي هنا
     function setupRealtimeListeners() {
+      if (!driverVehicleType) {
+        console.error('نوع مركبة السائق غير معروف');
+        showNotification('خطأ: لم يتم تحديد نوع المركبة', 'error');
+        return;
+      }
+      
       const db = firebase.firestore();
       
-      // 1. الاستماع للطلبات المتاحة (الطلبات بحالة "pending" بدون سائق)
+      // إلغاء الاستماع القديم إذا كان موجوداً
+      if (availableOrdersUnsubscribe) {
+        availableOrdersUnsubscribe();
+      }
+      
+      // 1. الاستماع للطلبات المتاحة (الطلبات بحالة "pending" ونوع المركبة يطابق نوع سائق)
+      // الإصلاح: إضافة فلترة حسب نوع المركبة
       availableOrdersUnsubscribe = db.collection('orders')
         .where('status', '==', 'pending')
-        .orderBy('createdAt', 'desc')
+        .where('vehicleType', '==', driverVehicleType) // الفلترة حسب نوع المركبة
         .onSnapshot((snapshot) => {
           const orders = [];
           snapshot.forEach(doc => {
             orders.push({ id: doc.id, ...doc.data() });
           });
-          renderAvailableOrders(orders);
-          updateStats();
+          
+          // فرز الطلبات حسب الوقت (الأحدث أولاً)
+          orders.sort((a, b) => {
+            const aTime = a.createdAt?.toDate?.() || a.createdAt || new Date(0);
+            const bTime = b.createdAt?.toDate?.() || b.createdAt || new Date(0);
+            return new Date(bTime) - new Date(aTime);
+          });
+                    renderAvailableOrders(orders);
         }, (error) => {
           console.error('خطأ في تحميل الطلبات المتاحة:', error);
-          showNotification('خطأ في تحميل الطلبات المتاحة', 'error');        });
-      
-      // 2. الاستماع لطلبات السائق الحالية (الطلبات المقبولة)
-      myOrdersUnsubscribe = db.collection('orders')
-        .where('driverId', '==', currentUserId)
-        .where('status', 'in', ['accepted', 'picked_up'])
-        .orderBy('createdAt', 'desc')
-        .onSnapshot((snapshot) => {
-          const orders = [];
-          snapshot.forEach(doc => {
-            orders.push({ id: doc.id, ...doc.data() });
-          });
-          renderMyOrders(orders);
-          updateStats();
-        }, (error) => {
-          console.error('خطأ في تحميل طلبات السائق:', error);
-          showNotification('خطأ في تحميل طلباتك', 'error');
-        });
-      
-      // 3. الاستماع للطلبات المكتملة (للسجل)
-      completedOrdersUnsubscribe = db.collection('orders')
-        .where('driverId', '==', currentUserId)
-        .where('status', '==', 'completed')
-        .orderBy('createdAt', 'desc')
-        .limit(10)
-        .onSnapshot((snapshot) => {
-          const orders = [];
-          snapshot.forEach(doc => {
-            orders.push({ id: doc.id, ...doc.data() });
-          });
-          renderHistoryOrders(orders);
-        }, (error) => {
-          console.error('خطأ في تحميل سجل الطلبات:', error);
+          
+          // محاولة إعادة الاتصال بعد 5 ثوانٍ
+          showNotification('خطأ في الاتصال. إعادة المحاولة...', 'error');
+          setTimeout(() => {
+            setupRealtimeListeners();
+          }, 5000);
         });
     }
     
     // عرض الطلبات المتاحة
     function renderAvailableOrders(orders) {
-      const container = document.getElementById('availableOrdersList');
+      const container = document.getElementById('availableOrdersContainer');
       
       if (orders.length === 0) {
         container.innerHTML = `
           <div class="empty-state">
             <i class="fas fa-box-open"></i>
-            <p>لا توجد طلبات متاحة حالياً</p>
-            <p style="font-size: 15px; margin-top: 8px; opacity: 0.8;">سيتم عرض الطلبات الجديدة تلقائياً عند توفرها</p>
+            <p>لا توجد طلبات متاحة لـ ${getVehicleTypeLabel(driverVehicleType)}</p>
+            <p style="font-size: 15px; margin-top: 8px; opacity: 0.8;">
+              سيتم عرض الطلبات الجديدة تلقائياً عند توفرها
+            </p>
+            <div style="background: rgba(79, 172, 254, 0.15); border-radius: 12px; padding: 12px; margin-top: 15px; font-size: 14px;">
+              <i class="fas fa-info-circle" style="margin-left: 5px;"></i>
+              هذه الشاشة تعرض فقط الطلبات المناسبة لمركبتك: <strong>${getVehicleTypeLabel(driverVehicleType)}</strong>
+            </div>
           </div>
         `;
         return;
-      }      
-      let html = '';
+      }
+      
+      let html = `<div style="margin-bottom: 15px; padding: 12px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; border-left: 3px solid var(--success);">
+        <i class="fas fa-check-circle" style="margin-left: 5px;"></i>
+        <strong>${orders.length}</strong> طلب جديد متاح لـ ${getVehicleTypeLabel(driverVehicleType)}
+      </div>`;
+      
       orders.forEach(order => {
         html += `
           <div class="order-card pending" data-id="${order.id}">
             <div class="order-header">
-              <div class="order-id">طلب #${order.id.substring(0, 6)}</div>
+              <div class="order-id">
+                <i class="fas fa-shopping-bag"></i> طلب #${order.id.substring(0, 5)}
+              </div>
               <div class="order-time">
-                <i class="fas fa-clock"></i> 
-                ${order.createdAt ? formatTimeAgo(order.createdAt) : 'الآن'}
+                <i class="fas fa-clock"></i> ${order.createdAt ? formatTimeAgo(order.createdAt) : 'الآن'}
               </div>
             </div>
-            
-            <div class="order-locations">
+                        <div class="order-locations">
               <div class="location-item">
                 <div class="location-icon">
                   <i class="fas fa-map-marker-alt"></i>
                 </div>
                 <div>
-                  <div class="location-label">مكان الاستلام</div>
-                  <div class="location-address">${order.pickupLocation || '---'}</div>
+                  <div class="location-label">الاستلام</div>
+                  <div class="location-address">${order.pickupLocation?.substring(0, 25) || '---'}</div>
                 </div>
               </div>
               <div class="location-item">
@@ -859,8 +601,8 @@
                   <i class="fas fa-truck"></i>
                 </div>
                 <div>
-                  <div class="location-label">مكان التسليم</div>
-                  <div class="location-address">${order.deliveryLocation || '---'}</div>
+                  <div class="location-label">التسليم</div>
+                  <div class="location-address">${order.deliveryLocation?.substring(0, 25) || '---'}</div>
                 </div>
               </div>
             </div>
@@ -868,30 +610,24 @@
             <div class="order-details">
               <div class="detail-item">
                 <div class="detail-label">الزبون</div>
-                <div class="detail-value">${order.customerName || '---'}</div>
+                <div class="detail-value">${order.customerName?.substring(0, 12) || '---'}</div>
               </div>
               <div class="detail-item">
-                <div class="detail-label">المركبة</div>
-                <div class="detail-value">
-                  <span class="vehicle-badge ${order.vehicleType || 'motorcycle'}">
-                    <i class="fas fa-${order.vehicleType === 'car' ? 'car' : order.vehicleType === 'truck' ? 'truck' : 'motorcycle'}"></i>
-                    ${getVehicleTypeLabel(order.vehicleType)}
-                  </span>
-                </div>
+                <div class="detail-label">السعر</div>
+                <div class="detail-value">${order.suggestedPrice ? order.suggestedPrice + ' درهم' : '---'}</div>
               </div>
               <div class="detail-item">
-                <div class="detail-label">السعر</div>                <div class="detail-value">${order.suggestedPrice ? order.suggestedPrice + ' درهم' : '---'}</div>
+                <div class="detail-label">المسافة</div>
+                <div class="detail-value">~${calculateDistance(order)} كم</div>
               </div>
               <div class="detail-item">
-                <div class="detail-label">الحالة</div>
-                <div class="detail-value">
-                  <span class="status-badge pending">في الانتظار</span>
-                </div>
+                <div class="detail-label">الوقت</div>
+                <div class="detail-value">${calculateDeliveryTime(order)} دقيقة</div>
               </div>
             </div>
             
             <div class="order-actions">
-              <button class="action-btn accept" onclick="acceptOrder('${order.id}')">
+              <button class="action-btn accept" data-id="${order.id}">
                 <i class="fas fa-check-circle"></i> قبول الطلب
               </button>
             </div>
@@ -899,192 +635,28 @@
         `;
       });
       
-      container.innerHTML = html;
+      container.innerHTML = html;      
+      // إضافة مستمعات للأزرار
+      document.querySelectorAll('.action-btn.accept').forEach(button => {
+        button.addEventListener('click', (e) => {
+          const orderId = e.currentTarget.getAttribute('data-id');
+          acceptOrder(orderId);
+        });
+      });
       
       // إظهار إشعار عند وجود طلب جديد
-      if (orders.length > 0 && orders[0].isNew) {
-        showNotification(`طلب جديد متاح للتوصيل! #${orders[0].id.substring(0, 6)}`, 'info');
+      if (orders.length > 0) {
+        const latestOrderTime = orders[0].createdAt?.toDate?.() || new Date();
+        const lastNotificationTime = localStorage.getItem('lastOrderNotificationTime');
+        const lastOrderId = localStorage.getItem('lastOrderId');
+        
+        // إظهار إشعار فقط إذا كان الطلب جديدًا
+        if (!lastNotificationTime || new Date(lastNotificationTime) < latestOrderTime || lastOrderId !== orders[0].id) {
+          showNotification(`طلب جديد! #${orders[0].id.substring(0, 5)} - ${getVehicleTypeLabel(driverVehicleType)}`, 'info');
+          localStorage.setItem('lastOrderNotificationTime', new Date().toISOString());
+          localStorage.setItem('lastOrderId', orders[0].id);
+        }
       }
-    }
-    
-    // عرض طلبات السائق
-    function renderMyOrders(orders) {
-      const container = document.getElementById('myOrdersList');
-      
-      if (orders.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-truck"></i>
-            <p>ليس لديك طلبات نشطة</p>
-            <p style="font-size: 15px; margin-top: 8px; opacity: 0.8;">اقبل طلباً جديداً لإضافته إلى قائمتك</p>
-          </div>
-        `;
-        return;
-      }
-      
-      let html = '';
-      orders.forEach(order => {
-        const isPickedUp = order.status === 'picked_up';
-        html += `
-          <div class="order-card ${order.status}" data-id="${order.id}">
-            <div class="order-header">
-              <div class="order-id">طلب #${order.id.substring(0, 6)}</div>
-              <div class="order-time">                <i class="fas fa-user"></i> 
-                ${order.customerName || 'زبون'}
-              </div>
-            </div>
-            
-            <div class="order-locations">
-              <div class="location-item">
-                <div class="location-icon">
-                  <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <div>
-                  <div class="location-label">مكان الاستلام</div>
-                  <div class="location-address">${order.pickupLocation || '---'}</div>
-                </div>
-              </div>
-              <div class="location-item">
-                <div class="location-icon delivery">
-                  <i class="fas fa-truck"></i>
-                </div>
-                <div>
-                  <div class="location-label">مكان التسليم</div>
-                  <div class="location-address">${order.deliveryLocation || '---'}</div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="order-details">
-              <div class="detail-item">
-                <div class="detail-label">السعر</div>
-                <div class="detail-value">${order.suggestedPrice ? order.suggestedPrice + ' درهم' : '---'}</div>
-              </div>
-              <div class="detail-item">
-                <div class="detail-label">الحالة</div>
-                <div class="detail-value">
-                  <span class="status-badge ${order.status}">${getOrderStatusLabel(order.status)}</span>
-                </div>
-              </div>
-              <div class="detail-item">
-                <div class="detail-label">الوقت</div>
-                <div class="detail-value">${order.createdAt ? formatTimeAgo(order.createdAt) : '---'}</div>
-              </div>
-              <div class="detail-item">
-                <div class="detail-label">المسافة</div>
-                <div class="detail-value">~${calculateDistance(order)} كم</div>
-              </div>
-            </div>
-            
-            <div class="order-actions">
-              ${!isPickedUp ? `
-                <button class="action-btn picked-up" onclick="updateOrderStatus('${order.id}', 'picked_up')">                  <i class="fas fa-box-open"></i> تم الاستلام
-                </button>
-                <button class="action-btn cancel" onclick="updateOrderStatus('${order.id}', 'cancelled')">
-                  <i class="fas fa-times"></i> إلغاء
-                </button>
-              ` : `
-                <button class="action-btn complete" onclick="updateOrderStatus('${order.id}', 'completed')">
-                  <i class="fas fa-check"></i> تم التوصيل
-                </button>
-              `}
-            </div>
-          </div>
-        `;
-      });
-      
-      container.innerHTML = html;
-    }
-    
-    // عرض سجل الطلبات
-    function renderHistoryOrders(orders) {
-      const container = document.getElementById('historyOrdersList');
-      
-      if (orders.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-history"></i>
-            <p>لا يوجد سجل طلبات</p>
-            <p style="font-size: 15px; margin-top: 8px; opacity: 0.8;">سيتم عرض سجل طلباتك هنا بعد إكمال أول طلب</p>
-          </div>
-        `;
-        return;
-      }
-      
-      let html = '';
-      orders.forEach(order => {
-        html += `
-          <div class="order-card completed" data-id="${order.id}">
-            <div class="order-header">
-              <div class="order-id">طلب #${order.id.substring(0, 6)}</div>
-              <div class="order-time">
-                <i class="fas fa-calendar"></i> 
-                ${order.createdAt ? formatDate(order.createdAt) : '---'}
-              </div>
-            </div>
-            
-            <div class="order-locations">
-              <div class="location-item">
-                <div class="location-icon">
-                  <i class="fas fa-map-marker-alt"></i>
-                </div>                <div>
-                  <div class="location-label">من</div>
-                  <div class="location-address">${order.pickupLocation?.substring(0, 30) || '---'}</div>
-                </div>
-              </div>
-              <div class="location-item">
-                <div class="location-icon delivery">
-                  <i class="fas fa-truck"></i>
-                </div>
-                <div>
-                  <div class="location-label">إلى</div>
-                  <div class="location-address">${order.deliveryLocation?.substring(0, 30) || '---'}</div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="order-details">
-              <div class="detail-item">
-                <div class="detail-label">السعر</div>
-                <div class="detail-value">${order.suggestedPrice ? order.suggestedPrice + ' درهم' : '---'}</div>
-              </div>
-              <div class="detail-item">
-                <div class="detail-label">الحالة</div>
-                <div class="detail-value">
-                  <span class="status-badge completed">مكتمل</span>
-                </div>
-              </div>
-              <div class="detail-item">
-                <div class="detail-label">التقييم</div>
-                <div class="detail-value">★★★★★</div>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-      
-      container.innerHTML = html;
-    }
-    
-    // تحديث الإحصائيات
-    function updateStats() {
-      // سيتم تحديث الإحصائيات تلقائياً من خلال الاستماع للطلبات
-      // هذا مثال بسيط، في التطبيق الحقيقي سيتم حساب القيم من البيانات
-      const activeCount = document.querySelectorAll('#myOrdersList .order-card').length;
-      const pendingCount = document.querySelectorAll('#availableOrdersList .order-card').length;
-      const completedCount = document.querySelectorAll('#historyOrdersList .order-card').length;
-      
-      document.getElementById('activeOrdersCount').textContent = activeCount;
-      document.getElementById('pendingOrdersCount').textContent = pendingCount;
-      document.getElementById('completedTodayCount').textContent = completedCount;      
-      // تحديث التقييم (مثال)
-      document.getElementById('driverRating').textContent = activeCount > 0 ? '4.9' : '0.0';
-      
-      // تحديث الإحصائيات الأخرى
-      document.getElementById('totalOrders').textContent = activeCount + completedCount;
-      document.getElementById('dailyEarnings').textContent = `${Math.floor(Math.random() * 500) + 100} درهم`;
-      document.getElementById('acceptanceRate').textContent = `${Math.floor(Math.random() * 30) + 70}%`;
-      document.getElementById('avgDeliveryTime').textContent = `${Math.floor(Math.random() * 15) + 15} دقيقة`;
     }
     
     // قبول الطلب
@@ -1096,42 +668,25 @@
         await db.collection('orders').doc(orderId).update({
           driverId: currentUserId,
           status: 'accepted',
+          acceptedAt: firebase.firestore.FieldValue.serverTimestamp(),
           updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
         
-        showNotification('تم قبول الطلب بنجاح!', 'success');
+        showNotification('تم قبول الطلب بنجاح! اذهب لاستلام الطلب', 'success');
+        
+        // تحديث مؤقت لمنع إشعار مكرر
+        localStorage.setItem('lastOrderId', '');
+        
       } catch (error) {
         console.error('خطأ في قبول الطلب:', error);
-        showNotification('حدث خطأ في قبول الطلب', 'error');
-      }
-    }
-    
-    // تحديث حالة الطلب
-    async function updateOrderStatus(orderId, newStatus) {
-      try {
-        const statusMessages = {
-          'picked_up': 'جارٍ تحديث الحالة إلى "تم الاستلام"...',
-          'completed': 'جارٍ تحديث الحالة إلى "مكتمل"...',
-          'cancelled': 'جارٍ إلغاء الطلب...'
-        };
         
-        showNotification(statusMessages[newStatus] || 'جارٍ التحديث...', 'info');
-        
-        const db = firebase.firestore();
-        await db.collection('orders').doc(orderId).update({
-          status: newStatus,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        
-        const successMessages = {
-          'picked_up': 'تم تحديث الحالة إلى "تم الاستلام"',
-          'completed': 'تهانينا! تم إكمال الطلب بنجاح',          'cancelled': 'تم إلغاء الطلب'
-        };
-        
-        showNotification(successMessages[newStatus] || 'تم التحديث بنجاح', 'success');
-      } catch (error) {
-        console.error('خطأ في تحديث حالة الطلب:', error);
-        showNotification('حدث خطأ في تحديث الحالة', 'error');
+        // معالجة أخطاء محددة
+        if (error.code === 'permission-denied') {
+          showNotification('هذا الطلب تم قبوله من قبل سائق آخر', 'error');
+        } else if (error.code === 'not-found') {
+          showNotification('الطلب غير موجود', 'error');        } else {
+          showNotification('حدث خطأ في قبول الطلب. حاول مرة أخرى', 'error');
+        }
       }
     }
     
@@ -1143,17 +698,6 @@
         'truck': 'شاحنة'
       };
       return labels[type] || type;
-    }
-    
-    function getOrderStatusLabel(status) {
-      const labels = {
-        'pending': 'في الانتظار',
-        'accepted': 'مقبول',
-        'picked_up': 'تم الاستلام',
-        'completed': 'مكتمل',
-        'cancelled': 'ملغى'
-      };
-      return labels[status] || status;
     }
     
     function formatTimeAgo(timestamp) {
@@ -1169,19 +713,17 @@
       return `${Math.floor(diffMinutes / 1440)} يوم`;
     }
     
-    function formatDate(timestamp) {
-      if (!timestamp) return '---';
-      
-      const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-      return date.toLocaleDateString('ar-MA', {
-        year: 'numeric',        month: 'short',
-        day: 'numeric'
-      });
-    }
-    
     function calculateDistance(order) {
       // هذه دالة محاكاة - في التطبيق الحقيقي سيتم حساب المسافة الفعلية
-      return Math.floor(Math.random() * 15) + 2;
+      // نحسب مسافة عشوائية بين 2 و 15 كم
+      return Math.floor(Math.random() * 14) + 2;
+    }
+    
+    function calculateDeliveryTime(order) {
+      // حساب الوقت التقريبي للتوصيل بناءً على المسافة
+      const distance = calculateDistance(order);
+      // 3-5 دقائق لكل كيلومتر
+      return Math.floor(distance * Math.random() * 2 + 3);
     }
     
     // عرض الإشعار
@@ -1191,8 +733,7 @@
       
       notificationText.textContent = message;
       notification.className = 'notification';
-      
-      if (type === 'success') notification.classList.add('success');
+            if (type === 'success') notification.classList.add('success');
       else if (type === 'error') notification.classList.add('error');
       else if (type === 'info') notification.classList.add('info');
       
@@ -1219,14 +760,17 @@
     // إشعار ترحيبي عند التحميل
     window.addEventListener('load', () => {
       setTimeout(() => {
-        showNotification('مرحباً بك في لوحة تحكم السائق! التحديث التلقائي مفعل', 'success');
-      }, 1000);
+        // إخفاء مؤشر التحميل بعد 1.5 ثانية
+        const loadingEl = document.querySelector('.loading');
+        if (loadingEl) {
+          loadingEl.style.display = 'none';
+        }
+      }, 1500);
     });
     
-    // تنظيف الاستماع عند مغادرة الصفحة    window.addEventListener('beforeunload', () => {
+    // تنظيف الاستماع عند مغادرة الصفحة
+    window.addEventListener('beforeunload', () => {
       if (availableOrdersUnsubscribe) availableOrdersUnsubscribe();
-      if (myOrdersUnsubscribe) myOrdersUnsubscribe();
-      if (completedOrdersUnsubscribe) completedOrdersUnsubscribe();
     });
   </script>
 </body>
